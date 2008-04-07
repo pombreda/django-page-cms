@@ -19,7 +19,7 @@ An object can be linked with mutiple nodes, but it's not the case for a Page obj
 node = nodes[0]
 }}}
 
-You have your associated node. You can now use it to retrieve all linked object:
+You can now use it to retrieve all linked object:
 
 {{{
 all_objects = node.get_objects()
