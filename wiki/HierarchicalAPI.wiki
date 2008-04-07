@@ -31,7 +31,7 @@ You have now a list of all objects associated with the node of your page. You ca
 
 All these functions are class functions of HierarchicalNode.
 
-  * get_first_level_objects() : return objects associated with first level nodes
+  * get_first_level_objects(model) : return objects of the same model associated with first level nodes
   * get_nodes_by_model(model) : return nodes associated with an object of the given model
   * get_nodes_by_object(object) : return nodes associated with the given object
   * get_parent_object(object) : return the first parent object of the same type that the given object
