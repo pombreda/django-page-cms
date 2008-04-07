@@ -1,0 +1,28 @@
+#summary How to use the API
+
+= How to use Hierarchical with other objects =
+
+It's a good thing to define a `get_admin_url` method into your model if you want a link into linked objects of the hierarchical page.
+
+== How to retrieve the node(s) of an object ==
+
+Here an example with a page object
+
+{{{
+current_page = Page.published.get(id=int(page_id))
+nodes = HierarchicalNode.get_nodes_by_object(current_page)
+}}}
+
+An object can be linked with mutiple nodes, but it's not the case for a Page object so you can safely do:
+
+{{{
+node = nodes[0]
+}}}
+
+You have your associated node. You can now use it to retrieve all linked object:
+
+{{{
+all_objects = node.get_objects()
+}}}
+
+You have now a list of all objects associated with the node of your page. You can link any sort of object that you application provide and build a CMS upon it.
