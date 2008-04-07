@@ -26,3 +26,14 @@ all_objects = node.get_objects()
 }}}
 
 You have now a list of all objects associated with the node of your page. You can link any sort of object that you application provide and build a CMS upon it.
+
+== Other functions ==
+
+All these functions are class functions of HierarchicalNode.
+
+  * get_first_level_objects() : return objects associated with first level nodes
+  * get_nodes_by_model(model) : return nodes associated with an object of the given model
+  * get_nodes_by_object(object) : return nodes associated with the given object
+  * get_parent_object(object) : return the first parent object of the same type that the given object
+  * get_children_objects(object) : return children objects of the given object assuming that the object is only associated with one node
+  * is_parent(object1, object2) : tell if object1 is parent of object2
