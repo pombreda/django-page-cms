@@ -2,7 +2,7 @@
 
 = How to use Hierarchical with other objects =
 
-It's a good thing to define a `get_admin_url` method into your model if you want a link into linked objects of the hierarchical page.
+You shoudl define a `get_admin_url` method into your model if you want a link in the admin hierarchical page.
 
 == How to retrieve the node(s) of an object ==
 
