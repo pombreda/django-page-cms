@@ -1,5 +1,9 @@
 #summary How to use the API
 
+*This API is now deprecated. This project use the MPTT Django project*
+
+http://code.google.com/p/django-mptt/
+
 = How to use Hierarchical with other objects =
 
 You shoudl define a `get_admin_url` method into your model if you want a link in the admin hierarchical page.
