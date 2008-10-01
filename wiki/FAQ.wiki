@@ -9,6 +9,6 @@ the user want to *changed the slug*.
 
 What will happened if someone have published the old URL in a forum? He will get a 404 error. We cannot accept this.
 
-If you want to never break URLs without restraining the user the id trick seems like a acceptable solution.
+If you want to never break URLs without restraining the user the id trick seems like an acceptable solution.
 
 Otherwise if you really want to get ride of this ID you can set PAGE_UNIQUE_SLUG_REQUIRED to True into your settings and make the necessary modifications to the pages.url, page.views and pages.models.get_url.
