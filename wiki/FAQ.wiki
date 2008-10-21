@@ -12,3 +12,15 @@ What will happened if someone have published the old URL in a forum? He will get
 If you want to never break URLs without restraining the user the id trick seems like an acceptable solution.
 
 Otherwise if you really want to get ride of this ID you can set PAGE_UNIQUE_SLUG_REQUIRED to True into your settings and make the necessary modifications to the pages.url, page.views and pages.models.get_url.
+
+== how could I specify meta description for each
+page (in each language)? ==
+
+If you want to have a field for the description meta tag just add a placeholder in your template:
+
+<meta name="keywords" content="{% placeholder meta_description current_page TextInput %}" />
+
+And an translated field should appears in the admin. (for each language)
+
+
+
