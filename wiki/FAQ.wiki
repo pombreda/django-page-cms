@@ -4,7 +4,7 @@
 
 == You add the page ID at end of URL. Why have you done this horrible thing? ==
 
-Imagine that the URL change because the has moved the page in the tree or because
+Imagine that the URL change because the user has moved the page in the tree or because
 the user has *changed the slug*.
 
 What will happened if someone have published the old URL in a forum? He will get a 404 error. We cannot accept this.
