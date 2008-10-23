@@ -2,7 +2,7 @@
 
 = FAQ =
 
-== You add the page ID at end of URL. Why have you done such an horrible thing? ==
+== You add the page ID at end of URL. Why have you done such a horrible thing? ==
 
 Imagine that the URL change because the has moved the page in the tree or because
 the user has *changed the slug*.
