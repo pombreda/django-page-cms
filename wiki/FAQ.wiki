@@ -22,3 +22,11 @@ If you want to have a field for the description meta tag just add a placeholder 
 }}}
 
 And an translated field should appears in the admin.
+
+== How can I show content part of the page without using a placeholder?==
+
+The show_content template tags is here for that :
+
+{{{
+{% show_content the_page_object "the_content_type" %}
+}}}
