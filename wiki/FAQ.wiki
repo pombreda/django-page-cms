@@ -2,16 +2,9 @@
 
 = FAQ =
 
-== You add the page ID at end of URL. Why have you done this horrible thing? ==
+== You add the page ID at end of URL. How can I change that? ==
 
-Imagine that the URL change because the user has moved the page in the tree or because
-the user has *changed the slug*.
-
-What will happened if someone have published the old URL in a forum? He will get a 404 error. We cannot accept this.
-
-If you want to never break URLs without restraining the user the id trick seems like an acceptable solution.
-
-Otherwise if you really want to get ride of this ID you can set PAGE_UNIQUE_SLUG_REQUIRED to True into your settings and make the necessary modifications to the pages.url, page.views and pages.models.get_url.
+if you want to get ride of this ID you can set PAGE_UNIQUE_SLUG_REQUIRED to True into your settings and the default front end will use the slug instead of the ID pf the page.
 
 == How can I specify a meta description for each page and for each language? ==
 
