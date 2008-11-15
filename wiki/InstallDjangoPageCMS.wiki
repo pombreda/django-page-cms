@@ -50,6 +50,8 @@ Add django.core.context_processors.request and pages.context_processors.media to
 TEMPLATE_CONTEXT_PROCESSORS = (
     ...
     "django.core.context_processors.media",
+    "django.core.context_processors.request",
+    "pages.context_processors.media",
     ...
 )
 
