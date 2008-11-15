@@ -1,10 +1,10 @@
-#Explain how to integrate django page cms into a legacy django project
+#summary Explain how to integrate django page cms into a legacy django project
 
 =Install in legacy project=
 
 ==Install by using subversion externals==
 
-You can use the latest trunk version of the Django page CMS by using subversion externals
+You can use the released version of the Django page CMS by using subversion externals
 
 {{{
 $ svn pe svn:externals .
@@ -19,7 +19,7 @@ Or if you want the latest version
 pages                   http://django-page-cms.googlecode.com/svn/trunk/pages
 }}}
 
-Tagging is optional. If you don't want it please set PAGE_TAGGING setting to false in your settings. After that simply add wanted apps to your installed apps :
+Tagging is optional. If you don't want it please set PAGE_TAGGING setting to False in your settings. After that simply add wanted apps to your installed apps :
 
 {{{
 INSTALLED_APPS = (
@@ -46,7 +46,23 @@ For the settings have a look in pages/settings.py for available options.
 
 Add django.core.context_processors.request and pages.context_processors.media to your TEMPLATE_CONTEXT_PROCESSORS and django.middleware.locale.LocaleMiddleware middleware to MIDDLEWARE_CLASSES.
 
-You have also to set DEFAULT_PAGE_TEMPLATE, LANGUAGES, and PAGE_TEMPLATES to the name of your default CMS template.
+{{{
+TEMPLATE_CONTEXT_PROCESSORS = (
+    ...
+    "django.core.context_processors.media",
+    ...
+)
+
+INTERNAL_IPS = ('127.0.0.1',)
+
+MIDDLEWARE_CLASSES = (
+    ...
+    'django.middleware.locale.LocaleMiddleware',
+    ...
+)
+}}}
+
+You also have to set DEFAULT_PAGE_TEMPLATE to the name of your default CMS template. And LANGUAGES with wanted languages.
 
 {{{
 LANGUAGES = (
@@ -56,7 +72,11 @@ LANGUAGES = (
 )
 
 DEFAULT_PAGE_TEMPLATE = 'index.html'
+}}}
 
+Optionally you can set PAGE_TEMPLATES if you want additional templates choices:
+
+{{{
 # Could be set to None if you don't need multiple templates.
 PAGE_TEMPLATES = (
     ('nice.html', 'nice one'),
