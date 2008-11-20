@@ -1,4 +1,5 @@
 #summary Explain how to integrate django page cms into a legacy django project
+#labels Featured
 
 =Install in legacy project=
 
