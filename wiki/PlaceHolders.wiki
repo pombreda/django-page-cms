@@ -1,0 +1,23 @@
+#summary Documentation about placeholders
+
+=Dynamic localized placeholders in templates=
+
+To create new multilingual page content you can use the *placeholder* template tag. This template tag use the request object so you have to put it in the context of your views.
+
+{{{
+  <h3>title : {% placeholder title current_page TextInput %}</h3>
+  <p>body : {% placeholder body current_page Textarea %}</p>
+}}}
+
+A field will be automatically created in the admin interface for each placeholder in your template.
+
+==List of placeholder style==
+
+Placeholder could be rendered with different widgets:
+
+  * TextInput : a simple line input
+  * Textarea : a multi line input
+  * RichTextarea : a [http://batiste.dosimple.ch/blog/posts/2007-09-11-1/rich-text-editor-jquery.html simple Rich Text Area Editor based jQuery]
+  * WYMEditor : a complete jQuery Rich Text Editor called [http://www.wymeditor.org/ wymeditor]
+  * markItUpMarkdown : markdown editor based on [http://markitup.jaysalvat.com/home/ markitup]
+  * markItUpHTML : HTML editor based on [http://markitup.jaysalvat.com/home/ markitup]
