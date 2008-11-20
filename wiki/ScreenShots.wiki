@@ -1,4 +1,5 @@
 #summary Some screenshots
+#labels Featured
 
 =Page tree=
 
