@@ -11,7 +11,7 @@ To create new multilingual page content you can use the *placeholder* template t
 
 A field will be automatically created in the admin interface for each placeholder in your template.
 
-==List of placeholder style==
+=List of placeholder style=
 
 Placeholder could be rendered with different widgets:
 
