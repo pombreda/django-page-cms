@@ -1,0 +1,21 @@
+#summary Documentation for backwards-incompatible changes.
+#labels Phase-Implementation,Phase-Support
+
+= Backwards Incompatible Changes =
+
+=== r224 (Nov 23, 2008) ===
+
+Moved [http://code.google.com/p/django-page-cms/source/browse/trunk#trunk/example example project] to its own subdirectory in the subversion root.
+
+===  r207 (Nov 18, 2008) ===
+
+Added new !DateTime field "publication_end_date" to Page model.
+
+Use the following SQL statement as a helper if you need to modify existing data:
+
+{{{
+BEGIN;
+ALTER TABLE pages_page
+    ADD COLUMN publication_end_date datetime NULL;
+COMMIT;
+}}}
