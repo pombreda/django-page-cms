@@ -3,6 +3,12 @@
 
 = Backwards Incompatible Changes =
 
+=== r238 (Nov 26, 2008) ===
+
+Removed `blank` and `null` options on the `sites` field of the `Page` model to enforce validation. That's now mandatory given the new `CurrentSiteMiddleware`. Change your site objects to match your domain(s)!
+
+No worries if you use different subdomains on the same Django instance, pages checks if the request host ends with one of the Site instances.
+
 === r224 (Nov 23, 2008) ===
 
 Moved [http://code.google.com/p/django-page-cms/source/browse/trunk#trunk/example example project] to its own subdirectory in the subversion root.
