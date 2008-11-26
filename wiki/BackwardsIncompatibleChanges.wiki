@@ -7,6 +7,19 @@
 
 Moved [http://code.google.com/p/django-page-cms/source/browse/trunk#trunk/example example project] to its own subdirectory in the subversion root.
 
+=== r222/r223 (Nov 23, 2008) ===
+
+Added a !CurrentSiteMiddleware middleware that is now mandatory. This enables django-page-cms to serve multiple domains without having to have multiple Django processes.
+
+Please modify your settings to look like this:
+
+{{{
+MIDDLEWARE_CLASSES = (
+    # ..
+    'pages.middleware.CurrentSiteMiddleware',
+)
+}}}
+
 ===  r207 (Nov 18, 2008) ===
 
 Added new !DateTime field "publication_end_date" to Page model.
