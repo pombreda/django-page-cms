@@ -13,7 +13,7 @@ No worries if you use different subdomains on the same Django instance, pages ch
 
 Moved [http://code.google.com/p/django-page-cms/source/browse/trunk#trunk/example example project] to its own subdirectory in the subversion root.
 
-In case you update from a previous version please make sure all remaining .pyc files are deleted from your checkout before you run the example project again. On Linux/Unix systems that can be achieved by running the following command in the django-page-cms checkout directory:
+In case you updated from a previous version please make sure all remaining `*.pyc` files are deleted from your checkout before you run the example project again. On Linux/Unix systems that can be achieved by running the following command in the django-page-cms checkout directory:
 
 {{{
 find . -name '*.pyc' -exec rm {} \;
