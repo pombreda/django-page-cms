@@ -3,6 +3,20 @@
 
 = Backwards Incompatible Changes =
 
+=== r252 (Nov 28, 2008) ===
+
+The `mptt` app is now *required* to be added to the `INSTALLED_APPS` setting.
+Just make sure your settings.py looks like that:
+
+{{{
+INSTALLED_APPS = (
+    ...
+    'mptt',
+    'tagging',
+    'pages',
+)
+}}}
+
 === r238 (Nov 26, 2008) ===
 
 Removed `blank` and `null` options on the `sites` field of the `Page` model to enforce validation. That's now mandatory given the new `CurrentSiteMiddleware`. Change your site objects to match your domain(s)!
