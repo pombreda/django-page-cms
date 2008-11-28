@@ -25,12 +25,11 @@ Tagging is optional. If you don't want it please set PAGE_TAGGING setting to Fal
 {{{
 INSTALLED_APPS = (
     ...
+    'mptt',
     'tagging',
     'pages',
 )
 }}}
-
-MPTT seems to work without being added to installed apps.
 
 ==Urls and settings==
 
