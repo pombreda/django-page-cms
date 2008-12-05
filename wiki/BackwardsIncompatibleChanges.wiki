@@ -3,6 +3,45 @@
 
 = Backwards Incompatible Changes =
 
+=== r259 (Dec 5, 2008) ===
+
+The placeholder template tag has been revamped to be a more flexible. The new syntax is a bit different and will break unless you change your existing templates.
+
+The *old* syntax:
+
+{{{
+{% placeholder [name] [page] [widget] %}
+}}}
+
+The *new* syntax:
+
+{{{
+{% placeholder [name] %}
+{% placeholder [name] parsed %}
+
+{% placeholder [name] with [widget] %}
+{% placeholder [name] with [widget] parsed %}
+
+{% placeholder [name] on [page]  %}
+{% placeholder [name] on [page] parsed %}
+{% placeholder [name] on [page] with [widget] %}
+{% placeholder [name] on [page] with [widget] parsed %}
+}}}
+
+The `page` and `widget` parameter are both optional now. If now `page` parameter is given it will automatically take the current page (by using the `current_page` context variable) to get the content of the placeholder.
+
+*New:* If you pass the word "parsed" the content of the template will be evaluated as Django template code, within the current template context. Each placeholder with that has the "parsed" parameter will also have a note in the admin interface noting its ability to be evaluated as template.
+
+*New:* You can now also use a variable name optionally that is automatically set in the context view with the content of the placeholder. The content will not be embedded in a `div` tag. 
+
+{{{
+{% placeholder right-column parsed as right_column %}
+
+..random content..
+
+<div class="my_funky_column">{{ right_column }}</div>
+}}}
+
 === r252 (Nov 28, 2008) ===
 
 The `mptt` app is now *required* to be added to the `INSTALLED_APPS` setting.
