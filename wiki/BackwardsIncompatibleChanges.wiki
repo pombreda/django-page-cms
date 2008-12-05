@@ -3,6 +3,10 @@
 
 = Backwards Incompatible Changes =
 
+=== r261 (Dec 5, 2008) ===
+
+The placeholder template tag doesn't return a `<div class="placeholder">[content]</div>` anymore. Please wrap the template tags yourself in HTML you require. The templates of the example project was changed to follow the changes.
+
 === r259 (Dec 5, 2008) ===
 
 The placeholder template tag has been revamped to be a more flexible. The new syntax is a bit different and will break unless you change your existing templates.
