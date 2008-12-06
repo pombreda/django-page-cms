@@ -2,6 +2,8 @@
 
 =Dynamic localized placeholders in templates=
 
+===The following notes are valid for version 0.1, *not* for trunk===
+
 To create new multilingual page content you can use the *placeholder* template tag. This template tag use the request object so you have to put it in the context of your views.
 
 {{{
