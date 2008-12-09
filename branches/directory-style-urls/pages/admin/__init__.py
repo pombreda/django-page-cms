@@ -10,14 +10,15 @@ from django.db import models
 from django.http import HttpResponseRedirect
 
 from pages import settings
-from pages.models import Page, Content, tagging
+from pages.models import Page, Content, tagging, URL
 from pages.views import details
 from pages.utils import get_template_from_request, has_page_add_permission, \
     get_language_from_request
 
 from pages.admin import widgets
 from pages.admin.forms import PageForm
-from pages.admin.utils import get_placeholders
+from pages.admin.utils import get_placeholders, unique_slug_for_parent, \
+    create_url_for_page
 from pages.admin.views import traduction, get_content, valid_targets_list, \
     change_status, modify_content
 
@@ -37,7 +38,7 @@ class PageAdmin(admin.ModelAdmin):
         general_fields.insert(insert_point, 'publication_end_date')
     if settings.PAGE_SHOW_START_DATE:
         general_fields.insert(insert_point, 'publication_date')
-
+        
     normal_fields = ['language']
     if settings.PAGE_TEMPLATES:
         normal_fields.append('template')
@@ -51,6 +52,10 @@ class PageAdmin(admin.ModelAdmin):
             'fields': normal_fields,
             'classes': ('sidebar', 'clear'),
             'description': _('Note: This page reloads if you change the selection'),
+        }),
+        ('', {
+            'fields': ('target','position'),
+            'classes': ('hidden',)
         }),
     )
         
@@ -91,6 +96,11 @@ class PageAdmin(admin.ModelAdmin):
         elif url.endswith('/change-status'):
             return change_status(request, unquote(url[:-14]))
         return super(PageAdmin, self).__call__(request, url)
+    
+#    def add_view(self, request):
+#        target = request.GET.get('target', None)
+#        self.form.fields['parent'] = int(target)
+#        return admin.ModelAdmin.add_view(self, request)
 
     def i18n_javascript(self, request):
         """
@@ -114,6 +124,7 @@ class PageAdmin(admin.ModelAdmin):
         language = form.cleaned_data['language']
         target = request.GET.get('target', None)
         position = request.GET.get('position', None)
+        
         if target is not None and position is not None:
             try:
                 target = self.model.objects.get(pk=target)
@@ -141,7 +152,13 @@ class PageAdmin(admin.ModelAdmin):
                 else:
                     Content.objects.set_or_create_content(obj, language,
                         placeholder.name, form.cleaned_data[placeholder.name])
-
+                    
+        # Create the URLs for the page when the slug is created or changes
+        if 'slug' in form._get_changed_data(): 
+            create_url_for_page(obj)
+            for page in obj.get_descendants():
+                create_url_for_page(page)
+                                
     def get_fieldsets(self, request, obj=None):
         """
         Add fieldsets of placeholders to the list of already existing
@@ -297,17 +314,26 @@ class PageAdmin(admin.ModelAdmin):
 
         target = request.POST.get('target', None)
         position = request.POST.get('position', None)
+        
         if target is not None and position is not None:
-            try:
-                target = self.model.objects.get(pk=target)
-            except self.model.DoesNotExist:
-                context.update({'error': _('Page could not been moved.')})
+            if position in ('right', 'left'):
+                relationship = 'sibling'
+            elif position == 'first-child':
+                relationship = 'parent'
+            if unique_slug_for_parent(slug=page.slug(),
+                    page_id=target, relationship=relationship):
+                try:
+                    target = self.model.objects.get(pk=target)
+                except self.model.DoesNotExist:
+                    context.update({'move_status': _('Page could not been moved.')})
+                else:
+                    page.move_to(target, position)
+                    context.update({'move_status': _('Page Successfully moved.')})
             else:
-                page.move_to(target, position)
-                return self.list_pages(request,
-                    template_name='admin/pages/page/change_list_table.html')
+                context.update({'move_status': _('Error Moving Page. Slug is not unique for parent.')})
         context.update(extra_context or {})
-        return HttpResponseRedirect('../../')
+        return self.list_pages(request,
+            template_name='admin/pages/page/change_list_table.html', extra_context=context)
 admin.site.register(Page, PageAdmin)
 
 class ContentAdmin(admin.ModelAdmin):

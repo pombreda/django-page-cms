@@ -109,6 +109,9 @@ PAGE_TEMPLATES = (
     ('cool.html', 'cool one'),
 )
 
+PAGE_UNIQUE_SLUG_REQUIRED = False
+PAGE_BASE_URL = ''
+
 try:
     from local_settings import *
 except ImportError:

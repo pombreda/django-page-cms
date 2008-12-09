@@ -160,7 +160,9 @@ $(document).ready(function() {
                         $('#changelist').html(html);
                         initTreeCollapsing();
                         $('#page-row-'+selected_page).addClass("selected");
-                        var msg = $('<span>Successfully moved</span>');
+                        var msg_text = $('#move_status').html();
+                        var msg = $('<span>' + msg_text +'</span>');
+                        //var msg = $('<span>Successfully moved</span>');
                         $($('#page-row-'+selected_page+" td")[0]).append(msg);
                         msg.fadeOut(5000);
                     }

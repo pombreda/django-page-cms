@@ -4,6 +4,19 @@ from django.template.loader_tags import ExtendsNode
 from django.templatetags.pages_tags import PlaceholderNode
 
 from pages.views import details
+from pages.models import Page, URL
+from pages import settings
+
+def create_url_for_page(page):
+    """
+    Insert URL Records for a given page based on page.get_url()
+    """
+    for language in settings.PAGE_LANGUAGES:
+        url, new = URL.objects.get_or_create(
+                       page=page, url=page.get_url(language[0])
+                   )
+        if new:
+            url.save()
 
 def get_placeholders(request, template_name):
     """
@@ -36,3 +49,19 @@ def placeholders_recursif(nodelist, list):
     for node in nodelist:
         if isinstance(node, ExtendsNode):
             placeholders_recursif(node.get_parent(Context()).nodelist, list)
+            
+def unique_slug_for_parent(slug, page_id, relationship):
+    """
+    Checks uniqueness of a slug in relation to other pages.
+    """
+    if relationship == 'sibling':
+        target_page = Page.objects.get(pk=page_id)
+        sibling_slugs = [sibling.slug() for sibling in target_page.get_siblings()]
+        sibling_slugs.append(target_page.slug())
+        if slug in sibling_slugs:
+            return False
+    elif relationship == 'parent':
+        siblings = Page.objects.get(pk=page_id).get_children()
+        if slug in [sibling.slug() for sibling in siblings]:
+            return False
+    return True
