@@ -26,6 +26,9 @@ PAGE_TAGGING = getattr(settings, 'PAGE_TAGGING', True)
 # Whether to only allow unique slugs.
 PAGE_UNIQUE_SLUG_REQUIRED = getattr(settings, 'PAGE_UNIQUE_SLUG_REQUIRED', True)
 
+# Append the Page ID to the URL.
+PAGE_USE_ID_IN_URL = getattr(settings, 'PAGE_USE_ID_IN_URL', False)
+
 # Whether to enable revisions.
 PAGE_CONTENT_REVISION = getattr(settings, 'PAGE_CONTENT_REVISION', True)
 

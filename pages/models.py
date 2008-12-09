@@ -9,6 +9,8 @@ from django.core.cache import cache
 from django.core.urlresolvers import reverse
 from django.core.exceptions import ImproperlyConfigured
 from django.contrib.sites.models import Site
+from django.db.models.signals import pre_save, post_save
+
 
 import mptt
 from pages import settings
@@ -104,10 +106,10 @@ class Page(models.Model):
         """
         get the url of this page, adding parent's slug
         """
-        if settings.PAGE_UNIQUE_SLUG_REQUIRED:
-            url = u'%s/' % self.slug(language)
-        else:
+        if settings.PAGE_USE_ID_IN_URL:
             url = u'%s-%d/' % (self.slug(language), self.id)
+        else:
+            url = u'%s/' % self.slug(language)
         for ancestor in self.get_ancestors(ascending=True):
             url = ancestor.slug(language) + u'/' + url
         return url
@@ -215,3 +217,17 @@ class Content(models.Model):
 
     def __unicode__(self):
         return "%s :: %s" % (self.page.slug(), self.body[0:15])
+    
+class URL(models.Model):
+    """URLS available for pages"""
+    page = models.ForeignKey(Page)
+    url = models.CharField(max_length=500)
+    creation_date = models.DateTimeField(auto_now_add=True)
+    
+    def __unicode__(self):
+        return self.url
+    
+    class Meta():
+        unique_together = ('page', 'url')
+
+    

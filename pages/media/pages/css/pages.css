@@ -16,6 +16,10 @@
     background:#fff;
 }
 
+.hidden {
+    display: none;	
+}
+
 .placeholder-row textarea, .placeholder-row input {
     float:left;
 }

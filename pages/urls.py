@@ -7,11 +7,11 @@ urlpatterns = patterns('',
     url(r'^$', details, name='pages-root'),
 )
 
-if settings.PAGE_UNIQUE_SLUG_REQUIRED:
+if settings.PAGE_USE_ID_IN_URL:
     urlpatterns += patterns('',
-        url(r'^.*?/?(?P<slug>[-\w]+)/$', details, name='pages-details-by-slug'),
+        url(r'^.*?(?P<page_id>[0-9]+)/$', details, name='pages-details-by-id'),
     )
 else:
     urlpatterns += patterns('',
-        url(r'^.*?(?P<page_id>[0-9]+)/$', details, name='pages-details-by-id'),
+        url(r'^.*?/?(?P<slug>[-\w]+)/$', details, name='pages-details-by-slug'),
     )

@@ -138,6 +138,14 @@ class ContentManager(models.Manager):
         else:
             return content
 
+    def get_slugs_by_name(self, slug):
+        """
+        Returns all content objects that are slugs with the given slug arg.
+        """
+        return self.filter(type='slug', body=slug,
+            page__sites__pk=Site.objects.get_current().pk
+                ).select_related('page')
+        
 class PagePermissionManager(models.Manager):
     
     def get_page_id_list(self, user):

@@ -4,6 +4,7 @@ from django.utils.translation import ugettext_lazy as _
 
 from pages import settings
 from pages.models import Page, Content, tagging
+from pages.admin.utils import unique_slug_for_parent
 
 class PageForm(forms.ModelForm):
     title = forms.CharField(
@@ -27,6 +28,9 @@ class PageForm(forms.ModelForm):
         choices=settings.PAGE_TEMPLATES,
         help_text=_('The template used to render the content.')
     )
+    target = forms.IntegerField(required=False)
+    position = forms.CharField(required=False)
+
     if tagging:
         from tagging.forms import TagField
         from pages.admin.widgets import AutoCompleteTagInput
@@ -43,4 +47,18 @@ class PageForm(forms.ModelForm):
                     raise forms.ValidationError(_('Another page with this slug already exists'))
             elif Content.objects.filter(body=slug, type="slug").count():
                 raise forms.ValidationError(_('Another page with this slug already exists'))
+        else:
+            target = self.data.get('target', None)
+            position = self.data.get('position', None)
+            if self.instance.id:
+                sibling_slugs = [sibling.slug() for sibling in self.instance.get_siblings()]
+                if slug in sibling_slugs:
+                    raise forms.ValidationError(ugettext_lazy('A sibling page with this slug already exists'))
+            elif target is not None and position is not None:
+                if position in ('left', 'right'):
+                    if not unique_slug_for_parent(slug=slug, page_id=target, relationship='sibling'):
+                        raise forms.ValidationError(ugettext_lazy('A sibling page with this slug already exists'))
+                elif position == 'first-child':
+                    if not unique_slug_for_parent(slug=slug, page_id=target, relationship='parent'):
+                        raise forms.ValidationError(ugettext_lazy('A sibling page with this slug already exists'))
         return slug
