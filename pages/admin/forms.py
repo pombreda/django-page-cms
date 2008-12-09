@@ -53,12 +53,12 @@ class PageForm(forms.ModelForm):
             if self.instance.id:
                 sibling_slugs = [sibling.slug() for sibling in self.instance.get_siblings()]
                 if slug in sibling_slugs:
-                    raise forms.ValidationError(ugettext_lazy('A sibling page with this slug already exists'))
+                    raise forms.ValidationError(_('A sibling page with this slug already exists'))
             elif target is not None and position is not None:
                 if position in ('left', 'right'):
                     if not unique_slug_for_parent(slug=slug, page_id=target, relationship='sibling'):
-                        raise forms.ValidationError(ugettext_lazy('A sibling page with this slug already exists'))
+                        raise forms.ValidationError(_('A sibling page with this slug already exists'))
                 elif position == 'first-child':
                     if not unique_slug_for_parent(slug=slug, page_id=target, relationship='parent'):
-                        raise forms.ValidationError(ugettext_lazy('A sibling page with this slug already exists'))
+                        raise forms.ValidationError(_('A sibling page with this slug already exists'))
         return slug
