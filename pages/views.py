@@ -19,7 +19,7 @@ def details(request, page_id=None, slug=None,
             current_page = get_object_or_404(Page.objects.published(site), pk=page_id)
         elif slug:
             try:
-                relative_url = re.sub(reverse('pages-root'), '', request.path, count=1)
+                relative_url = re.sub(r'^%s' % reverse('pages-root'), '', request.path)
                 current_page = URL.objects.filter(
                                    url=relative_url
                                ).latest('creation_date').page
