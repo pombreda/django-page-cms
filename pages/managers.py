@@ -120,6 +120,8 @@ class ContentManager(models.Manager):
                 pass
         return None
 
+    ## No longer being used.  Keep around for a while to make sure we really don't
+    ## Need it
     def get_page_slug(self, slug, site=None, latest_by='creation_date'):
         """
         Returns the latest slug for the given slug and checks if it's available 
@@ -137,14 +139,6 @@ class ContentManager(models.Manager):
             return None
         else:
             return content
-
-    def get_slugs_by_name(self, slug):
-        """
-        Returns all content objects that are slugs with the given slug arg.
-        """
-        return self.filter(type='slug', body=slug,
-            page__sites__pk=Site.objects.get_current().pk
-                ).select_related('page')
         
 class PagePermissionManager(models.Manager):
     
