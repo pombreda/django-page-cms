@@ -329,6 +329,9 @@ class PageAdmin(admin.ModelAdmin):
                     context.update({'move_status': _('Page could not been moved.')})
                 else:
                     page.move_to(target, position)
+                    create_url_for_page(page)
+                    for descendant in page.get_descendants():
+                        create_url_for_page(descendant)
                     context.update({'move_status': _('Page Successfully moved.')})
             else:
                 context.update({'move_status': _('Error Moving Page. Slug is not unique for parent.')})
