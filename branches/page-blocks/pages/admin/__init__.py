@@ -5,12 +5,11 @@ from django.forms import Widget, TextInput, Textarea, CharField
 from django.contrib import admin
 from django.utils.translation import ugettext as _, ugettext_lazy
 from django.utils.encoding import force_unicode
-from django.conf import settings as global_settings
 from django.db import models
 from django.http import HttpResponseRedirect
 from django.contrib.admin.util import unquote
 
-from pages import settings
+from pages.conf import settings
 from pages.models import Page, Content, tagging
 from pages.views import details
 from pages.utils import get_template_from_request, has_page_add_permission, \
@@ -30,17 +29,17 @@ class PageAdmin(admin.ModelAdmin):
     general_fields = ['title', 'slug', 'status', 'sites']
     insert_point = general_fields.index('status') + 1
     
-    if settings.PAGE_TAGGING:
+    if settings.PAGES_TAGGING:
         general_fields.insert(insert_point, 'tags')
     
     # Add support for future dating and expiration based on settings.
-    if settings.PAGE_SHOW_END_DATE:
+    if settings.PAGES_SHOW_END_DATE:
         general_fields.insert(insert_point, 'publication_end_date')
-    if settings.PAGE_SHOW_START_DATE:
+    if settings.PAGES_SHOW_START_DATE:
         general_fields.insert(insert_point, 'publication_date')
 
     normal_fields = ['language']
-    if settings.PAGE_TEMPLATES:
+    if settings.PAGES_TEMPLATES:
         normal_fields.append('template')
 
     fieldsets = (
@@ -100,7 +99,7 @@ class PageAdmin(admin.ModelAdmin):
         This takes into account the USE_I18N setting. If it's set to False, the
         generated JavaScript will be leaner and faster.
         """
-        if global_settings.USE_I18N:
+        if settings.USE_I18N:
             from django.views.i18n import javascript_catalog
         else:
             from django.views.i18n import null_javascript_catalog as javascript_catalog
@@ -132,8 +131,8 @@ class PageAdmin(admin.ModelAdmin):
                 if change:
                     if placeholder.name not in self.mandatory_placeholders:
                         # we need create a new content if revision is enabled
-                        if settings.PAGE_CONTENT_REVISION and placeholder.name \
-                                not in settings.PAGE_CONTENT_REVISION_EXCLUDE_LIST:
+                        if settings.PAGES_CONTENT_REVISION and placeholder.name \
+                                not in settings.PAGES_CONTENT_REVISION_EXCLUDE_LIST:
                             Content.objects.create_content_if_changed(obj, language,
                                 placeholder.name, form.cleaned_data[placeholder.name])
                         else:
@@ -199,9 +198,9 @@ class PageAdmin(admin.ModelAdmin):
             form.base_fields['slug'].label = _('Slug')
 
         template = get_template_from_request(request, obj)
-        if settings.PAGE_TEMPLATES:
-            template_choices = list(settings.PAGE_TEMPLATES)
-            template_choices.insert(0, (settings.DEFAULT_PAGE_TEMPLATE, _('Default template')))
+        if settings.PAGES_TEMPLATES:
+            template_choices = list(settings.PAGES_TEMPLATES)
+            template_choices.insert(0, (settings.PAGES_DEFAULT_TEMPLATE, _('Default template')))
             form.base_fields['template'].choices = template_choices
             form.base_fields['template'].initial = force_unicode(template)
 
@@ -240,7 +239,7 @@ class PageAdmin(admin.ModelAdmin):
             extra_context = {
                 'placeholders': get_placeholders(request, template),
                 'language': get_language_from_request(request),
-                'traduction_language': settings.PAGE_LANGUAGES,
+                'traduction_language': settings.PAGES_LANGUAGES,
                 'page': obj,
             }
         return super(PageAdmin, self).change_view(request, object_id, extra_context)
@@ -249,7 +248,7 @@ class PageAdmin(admin.ModelAdmin):
         """
         Return true if the current user has permission to add a new page.
         """
-        if not settings.PAGE_PERMISSION:
+        if not settings.PAGES_PERMISSION:
             return super(PageAdmin, self).has_add_permission(request)
         else:
             return has_page_add_permission(request)
@@ -259,7 +258,7 @@ class PageAdmin(admin.ModelAdmin):
         Return true if the current user has permission on the page.
         Return the string 'All' if the user has all rights.
         """
-        if settings.PAGE_PERMISSION and obj is not None:
+        if settings.PAGES_PERMISSION and obj is not None:
             return obj.has_page_permission(request)
         return super(PageAdmin, self).has_change_permission(request, obj)
 
@@ -268,7 +267,7 @@ class PageAdmin(admin.ModelAdmin):
         Return true if the current user has permission on the page.
         Return the string 'All' if the user has all rights.
         """
-        if settings.PAGE_PERMISSION and obj is not None:
+        if settings.PAGES_PERMISSION and obj is not None:
             return obj.has_page_permission(request)
         return super(PageAdmin, self).has_delete_permission(request, obj)
 
@@ -318,6 +317,6 @@ class ContentAdmin(admin.ModelAdmin):
 
 #admin.site.register(Content, ContentAdmin)
 
-if settings.PAGE_PERMISSION:
+if settings.PAGES_PERMISSION:
     from pages.models import PagePermission
     admin.site.register(PagePermission)

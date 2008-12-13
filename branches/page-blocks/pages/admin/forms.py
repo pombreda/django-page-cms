@@ -2,7 +2,7 @@ from django import forms
 from django.template.defaultfilters import slugify
 from django.utils.translation import ugettext_lazy as _
 
-from pages import settings
+from pages.conf import settings
 from pages.models import Page, Content, tagging
 
 class PageForm(forms.ModelForm):
@@ -18,13 +18,13 @@ class PageForm(forms.ModelForm):
     )
     language = forms.ChoiceField(
         label=_('Language'),
-        choices=settings.PAGE_LANGUAGES,
+        choices=settings.PAGES_LANGUAGES,
         help_text=_('The current language of the content fields.'),
     )
     template = forms.ChoiceField(
         required=False,
         label=_('Template'),
-        choices=settings.PAGE_TEMPLATES,
+        choices=settings.PAGES_TEMPLATES,
         help_text=_('The template used to render the content.')
     )
     if tagging:
@@ -37,7 +37,7 @@ class PageForm(forms.ModelForm):
 
     def clean_slug(self):
         slug = slugify(self.cleaned_data['slug'])
-        if settings.PAGE_UNIQUE_SLUG_REQUIRED:
+        if settings.PAGES_UNIQUE_SLUG_REQUIRED:
             if self.instance.id:
                 if Content.objects.exclude(page=self.instance).filter(body=slug, type="slug").count():
                     raise forms.ValidationError(_('Another page with this slug already exists'))

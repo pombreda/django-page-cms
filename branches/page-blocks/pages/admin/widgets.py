@@ -1,11 +1,10 @@
 from os.path import join
-from django.conf import settings
 from django.forms import TextInput, Textarea
 from django.utils.safestring import mark_safe
 from django.template import RequestContext
 from django.template.loader import render_to_string
 
-from pages.settings import PAGES_MEDIA_URL
+from pages.conf import settings
 from pages.models import Page, tagging
 
 if tagging:
@@ -14,7 +13,7 @@ if tagging:
 
     class AutoCompleteTagInput(TextInput):
         class Media:
-            js = [join(PAGES_MEDIA_URL, path) for path in (
+            js = [join(settings.PAGES_MEDIA_URL, path) for path in (
                 'javascript/jquery.js',
                 'javascript/jquery.bgiframe.min.js',
                 'javascript/jquery.ajaxQueue.js',
@@ -33,11 +32,11 @@ if tagging:
 
 class RichTextarea(Textarea):
     class Media:
-        js = [join(PAGES_MEDIA_URL, path) for path in (
+        js = [join(settings.PAGES_MEDIA_URL, path) for path in (
             'javascript/jquery.js',
         )]
         css = {
-            'all': [join(PAGES_MEDIA_URL, path) for path in (
+            'all': [join(settings.PAGES_MEDIA_URL, path) for path in (
                 'css/rte.css',
             )]
         }
@@ -50,14 +49,14 @@ class RichTextarea(Textarea):
         rendered = super(RichTextarea, self).render(name, value, attrs)
         context = {
             'name': name,
-            'PAGES_MEDIA_URL': PAGES_MEDIA_URL,
+            'settings.PAGES_MEDIA_URL': settings.PAGES_MEDIA_URL,
         }
         return rendered + mark_safe(render_to_string(
             'admin/pages/page/widgets/richtextarea.html', context))
 
 class WYMEditor(Textarea):
     class Media:
-        js = [join(PAGES_MEDIA_URL, path) for path in (
+        js = [join(settings.PAGES_MEDIA_URL, path) for path in (
             'javascript/jquery.js',
             'wymeditor/jquery.wymeditor.js',
             'wymeditor/plugins/resizable/jquery.wymeditor.resizable.js',
@@ -75,20 +74,20 @@ class WYMEditor(Textarea):
         context = {
             'name': name,
             'language': self.language,
-            'PAGES_MEDIA_URL': PAGES_MEDIA_URL,
+            'settings.PAGES_MEDIA_URL': settings.PAGES_MEDIA_URL,
         }
         return rendered + mark_safe(render_to_string(
             'admin/pages/page/widgets/wymeditor.html', context))
 
 class markItUpMarkdown(Textarea):
     class Media:
-        js = [join(PAGES_MEDIA_URL, path) for path in (
+        js = [join(settings.PAGES_MEDIA_URL, path) for path in (
             'javascript/jquery.js',
             'markitup/jquery.markitup.js',
             'markitup/sets/markdown/set.js',
         )]
         css = {
-            'all': [join(PAGES_MEDIA_URL, path) for path in (
+            'all': [join(settings.PAGES_MEDIA_URL, path) for path in (
                 'markitup/skins/simple/style.css',
                 'markitup/sets/markdown/style.css',
             )]
@@ -104,13 +103,13 @@ class markItUpMarkdown(Textarea):
 
 class markItUpHTML(Textarea):
     class Media:
-        js = [join(PAGES_MEDIA_URL, path) for path in (
+        js = [join(settings.PAGES_MEDIA_URL, path) for path in (
             'javascript/jquery.js',
             'markitup/jquery.markitup.js',
             'markitup/sets/default/set.js',
         )]
         css = {
-            'all': [join(PAGES_MEDIA_URL, path) for path in (
+            'all': [join(settings.PAGES_MEDIA_URL, path) for path in (
                 'markitup/skins/simple/style.css',
                 'markitup/sets/default/style.css',
             )]

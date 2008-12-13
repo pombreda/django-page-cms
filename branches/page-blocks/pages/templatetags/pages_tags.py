@@ -3,9 +3,8 @@ from django.core.cache import cache
 from django.utils.safestring import SafeUnicode, mark_safe
 from django.utils.translation import ugettext_lazy as _
 from django.template import Template, TemplateSyntaxError
-from django.conf import settings as global_settings
 
-from pages import settings
+from pages.conf import settings
 from pages.models import Content, Page
 from pages.utils import get_language_from_request
 
@@ -21,7 +20,7 @@ def show_menu(context, page, url='/'):
     request = context['request']
     site = request.site
     children = get_page_children_for_site(page, site)
-    PAGE_CONTENT_CACHE_DURATION = settings.PAGE_CONTENT_CACHE_DURATION
+    PAGES_CONTENT_CACHE_DURATION = settings.PAGES_CONTENT_CACHE_DURATION
     lang = get_language_from_request(request)
     if 'current_page' in context:
         current_page = context['current_page']
@@ -87,12 +86,12 @@ def show_content(context, page, content_type, lang=None):
             return {'content':''}
     if lang is None:
         lang = get_language_from_request(context['request'])
-    if hasattr(settings, 'PAGE_CONTENT_CACHE_DURATION'):
+    if hasattr(settings, 'PAGES_CONTENT_CACHE_DURATION'):
         key = 'content_cache_pid:'+str(page.id)+'_l:'+str(lang)+'_type:'+str(content_type)
         c = cache.get(key)
         if not c:
             c = Content.objects.get_content(page, lang, content_type, True)
-            cache.set(key, c, settings.PAGE_CONTENT_CACHE_DURATION)
+            cache.set(key, c, settings.PAGES_CONTENT_CACHE_DURATION)
     else:
         c = Content.objects.get_content(page, lang, content_type, True)
     if c:
@@ -126,12 +125,12 @@ def show_absolute_url(context, page, lang=None):
         return {'content':''}
     if lang is None:
         lang = get_language_from_request(context['request'])
-    if hasattr(settings, 'PAGE_CONTENT_CACHE_DURATION'):
+    if hasattr(settings, 'PAGES_CONTENT_CACHE_DURATION'):
         key = 'page_url_pid:'+str(page.id)+'_l:'+str(lang)+'_type:absolute_url'
         url = cache.get(key)
         if not url:
             url = page.get_absolute_url(language=lang)
-            cache.set(key, url, settings.PAGE_CONTENT_CACHE_DURATION)
+            cache.set(key, url, settings.PAGES_CONTENT_CACHE_DURATION)
     else:
         url = page.get_absolute_url(language=lang)
     if url:
@@ -142,7 +141,7 @@ show_absolute_url = register.inclusion_tag('pages/content.html',
 
 def show_revisions(context, page, content_type, lang=None):
     """Render the last 10 revisions of a page content with a list"""
-    if not settings.PAGE_CONTENT_REVISION:
+    if not settings.PAGES_CONTENT_REVISION:
         return {'revisions':None}
     revisions = Content.objects.filter(page=page, language=lang,
                                 type=content_type).order_by('-creation_date')
@@ -301,7 +300,7 @@ class PlaceholderNode(template.Node):
                 t = template.Template(content, name=self.name)
                 content = mark_safe(t.render(context))
             except template.TemplateSyntaxError, error:
-                if global_settings.DEBUG:
+                if settings.DEBUG:
                     error = PLACEHOLDER_ERROR % {
                         'name': self.name,
                         'error': error,

@@ -102,9 +102,9 @@ LANGUAGES = (
     ('en', gettext_noop('English')),
 )
 
-DEFAULT_PAGE_TEMPLATE = 'index.html'
+PAGES_DEFAULT_TEMPLATE = 'index.html'
 
-PAGE_TEMPLATES = (
+PAGES_TEMPLATES = (
     ('nice.html', 'nice one'),
     ('cool.html', 'cool one'),
 )
