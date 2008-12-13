@@ -11,7 +11,7 @@ from django.core.exceptions import ImproperlyConfigured
 from django.contrib.sites.models import Site
 
 import mptt
-from pages import settings
+from pages.conf import settings
 from pages.managers import PageManager, ContentManager, PagePermissionManager
 
 try:
@@ -20,7 +20,7 @@ try:
 except ImproperlyConfigured:
     tagging = False
 
-if not settings.PAGE_TAGGING:
+if not settings.PAGES_TAGGING:
     tagging = False
 
 class Page(models.Model):
@@ -63,7 +63,7 @@ class Page(models.Model):
             self.publication_date = datetime.now()
         # Drafts should not, unless they have been set to the future
         if self.status == self.DRAFT:
-            if settings.PAGE_SHOW_START_DATE:
+            if settings.PAGES_SHOW_START_DATE:
                 if self.publication_date and self.publication_date <= datetime.now():
                     self.publication_date = None
             else:
@@ -75,11 +75,11 @@ class Page(models.Model):
         get the calculated status of the page based on published_date,
         published_end_date, and status
         """
-        if settings.PAGE_SHOW_START_DATE:
+        if settings.PAGES_SHOW_START_DATE:
             if self.publication_date > datetime.now():
                 return self.DRAFT
         
-        if settings.PAGE_SHOW_END_DATE and self.publication_end_date:
+        if settings.PAGES_SHOW_END_DATE and self.publication_end_date:
             if self.publication_end_date < datetime.now():
                 return self.EXPIRED
 
@@ -104,7 +104,7 @@ class Page(models.Model):
         """
         get the url of this page, adding parent's slug
         """
-        if settings.PAGE_UNIQUE_SLUG_REQUIRED:
+        if settings.PAGES_UNIQUE_SLUG_REQUIRED:
             url = u'%s/' % self.slug(language)
         else:
             url = u'%s-%d/' % (self.slug(language), self.id)
@@ -117,7 +117,7 @@ class Page(models.Model):
         get the slug of the page depending on the given language
         """
         if not language:
-            language = settings.PAGE_DEFAULT_LANGUAGE
+            language = settings.PAGES_DEFAULT_LANGUAGE
         return Content.objects.get_content(self, language, 'slug',
                                            language_fallback=fallback)
 
@@ -126,21 +126,21 @@ class Page(models.Model):
         get the title of the page depending on the given language
         """
         if not language:
-            language = settings.PAGE_DEFAULT_LANGUAGE
+            language = settings.PAGES_DEFAULT_LANGUAGE
         return Content.objects.get_content(self, language, 'title',
                                            language_fallback=fallback)
 
     def get_template(self):
         """
         get the template of this page if defined or if closer parent if
-        defined or DEFAULT_PAGE_TEMPLATE otherwise
+        defined or PAGES_DEFAULT_TEMPLATE otherwise
         """
         if self.template:
             return self.template
         for p in self.get_ancestors(ascending=True):
             if p.template:
                 return p.template
-        return settings.DEFAULT_PAGE_TEMPLATE
+        return settings.PAGES_DEFAULT_TEMPLATE
 
     def traductions(self):
         langs = ""
@@ -153,7 +153,7 @@ class Page(models.Model):
         Return true if the current user has permission on the page.
         Return the string 'All' if the user has all rights.
         """
-        if not settings.PAGE_PERMISSION:
+        if not settings.PAGES_PERMISSION:
             return True
         else:
             permission = PagePermission.objects.get_page_id_list(request.user)
@@ -176,7 +176,7 @@ try:
 except mptt.AlreadyRegistered:
     pass
 
-if settings.PAGE_PERMISSION:
+if settings.PAGES_PERMISSION:
     class PagePermission(models.Model):
         """
         Page permission object
@@ -215,3 +215,21 @@ class Content(models.Model):
 
     def __unicode__(self):
         return "%s :: %s" % (self.page.slug(), self.body[0:15])
+
+
+from django.contrib.contenttypes.models import ContentType
+from django.contrib.contenttypes import generic
+
+class Block(models.Model):
+    name = models.CharField(_("plugin_name"), max_length=25, db_index=True)
+    position = models.PositiveSmallIntegerField(_("position"), default=0)
+    language = models.CharField(_("language"), max_length=3, blank=False)
+    page = models.ForeignKey(Page, verbose_name=_("page"))
+    creation_date = models.DateTimeField(_("creation date"), editable=False, default=datetime.now)
+
+    content_type = models.ForeignKey(ContentType)
+    object_id = models.TextField()
+    object = generic.GenericForeignKey('content_type', 'object_id')
+
+    class Meta:
+        ordering = ('-creation_date', 'position')

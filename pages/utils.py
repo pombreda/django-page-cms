@@ -4,7 +4,7 @@ from django.db.models import signals
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.sites.models import Site, RequestSite, SITE_CACHE
 
-from pages import settings
+from pages.conf import settings
 
 def auto_render(func):
     """Decorator that put automaticaly the template path in the context dictionary
@@ -37,18 +37,18 @@ def get_template_from_request(request, obj=None):
     Gets a valid template from different sources or falls back to the default
     template.
     """
-    if settings.PAGE_TEMPLATES is None:
-        return settings.DEFAULT_PAGE_TEMPLATE
+    if settings.PAGES_TEMPLATES is None:
+        return settings.PAGES_DEFAULT_TEMPLATE
     template = request.REQUEST.get('template', None)
     if template is not None and \
-            template in dict(settings.PAGE_TEMPLATES).keys():
+            template in dict(settings.PAGES_TEMPLATES).keys():
         return template
     if obj is not None:
         return obj.get_template()
-    return settings.DEFAULT_PAGE_TEMPLATE
+    return settings.PAGES_DEFAULT_TEMPLATE
 
 def get_language_in_settings(iso):
-    for language in settings.PAGE_LANGUAGES:
+    for language in settings.PAGES_LANGUAGES:
         if language[0][:2] == iso:
             return iso
     return None
@@ -67,14 +67,14 @@ def get_language_from_request(request, current_page=None):
             if len(languages) > 0:
                 language = languages[0]
     if language is None:
-        language = settings.PAGE_DEFAULT_LANGUAGE
+        language = settings.PAGES_DEFAULT_LANGUAGE
     return language[:2]
 
 def has_page_add_permission(request, page=None):
     """
     Return true if the current user has permission to add a new page.
     """
-    if not settings.PAGE_PERMISSION:
+    if not settings.PAGES_PERMISSION:
         return True
     else:
         from pages.models import PagePermission

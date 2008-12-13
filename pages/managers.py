@@ -4,7 +4,7 @@ from django.contrib.sites.models import Site
 from django.db.models import Q
 from datetime import datetime
 
-from pages import settings
+from pages.conf import settings
 
 class PageManager(models.Manager):
     def on_site(self, site=None):
@@ -37,10 +37,10 @@ class PageManager(models.Manager):
     def published(self, site=None):
         pub = self.on_site(site).filter(status=self.model.PUBLISHED)
 
-        if settings.PAGE_SHOW_START_DATE:
+        if settings.PAGES_SHOW_START_DATE:
             pub = pub.filter(publication_date__lte=datetime.now())
 
-        if settings.PAGE_SHOW_END_DATE:
+        if settings.PAGES_SHOW_END_DATE:
             pub = pub.filter(
                 Q(publication_end_date__gt=datetime.now()) |
                 Q(publication_end_date__isnull=True)
@@ -49,7 +49,7 @@ class PageManager(models.Manager):
 
     def drafts(self, site=None):
         pub = self.on_site(site).filter(status=self.model.DRAFT)
-        if settings.PAGE_SHOW_START_DATE:
+        if settings.PAGES_SHOW_START_DATE:
             pub = pub.filter(publication_date__gte=datetime.now())
         return pub
 
@@ -73,7 +73,7 @@ class ContentManager(models.Manager):
         """
         set or create a content for a particular page and language
         """
-        if settings.PAGE_SANITIZE_USER_INPUT:
+        if settings.PAGES_SANITIZE_USER_INPUT:
             body = self.sanitize(body)
         try:
             content = self.filter(page=page, language=language,
@@ -89,7 +89,7 @@ class ContentManager(models.Manager):
         """
         set or create a content for a particular page and language
         """
-        if settings.PAGE_SANITIZE_USER_INPUT:
+        if settings.PAGES_SANITIZE_USER_INPUT:
             body = self.sanitize(body)
         try:
             content = self.filter(page=page, language=language,

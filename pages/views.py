@@ -2,12 +2,12 @@ from django.http import Http404
 from django.shortcuts import get_object_or_404
 from django.contrib.sites.models import SITE_CACHE
 
-from pages import settings
+from pages.conf import settings
 from pages.models import Page, Content
 from pages.utils import auto_render, get_template_from_request, get_language_from_request
 
 def details(request, page_id=None, slug=None, 
-        template_name=settings.DEFAULT_PAGE_TEMPLATE):
+        template_name=settings.PAGES_DEFAULT_TEMPLATE):
     lang = get_language_from_request(request)
     site = request.site
     pages = Page.objects.root(site).order_by("tree_id")

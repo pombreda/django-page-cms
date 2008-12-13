@@ -1,4 +1,4 @@
-from pages import settings
+from pages.conf import settings
 
 def media(request):
     """

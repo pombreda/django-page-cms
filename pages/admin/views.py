@@ -2,7 +2,7 @@ from django.shortcuts import get_object_or_404
 from django.http import HttpResponse, Http404
 from django.contrib.admin.views.decorators import staff_member_required
 
-from pages import settings
+from pages.conf import settings
 from pages.models import Page, Content
 
 from pages.utils import auto_render
@@ -30,7 +30,7 @@ def modify_content(request, page_id, content_id, language_id):
         if not content:
             raise Http404
         page = Page.objects.get(pk=page_id)
-        if settings.PAGE_CONTENT_REVISION:
+        if settings.PAGES_CONTENT_REVISION:
             Content.objects.create_content_if_changed(page, language_id,
                                                       content_id, content)
         else:
@@ -59,7 +59,7 @@ get_content = auto_render(get_content)
 
 def valid_targets_list(request, page_id):
     """A list of valid targets to move a page"""
-    if not settings.PAGE_PERMISSION:
+    if not settings.PAGES_PERMISSION:
         perms = "All"
     else:
         from pages.models import PagePermission
