@@ -3,7 +3,7 @@
 
 = Backwards Incompatible Changes =
 
-=== r284 (Dec 17, 2008) ===
+=== r285 (Dec 17, 2008) ===
 
 Renamed some templates tags to don't overlap with other Django apps, like django-treemenus.
 
