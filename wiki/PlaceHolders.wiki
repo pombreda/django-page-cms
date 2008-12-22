@@ -2,18 +2,44 @@
 
 =Dynamic localized placeholders in templates=
 
-===The following notes are valid for version 0.1, *not* for trunk===
+The placeholder template tag has been revamped to be a more flexible. The new syntax is a bit different and will break unless you change your existing templates.
 
-To create new multilingual page content you can use the *placeholder* template tag. This template tag use the request object so you have to put it in the context of your views.
+The *old* syntax for 0.1 release:
 
 {{{
-  <h3>title : {% placeholder title current_page TextInput %}</h3>
-  <p>body : {% placeholder body current_page Textarea %}</p>
+{% placeholder [name] [page] [widget] %}
 }}}
 
-A field will be automatically created in the admin interface for each placeholder in your template.
+The *new* syntax for trunk:
 
-=List of placeholder style=
+{{{
+{% placeholder [name] %}
+{% placeholder [name] parsed %}
+
+{% placeholder [name] with [widget] %}
+{% placeholder [name] with [widget] parsed %}
+
+{% placeholder [name] on [page]  %}
+{% placeholder [name] on [page] parsed %}
+{% placeholder [name] on [page] with [widget] %}
+{% placeholder [name] on [page] with [widget] parsed %}
+}}}
+
+The `page` and `widget` parameter are both optional now. If now `page` parameter is given it will automatically take the current page (by using the `current_page` context variable) to get the content of the placeholder.
+
+*New:* If you pass the word "parsed" the content of the template will be evaluated as Django template code, within the current template context. Each placeholder with that has the "parsed" parameter will also have a note in the admin interface noting its ability to be evaluated as template.
+
+*New:* You can now also use a variable name optionally that is automatically set in the context view with the content of the placeholder. The content will not be embedded in a `div` tag. 
+
+{{{
+{% placeholder right-column parsed as right_column %}
+
+..random content..
+
+<div class="my_funky_column">{{ right_column }}</div>
+}}}
+
+=List of placeholder widgets=
 
 Placeholder could be rendered with different widgets:
 
