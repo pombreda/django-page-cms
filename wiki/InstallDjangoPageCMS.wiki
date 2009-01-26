@@ -98,7 +98,6 @@ DEFAULT_PAGE_TEMPLATE = 'index.html'
 Optionally you can set PAGE_TEMPLATES if you want additional templates choices:
 
 {{{
-# Could be set to None if you don't need multiple templates.
 PAGE_TEMPLATES = (
     ('nice.html', 'nice one'),
     ('cool.html', 'cool one'),
