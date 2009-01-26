@@ -24,10 +24,15 @@ Tagging is optional. If you don't want it please set PAGE_TAGGING setting to Fal
 
 {{{
 INSTALLED_APPS = (
-    ...
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.admin',
+    'django.contrib.sites',
     'mptt',
     'tagging',
     'pages',
+    ...
 )
 }}}
 
@@ -37,6 +42,7 @@ Please take a look in the urls.py of the default project and copy desired urls i
 
 {{{
 urlpatterns = patterns('',
+    ...
     url(r'^pages/', include('pages.urls')),
     (r'^admin/(.*)', admin.site.root),
 )
@@ -49,6 +55,9 @@ Add django.core.context_processors.request and pages.context_processors.media to
 {{{
 TEMPLATE_CONTEXT_PROCESSORS = (
     ...
+    "django.core.context_processors.auth",
+    "django.core.context_processors.i18n",
+    "django.core.context_processors.debug",
     "django.core.context_processors.media",
     "django.core.context_processors.request",
     "pages.context_processors.media",
@@ -58,7 +67,10 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 ...
 
 MIDDLEWARE_CLASSES = (
-    ...
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.common.CommonMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.middleware.doc.XViewMiddleware',
     'django.middleware.locale.LocaleMiddleware',
     'pages.middleware.CurrentSiteMiddleware',
     ...
