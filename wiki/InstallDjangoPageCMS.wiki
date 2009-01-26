@@ -9,7 +9,7 @@ You can use the released version of the Django page CMS by using subversion exte
 
 {{{
 $ svn pe svn:externals .
-pages                   http://django-page-cms.googlecode.com/svn/tags/django-page-cms-0.2.2
+pages                   http://django-page-cms.googlecode.com/svn/tags/django-page-cms-0.2.2/pages
 mptt                    http://django-mptt.googlecode.com/svn/trunk/mptt
 tagging                 http://django-tagging.googlecode.com/svn/trunk/tagging
 }}}
