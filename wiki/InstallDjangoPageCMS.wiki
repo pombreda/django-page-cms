@@ -100,7 +100,7 @@ And you *must* copy the directory "example/templates/pages" into your root templ
 
 ===Additional templates===
 
-Optionally you can set PAGE_TEMPLATES if you want additional templates choices. The default is actually this:
+Optionally you can set PAGE_TEMPLATES if you want additional templates choices. In the the example application you have actually this:
 
 {{{
 PAGE_TEMPLATES = (
