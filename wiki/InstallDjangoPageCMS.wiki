@@ -79,7 +79,7 @@ MIDDLEWARE_CLASSES = (
 )
 }}}
 
-===Default language===
+===Default language and template===
 
 You must set DEFAULT_PAGE_TEMPLATE to the name of your default CMS template. And LANGUAGES with wanted languages.
 
@@ -91,7 +91,7 @@ LANGUAGES = (
     ('en', gettext_noop('English')),
 )
 
-DEFAULT_PAGE_TEMPLATE = 'index.html'
+DEFAULT_PAGE_TEMPLATE = 'pages/index.html'
 }}}
 
 ===Additional templates===
@@ -100,8 +100,8 @@ Optionally you can set PAGE_TEMPLATES if you want additional templates choices:
 
 {{{
 PAGE_TEMPLATES = (
-    ('nice.html', 'nice one'),
-    ('cool.html', 'cool one'),
+    ('pages/nice.html', 'nice one'),
+    ('pages/cool.html', 'cool one'),
 )
 }}}
 
