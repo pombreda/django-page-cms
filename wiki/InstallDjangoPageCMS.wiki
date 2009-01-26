@@ -65,9 +65,11 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     "pages.context_processors.media",
     ...
 )
+}}}
 
 You *must* have these middleware into your MIDDLEWARE_CLASSES settings:
 
+{{{
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
