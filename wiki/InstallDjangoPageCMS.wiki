@@ -52,7 +52,7 @@ For the settings have a look in pages/settings.py for available options.
 
 ===Template context processors and Middlwares===
 
-You *must* add django.core.context_processors.request and pages.context_processors.media to your TEMPLATE_CONTEXT_PROCESSORS and django.middleware.locale.LocaleMiddleware middleware to MIDDLEWARE_CLASSES.
+You *must* have these context processors into your TEMPLATE_CONTEXT_PROCESSORS:
 
 {{{
 TEMPLATE_CONTEXT_PROCESSORS = (
@@ -66,7 +66,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     ...
 )
 
-...
+You *must* have these middleware into your MIDDLEWARE_CLASSES settings:
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -120,4 +120,3 @@ The Site object should have the domain that match your actual domain (ie: 127.0.
 ===Media directory===
 
 You *must* create a symbolic link or copy of "pages/media/pages/" into your media directory to have a fully functioning admin interface.
-
