@@ -20,7 +20,7 @@ Or if you want the latest version
 pages                   http://django-page-cms.googlecode.com/svn/trunk/pages
 }}}
 
-Tagging is optional. If you don't want it please set PAGE_TAGGING setting to False in your settings. After that simply add wanted apps to your installed apps :
+Tagging is optional. If you don't want it please don't set PAGE_TAGGING setting into your settings. After that simply add wanted apps to your installed apps :
 
 {{{
 INSTALLED_APPS = (
@@ -52,7 +52,7 @@ For the settings have a look in pages/settings.py for available options.
 
 ===Template context processors and Middlwares===
 
-Add django.core.context_processors.request and pages.context_processors.media to your TEMPLATE_CONTEXT_PROCESSORS and django.middleware.locale.LocaleMiddleware middleware to MIDDLEWARE_CLASSES.
+You *must* add django.core.context_processors.request and pages.context_processors.media to your TEMPLATE_CONTEXT_PROCESSORS and django.middleware.locale.LocaleMiddleware middleware to MIDDLEWARE_CLASSES.
 
 {{{
 TEMPLATE_CONTEXT_PROCESSORS = (
@@ -81,7 +81,7 @@ MIDDLEWARE_CLASSES = (
 
 ===Default language and template===
 
-You must set DEFAULT_PAGE_TEMPLATE to the name of your default CMS template. And LANGUAGES with wanted languages.
+You *must* set DEFAULT_PAGE_TEMPLATE to the name of your default CMS template. And LANGUAGES with wanted languages.
 
 {{{
 gettext_noop = lambda s: s
@@ -94,9 +94,11 @@ LANGUAGES = (
 DEFAULT_PAGE_TEMPLATE = 'pages/index.html'
 }}}
 
+And you *must* copy the directory "example/templates/pages" into your root template directory.
+
 ===Additional templates===
 
-Optionally you can set PAGE_TEMPLATES if you want additional templates choices:
+Optionally you can set PAGE_TEMPLATES if you want additional templates choices. The default is actually this:
 
 {{{
 PAGE_TEMPLATES = (
@@ -107,11 +109,15 @@ PAGE_TEMPLATES = (
 
 ===The sites framework===
 
-Django page CMS use the [http://docs.djangoproject.com/en/dev/ref/contrib/sites/#ref-contrib-sites Django contrib sites framework] so you must define the SITE_ID setting and create the appropriate Site object into the admin interface:
+You *must* define the SITE_ID setting and create the appropriate Site object into the admin interface because Django page CMS use the [http://docs.djangoproject.com/en/dev/ref/contrib/sites/#ref-contrib-sites Django contrib sites framework]:
 
 {{{
 SITE_ID = 1
 }}}
 
-
 The Site object should have the domain that match your actual domain (ie: 127.0.0.1:8000)
+
+===Media directory===
+
+You *must* create a symbolic link or copy of "pages/media/pages/" into your media directory to have a fully functioning admin interface.
+
