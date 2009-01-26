@@ -107,7 +107,7 @@ PAGE_TEMPLATES = (
 
 ===The sites framework===
 
-Django page CMS use the [http://docs.djangoproject.com/en/dev/ref/contrib/sites/#ref-contrib-sites Django contrib sites framework] so you must define the SITE_ID setting and create the appropriate site object into the admin interface:
+Django page CMS use the [http://docs.djangoproject.com/en/dev/ref/contrib/sites/#ref-contrib-sites Django contrib sites framework] so you must define the SITE_ID setting and create the appropriate Site object into the admin interface:
 
 {{{
 SITE_ID = 1
