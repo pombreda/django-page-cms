@@ -30,7 +30,7 @@ You can also specify the slug of the page instead of the page object itself:
 {% show_content "my-page-slug" "the_content_type" %}
 }}}
 
-== Nothing show up at the frontend. What the the problem cn be? ==
+== Nothing show up at the frontend. What is the problem? ==
 
  * Check that you have set your site domain name correctly (ie: for local-host development you will need to set it to 127.0.0.1:8000)
  * Check that you have published the page correctly
