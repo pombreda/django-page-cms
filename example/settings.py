@@ -102,11 +102,11 @@ LANGUAGES = (
     ('en', gettext_noop('English')),
 )
 
-DEFAULT_PAGE_TEMPLATE = 'pages/index.html'
+DEFAULT_PAGE_TEMPLATE = 'index.html'
 
 PAGE_TEMPLATES = (
-    ('pages/nice.html', 'nice one'),
-    ('pages/cool.html', 'cool one'),
+    ('nice.html', 'nice one'),
+    ('cool.html', 'cool one'),
 )
 
 try:
