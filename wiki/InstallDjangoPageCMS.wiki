@@ -50,6 +50,8 @@ urlpatterns = patterns('',
 
 For the settings have a look in pages/settings.py for available options.
 
+===Template context processors and Middlwares===
+
 Add django.core.context_processors.request and pages.context_processors.media to your TEMPLATE_CONTEXT_PROCESSORS and django.middleware.locale.LocaleMiddleware middleware to MIDDLEWARE_CLASSES.
 
 {{{
@@ -77,7 +79,9 @@ MIDDLEWARE_CLASSES = (
 )
 }}}
 
-You also have to set DEFAULT_PAGE_TEMPLATE to the name of your default CMS template. And LANGUAGES with wanted languages.
+===Default language===
+
+You must set DEFAULT_PAGE_TEMPLATE to the name of your default CMS template. And LANGUAGES with wanted languages.
 
 {{{
 LANGUAGES = (
@@ -89,6 +93,8 @@ LANGUAGES = (
 DEFAULT_PAGE_TEMPLATE = 'index.html'
 }}}
 
+===Additional templates===
+
 Optionally you can set PAGE_TEMPLATES if you want additional templates choices:
 
 {{{
@@ -98,3 +104,14 @@ PAGE_TEMPLATES = (
     ('cool.html', 'cool one'),
 )
 }}}
+
+===The sites framework===
+
+Django page CMS use the [http://docs.djangoproject.com/en/dev/ref/contrib/sites/#ref-contrib-sites Django contrib sites framework] so you must define the SITE_ID setting and create the appropriate site object into the admin interface:
+
+{{{
+SITE_ID = 1
+}}}
+
+
+The Site object should have the domain that match your actual domain (ie: 127.0.0.1:8000)
