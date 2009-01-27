@@ -50,7 +50,7 @@ urlpatterns = patterns('',
 
 For the settings have a look in pages/settings.py for available options.
 
-===Template context processors and Middlwares===
+===Template context processors and Middlewares===
 
 You *must* have these context processors into your TEMPLATE_CONTEXT_PROCESSORS:
 
