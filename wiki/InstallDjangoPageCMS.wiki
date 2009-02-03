@@ -3,9 +3,20 @@
 
 =Install in legacy project=
 
+==Install by using easy_install==
+
+On debian linux you can do:
+
+{{{
+sudo easy_install django-mptt
+sudo easy_install tagging
+sudo easy_install html5lib
+sudo easy_install django-page-cms
+}}}
+
 ==Install by using subversion externals==
 
-You can use the released version of the Django page CMS by using subversion externals
+You can also use the released version of the Django page CMS by using subversion externals
 
 {{{
 $ svn pe svn:externals .
@@ -19,6 +30,8 @@ Or if you want the latest version
 {{{
 pages                   http://django-page-cms.googlecode.com/svn/trunk/pages
 }}}
+
+==Urls and settings==
 
 Tagging is optional. If you don't want it please don't set PAGE_TAGGING setting into your settings. After that simply add wanted apps to your installed apps :
 
@@ -35,8 +48,6 @@ INSTALLED_APPS = (
     ...
 )
 }}}
-
-==Urls and settings==
 
 Please take a look in the urls.py of the default project and copy desired urls in your settings. Basically you need to have something like this:
 
