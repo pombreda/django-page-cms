@@ -9,10 +9,11 @@ On debian linux you can do:
 
 {{{
 sudo easy_install django-mptt
-sudo easy_install tagging
 sudo easy_install html5lib
 sudo easy_install django-page-cms
 }}}
+
+Tagging should be installed by hand or with subversion because the current package is not compatible with django 1.0.
 
 ==Install by using subversion externals==
 
