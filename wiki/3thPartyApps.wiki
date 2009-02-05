@@ -1,6 +1,6 @@
 #summary a way to integrate 3th party apps into the CMS admin interface
 
-Django page cms provide a basic way to integrate forms into page admin in order to create page related object. For this you need to have an object with foreign key pointing to a page:
+Django page cms provide a basic way to integrate forms into page admin in order to create page related object. For this you need an object with foreign key pointing to a page:
 
 {{{
 class Document(models.Model):
