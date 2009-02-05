@@ -25,7 +25,7 @@ PAGE_CONNECTED_MODELS = [
 ]
 }}}
 
-When you edit a page, you should now see a form that enable you to create a Document object directly tied to a page.
+When you edit a page, you should see a form to create a Document object linked to this page.
 
 ==Planned features==
 
