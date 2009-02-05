@@ -1,0 +1,34 @@
+#a way to integrate 3th party apps into the CMS admin interface
+
+Django page cms provide a basic way to integrate forms into page admin in order to create for page related object. For this you need to have an object with foreign key pointing to a page:
+
+{{{
+class Document(models.Model):
+    "A dummy model used to illsutrate the use of linked models in django-page-cms"
+
+    title = models.CharField(_('title'), max_length=100, blank=False)
+    text = models.TextField(_('text'), blank=True)
+
+    # the foreign key *must* be called page
+    page = models.ForeignKey(Page)
+
+class DocumentForm(ModelForm):
+    class Meta:
+        model = Document
+}}}
+
+After that you need to set the PAGE_CONNECTED_MODELS into your settings:
+
+{{{
+PAGE_CONNECTED_MODELS = [
+    {'model':'documents.models.Document','form':'documents.models.DocumentForm'},
+]
+}}}
+
+When you edit a page, you should now see a form that enable you to create a Document object directly tied to a page.
+
+==Planned features==
+
+ * Delete/Edit related object from the page admin (a simple link should be enough)
+ * Inject related object into the default public view
+ 
