@@ -4,7 +4,7 @@ Django page cms provide a basic way to integrate forms into page admin in order 
 
 {{{
 class Document(models.Model):
-    "A dummy model used to illsutrate the use of linked models in django-page-cms"
+    "A dummy model used to illustrate the use of linked models in django-page-cms"
 
     title = models.CharField(_('title'), max_length=100, blank=False)
     text = models.TextField(_('text'), blank=True)
