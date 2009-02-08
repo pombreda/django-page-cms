@@ -20,6 +20,11 @@
     display: none;	
 }
 
+.change-list table td input{
+    margin-top:-1px;
+    margin-bottom:1px;
+}
+
 .placeholder-row textarea, .placeholder-row input {
     float:left;
 }
@@ -67,9 +72,13 @@ a.collapsed span.collapsed{
 }
 
 .sidebar {
-    width: 30em;
+    width: 24em;
     float: left;
     margin-right: 1em;
+}
+
+.sidebar div.description {
+    margin: 5px;
 }
 
 .clear {

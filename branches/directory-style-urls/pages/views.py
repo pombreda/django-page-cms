@@ -5,18 +5,25 @@ from django.core.urlresolvers import reverse
 
 from pages import settings
 from pages.models import Page, Content, URL
-from pages.utils import auto_render, get_template_from_request, get_language_from_request
+from pages.utils import auto_render, get_language_from_request, get_template_from_request
 
 import re
 
-def details(request, page_id=None, slug=None, 
+def details(request, page_id=None, slug=None, raise404=True,
         template_name=settings.DEFAULT_PAGE_TEMPLATE):    
+    """
+    Example view that get the root pages for navigation, 
+    and the current page if there is any root page. 
+    All is rendered with the current page's template.
+    """
     lang = get_language_from_request(request)
     site = request.site
-    pages = Page.objects.root(site).order_by("tree_id")
+    pages = Page.objects.navigation(site).order_by("tree_id")
+    
     if pages:
         if page_id:
-            current_page = get_object_or_404(Page.objects.published(site), pk=page_id)
+            current_page = get_object_or_404(
+                Page.objects.published(site), pk=page_id)
         elif slug:
             try:
                 relative_url = re.sub(r'^%s' % reverse('pages-root'), '', request.path)
@@ -29,7 +36,8 @@ def details(request, page_id=None, slug=None,
             current_page = pages[0]
         template_name = get_template_from_request(request, current_page)
     else:
-        current_page = None
+        raise Http404
+
     return template_name, locals()
 details = auto_render(details)
 

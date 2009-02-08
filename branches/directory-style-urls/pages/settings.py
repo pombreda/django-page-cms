@@ -22,6 +22,8 @@ PAGE_PERMISSION = getattr(settings, 'PAGE_PERMISSION', True)
 
 # Whether to enable tagging. 
 PAGE_TAGGING = getattr(settings, 'PAGE_TAGGING', True)
+if PAGE_TAGGING and "tagging" not in getattr(settings, 'INSTALLED_APPS', []):
+    raise ImproperlyConfigured("django-tagging could not be found.\nPlease make sure you've installed it correctly or disable the tagging feature by setting PAGE_TAGGING to False.")
 
 # Whether to only allow unique slugs.
 PAGE_UNIQUE_SLUG_REQUIRED = getattr(settings, 'PAGE_UNIQUE_SLUG_REQUIRED', True)
@@ -62,3 +64,8 @@ PAGE_SHOW_START_DATE = getattr(settings, 'PAGE_SHOW_START_DATE', False)
 # Changing this from True to False could cause some weirdness.  If that is required,
 # you should update your database and null any pages with publication_end_date set.
 PAGE_SHOW_END_DATE = getattr(settings, 'PAGE_SHOW_END_DATE', False)
+
+# You can specify a model and form for this model into your settings to get
+# an automatic form to create and directly link a new instance of this model
+# with your page.
+PAGE_CONNECTED_MODELS = getattr(settings, 'PAGE_CONNECTED_MODELS', False)

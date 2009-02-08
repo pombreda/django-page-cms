@@ -81,7 +81,7 @@
 
 <ul>
     {% for page in pages %}
-        {% show_menu page %}
+        {% pages_menu page %}
     {% endfor %}
 </ul>
 
@@ -89,7 +89,7 @@
 
 {% if current_page %}
 <ul>
-    {% show_sub_menu current_page %}
+    {% pages_sub_menu current_page %}
 </ul>
 {% endif %}
 
@@ -153,7 +153,7 @@
     });
 </script>
 
-{% include "debug.html" %}
+{% include "pages/debug.html" %}
 
 </body>
 </html>

@@ -90,10 +90,15 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.admin',
     'django.contrib.sites',
+    'documents',
     'tagging',
     'pages',
     'mptt',
 )
+
+PAGE_CONNECTED_MODELS = [
+    {'model':'documents.models.Document','form':'documents.models.DocumentForm'},
+]
 
 gettext_noop = lambda s: s
 LANGUAGES = (
@@ -102,11 +107,11 @@ LANGUAGES = (
     ('en', gettext_noop('English')),
 )
 
-DEFAULT_PAGE_TEMPLATE = 'index.html'
+DEFAULT_PAGE_TEMPLATE = 'pages/index.html'
 
 PAGE_TEMPLATES = (
-    ('nice.html', 'nice one'),
-    ('cool.html', 'cool one'),
+    ('pages/nice.html', 'nice one'),
+    ('pages/cool.html', 'cool one'),
 )
 
 PAGE_UNIQUE_SLUG_REQUIRED = False

@@ -3,7 +3,7 @@ from django.template.defaultfilters import slugify
 from django.utils.translation import ugettext_lazy as _
 
 from pages import settings
-from pages.models import Page, Content, tagging
+from pages.models import Page, Content
 from pages.admin.utils import unique_slug_for_parent
 
 class PageForm(forms.ModelForm):
@@ -28,10 +28,12 @@ class PageForm(forms.ModelForm):
         choices=settings.PAGE_TEMPLATES,
         help_text=_('The template used to render the content.')
     )
+    
+    # TODO: check if these fields are used
     target = forms.IntegerField(required=False)
     position = forms.CharField(required=False)
 
-    if tagging:
+    if settings.PAGE_TAGGING:
         from tagging.forms import TagField
         from pages.admin.widgets import AutoCompleteTagInput
         tags = TagField(widget=AutoCompleteTagInput(), required=False)

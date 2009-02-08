@@ -1,12 +1,15 @@
+import itertools
+from datetime import datetime
+
 from django.db import models
 from django.contrib.sites.managers import CurrentSiteManager
 from django.contrib.sites.models import Site
 from django.db.models import Q
-from datetime import datetime
 
 from pages import settings
 
 class PageManager(models.Manager):
+
     def on_site(self, site=None):
         if hasattr(site, 'domain'):
             return self.filter(**{'sites__domain__exact': site.domain})
@@ -34,8 +37,17 @@ class PageManager(models.Manager):
         else:
             return self.exclude(id__in=exclude_list)
 
+    def navigation(self, site=None):
+        return self.root(site).filter(status=self.model.PUBLISHED)
+
+    def hidden(self, site=None):
+        return self.on_site(site).filter(status=self.model.HIDDEN)
+
     def published(self, site=None):
-        pub = self.on_site(site).filter(status=self.model.PUBLISHED)
+        pub = itertools.chain(
+            self.on_site(site).filter(status=self.model.PUBLISHED),
+            self.hidden(site)
+        )
 
         if settings.PAGE_SHOW_START_DATE:
             pub = pub.filter(publication_date__lte=datetime.now())
@@ -120,12 +132,13 @@ class ContentManager(models.Manager):
                 pass
         return None
 
+    ## TODO: check the state of this code
     ## No longer being used.  Keep around for a while to make sure we really don't
     ## Need it
-    def get_page_slug(self, slug, site=None, latest_by='creation_date'):
+    def get_content_slug_by_slug(self, slug, site=None, latest_by='creation_date'):
         """
-        Returns the latest slug for the given slug and checks if it's available 
-        on the current site.
+        Returns the latest Content slug object that match the given slug for
+        the current site domain.
         """
         if not site:
             site = Site.objects.get_current()

@@ -7,7 +7,6 @@ from django.utils.translation import ugettext_lazy as _
 from django.utils.safestring import mark_safe
 from django.core.cache import cache
 from django.core.urlresolvers import reverse
-from django.core.exceptions import ImproperlyConfigured
 from django.contrib.sites.models import Site
 from django.db.models.signals import pre_save, post_save
 
@@ -15,15 +14,6 @@ from django.db.models.signals import pre_save, post_save
 import mptt
 from pages import settings
 from pages.managers import PageManager, ContentManager, PagePermissionManager
-
-try:
-    tagging = models.get_app('tagging')
-    from tagging.fields import TagField
-except ImproperlyConfigured:
-    tagging = False
-
-if not settings.PAGE_TAGGING:
-    tagging = False
 
 class Page(models.Model):
     """
@@ -33,9 +23,11 @@ class Page(models.Model):
     DRAFT = 0
     PUBLISHED = 1
     EXPIRED = 2
+    HIDDEN = 3
     STATUSES = (
         (DRAFT, _('Draft')),
         (PUBLISHED, _('Published')),
+        (HIDDEN, _('Hidden')),
     )
     author = models.ForeignKey(User, verbose_name=_('author'))
     parent = models.ForeignKey('self', null=True, blank=True, related_name='children', verbose_name=_('parent'))
@@ -50,8 +42,9 @@ class Page(models.Model):
     # Managers
     objects = PageManager()
 
-    if tagging:
-        tags = TagField()
+    if settings.PAGE_TAGGING:
+        from tagging import fields
+        tags = fields.TagField()
 
     class Meta:
         verbose_name = _('page')
