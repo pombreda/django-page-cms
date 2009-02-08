@@ -38,3 +38,18 @@ You can also specify the slug of the page instead of the page object itself:
 == The tree collapse and doesn't expand. What is the problem? ==
 
  * Check that you have set your site domain name correctly (ie: for local-host development you will need to set it to 127.0.0.1:8000)
+
+==Add a language prefix before the urls==
+
+ # change the url routing to accept a language prefix parameter (lang_id)
+ # change the default "details" view to accept this parameter and change this line 
+
+{{{
+lang = get_language_from_request(request)
+}}}
+into
+{{{
+lang = lang_id
+}}}
+ 
+Done.
