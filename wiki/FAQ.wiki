@@ -37,7 +37,7 @@ You can also specify the slug of the page instead of the page object itself:
 
 == The tree collapse and doesn't expand. What is the problem? ==
 
- * Check that you have set your site domain name correctly (ie: for local-host development you will need to set it to 127.0.0.1:8000)
+ * Check that you have set your site domain name correctly (ie: for local-host development you will need to set it to 127.0.0.1:8000, you use localhost:8000 you must have an entry called localhost:8000).
 
 ==Add a language prefix before the urls==
 
@@ -53,3 +53,20 @@ lang = lang_id
 }}}
  
 Done.
+
+== I have an error trying to display a page in the admin ==
+
+Check you have added the pages middleware and context processor. You have to add
+
+{{{
+'pages.middleware.CurrentSiteMiddleware',
+}}}
+
+in the middleware section,MIDDLEWARE_CLASSES, in your settings.py (see the example that comes with page-cms) and you have to add 
+
+{{{
+"pages.context_processors.media",
+}}}
+
+in the TEMPLATE_CONTEXT_PROCESSORS section
+ 
