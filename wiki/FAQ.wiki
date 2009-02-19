@@ -37,7 +37,9 @@ You can also specify the slug of the page instead of the page object itself:
 
 == The tree collapse and doesn't expand. What is the problem? ==
 
- * Check that you have set your site domain name correctly (ie: for local-host development you will need to set it to 127.0.0.1:8000, you use localhost:8000 you must have an entry called localhost:8000).
+ * Check that you have set your site domain name correctly (ie: for local-host development you will need to set it to 127.0.0.1:8000, you use localhost:8000 you must have an entry called localhost:8000). 
+
+ * Check also that the SITE_ID you have in your settings file is the one you are using to access.
 
 ==Add a language prefix before the urls==
 
