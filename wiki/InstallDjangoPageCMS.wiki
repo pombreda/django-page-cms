@@ -3,6 +3,16 @@
 
 =Install in legacy project=
 
+==Install by using pip==
+
+use :
+
+{{{
+sudo pip install -r requirements/external_apps.txt
+}}}
+
+Every package listed in the `external_app.txt` should be downloaded and installed.
+
 ==Install by using easy_install==
 
 On debian linux you can do:
