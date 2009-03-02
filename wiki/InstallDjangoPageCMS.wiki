@@ -18,12 +18,14 @@ Every package listed in the `external_app.txt` should be downloaded and installe
 On debian linux you can do:
 
 {{{
-sudo easy_install django-mptt
 sudo easy_install html5lib
 sudo easy_install django-page-cms
 }}}
 
-Tagging should be installed by hand or with subversion because the current package is not compatible with django 1.0.
+Tagging should be installed by hand or with subversion because the available package is not 
+compatible with django 1.0.
+
+Django-mptt should be installed by hand or with subversion because the available package is not compatible with django 1.0.
 
 ==Install by using subversion externals==
 
