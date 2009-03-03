@@ -29,19 +29,13 @@ Django-mptt should be installed by hand or with subversion because the available
 
 ==Install by using subversion externals==
 
-You can also use the released version of the Django page CMS by using subversion externals
+You can also use the trunk version of the Django page CMS by using subversion externals
 
 {{{
 $ svn pe svn:externals .
-pages                   http://django-page-cms.googlecode.com/svn/tags/django-page-cms-0.2.2/pages
+pages                   http://django-page-cms.googlecode.com/svn/trunk/pages
 mptt                    http://django-mptt.googlecode.com/svn/trunk/mptt
 tagging                 http://django-tagging.googlecode.com/svn/trunk/tagging
-}}}
-
-Or if you want the latest version
-
-{{{
-pages                   http://django-page-cms.googlecode.com/svn/trunk/pages
 }}}
 
 ==Urls and settings==
