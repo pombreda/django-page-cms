@@ -3,6 +3,16 @@
 
 = Backwards Incompatible Changes =
 
+=== r368 (Feb 25, 2009) ===
+
+The Content model accept now languages described with 5 characters to accept language of the form "en-us".
+
+You can face some problems if you were already describing languages with 5 characters in settings.LANGUAGES or settings.PAGE_LANGUAGES. The new pages will be saved in the database with 5 characters and the old one would remain with the old 2 characters language code.
+
+Quick fix: set your languages in settings.PAGE_LANGUAGES with only 2 characters.
+
+To update to 5 characters alter your pages.content.language database field to accept 5 characters and update every content to the targeted new language code, ie: "en" becomes "en-us".
+
 === r285 (Dec 17, 2008) ===
 
 Renamed some templates tags to don't overlap with other Django apps, like django-treemenus.
