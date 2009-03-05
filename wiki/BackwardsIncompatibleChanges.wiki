@@ -9,9 +9,16 @@ The Content model accept now languages described with 5 characters to accept lan
 
 You can face some problems if you were already describing languages with 5 characters in settings.LANGUAGES or settings.PAGE_LANGUAGES. The new pages will be saved in the database with 5 characters and the old one would remain with the old 2 characters language code.
 
-Quick fix: set your languages in settings.PAGE_LANGUAGES with only 2 characters.
+*Quick fix* : set your languages in settings.PAGE_LANGUAGES with only 2 characters.
 
 To update to 5 characters alter your pages.content.language database field to accept 5 characters and update every content to the targeted new language code, ie: "en" becomes "en-us".
+
+=== r361 (Feb 22, 2009) ===
+
+The site middle ware has been removed from the code source. Update your settings:
+
+*Solution*: remove 'pages.middleware.CurrentSiteMiddleware' from your MIDDLEWARE_CLASSES.
+
 
 === r285 (Dec 17, 2008) ===
 
