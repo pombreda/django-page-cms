@@ -68,6 +68,10 @@ urlpatterns = patterns('',
 
 For the settings have a look in pages/settings.py for available options.
 
+===Caching===
+
+Django page CMS use the caching framework quite intensively. You should definitely set-up [http://docs.djangoproject.com/en/dev/topics/cache/#setting-up-the-cache use one of the caching backend] to have decent performance.
+
 ===Template context processors and Middlewares===
 
 You *must* have these context processors into your TEMPLATE_CONTEXT_PROCESSORS:
@@ -109,7 +113,6 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.middleware.doc.XViewMiddleware',
     'django.middleware.locale.LocaleMiddleware',
-    'pages.middleware.CurrentSiteMiddleware',
     ...
 )
 }}}
@@ -144,9 +147,10 @@ PAGE_TEMPLATES = (
 
 ===The sites framework===
 
-You *must* define the SITE_ID setting and create the appropriate Site object into the admin interface because Django page CMS use the [http://docs.djangoproject.com/en/dev/ref/contrib/sites/#ref-contrib-sites Django contrib sites framework]:
+If you want to use the [http://docs.djangoproject.com/en/dev/ref/contrib/sites/#ref-contrib-sites Django sites framework] with django-page-cms, you *must* define the SITE_ID and PAGE_USE_SITE_ID settings and create the appropriate Site object into the admin interface.
 
 {{{
+PAGE_USE_SITE_ID = True
 SITE_ID = 1
 }}}
 
