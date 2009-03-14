@@ -3,7 +3,7 @@
 
 = Backwards Incompatible Changes =
 
-=== r399 (Feb 25, 2009) ===
+=== r399 (Marsh 14, 2009) ===
 
 Directory like URLs has been added to the code base. Now if you set PAGE_UNIQUE_SLUG_REQUIRED to False you will get this directory like URLs instead of the the id trick at the end of the page name.
 
