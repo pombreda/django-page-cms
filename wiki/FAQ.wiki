@@ -11,7 +11,7 @@ if you want to get ride of this ID you can set PAGE_UNIQUE_SLUG_REQUIRED to True
 If you want to have a field for the description meta tag just add a placeholder in your template:
 
 {{{
-<meta name="keywords" content="{% placeholder meta_description current_page TextInput %}" />
+<meta name="keywords" content="{% placeholder meta_description with TextInput %}" />
 }}}
 
 And an translated field should appears in the admin.
