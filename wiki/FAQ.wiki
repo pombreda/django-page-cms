@@ -50,7 +50,9 @@ For a full documenation : [DisplayContentInTemplates display content in template
 
 == I have an error trying to display a page in the admin ==
 
-Check you have added the pages middleware and context processor. Compare your middleware section, MIDDLEWARE_CLASSES, in your settings.py to the example that comes with page-cms and you have to add .
+Check you have added the required middlewares and context processors. 
+
+For that, compare your MIDDLEWARE_CLASSES in your settings.py to the example that comes with page-cms.
 
 Don't forget to also add:
 
@@ -58,5 +60,4 @@ Don't forget to also add:
 "pages.context_processors.media",
 }}}
 
-in your TEMPLATE_CONTEXT_PROCESSORS section
- 
+in your TEMPLATE_CONTEXT_PROCESSORS section to the media files.
