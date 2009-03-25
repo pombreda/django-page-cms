@@ -67,8 +67,10 @@ http://drupal.org/files/images/wymeditor.preview.jpg
 
 markdown editor based on [http://markitup.jaysalvat.com/home/ markitup]
 
+http://www.webdesignerdepot.com/wp-content/uploads/2008/11/05_markitup.jpg
+
 ==markItUpHTML==
 
 HTML editor based on [http://markitup.jaysalvat.com/home/ markitup]
 
-http://farm4.static.flickr.com/3063/2805660740_f90d4c3d6a.jpg
+http://t37.net/files/markitup-081127.jpg
