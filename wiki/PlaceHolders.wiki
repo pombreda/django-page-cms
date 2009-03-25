@@ -43,9 +43,32 @@ The `page` and `widget` parameter are both optional now. If now `page` parameter
 
 Placeholder could be rendered with different widgets:
 
-  * TextInput : a simple line input
-  * Textarea : a multi line input
-  * RichTextarea : a [http://batiste.dosimple.ch/blog/posts/2007-09-11-1/rich-text-editor-jquery.html simple Rich Text Area Editor based jQuery]
-  * WYMEditor : a complete jQuery Rich Text Editor called [http://www.wymeditor.org/ wymeditor]
-  * markItUpMarkdown : markdown editor based on [http://markitup.jaysalvat.com/home/ markitup]
-  * markItUpHTML : HTML editor based on [http://markitup.jaysalvat.com/home/ markitup]
+==TextInput==
+
+a simple line input
+
+==Textarea==
+
+a multi line input, a simple
+
+==RichTextarea==
+
+A simple [http://batiste.dosimple.ch/blog/posts/2007-09-11-1/rich-text-editor-jquery.html Rich Text Area Editor] based on jQuery
+
+http://rte-light.googlecode.com/svn/trunk/screenshot.png
+
+==WYMEditor==
+
+a complete jQuery Rich Text Editor called [http://www.wymeditor.org/ wymeditor]
+
+http://drupal.org/files/images/wymeditor.preview.jpg
+
+==markItUpMarkdown==
+
+markdown editor based on [http://markitup.jaysalvat.com/home/ markitup]
+
+==markItUpHTML==
+
+HTML editor based on [http://markitup.jaysalvat.com/home/ markitup]
+
+http://farm4.static.flickr.com/3063/2805660740_f90d4c3d6a.jpg
