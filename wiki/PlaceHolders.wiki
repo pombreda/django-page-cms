@@ -47,13 +47,25 @@ Placeholder could be rendered with different widgets:
 
 a simple line input
 
+{{{
+{% placeholder [name] with TextInput %}
+}}}
+
 ==Textarea==
 
 a multi line input, a simple
 
+{{{
+{% placeholder [name] with Textarea %}
+}}}
+
 ==RichTextarea==
 
 A simple [http://batiste.dosimple.ch/blog/posts/2007-09-11-1/rich-text-editor-jquery.html Rich Text Area Editor] based on jQuery
+
+{{{
+{% placeholder [name] with RichTextarea %}
+}}}
 
 http://rte-light.googlecode.com/svn/trunk/screenshot.png
 
@@ -61,15 +73,27 @@ http://rte-light.googlecode.com/svn/trunk/screenshot.png
 
 a complete jQuery Rich Text Editor called [http://www.wymeditor.org/ wymeditor]
 
+{{{
+{% placeholder [name] with WYMEditor %}
+}}}
+
 http://drupal.org/files/images/wymeditor.preview.jpg
 
 ==markItUpMarkdown==
 
 markdown editor based on [http://markitup.jaysalvat.com/home/ markitup]
 
+{{{
+{% placeholder [name] with markItUpMarkdown %}
+}}}
+
 http://www.webdesignerdepot.com/wp-content/uploads/2008/11/05_markitup.jpg
 
 ==markItUpHTML==
+
+{{{
+{% placeholder [name] with markItUpHTML %}
+}}}
 
 HTML editor based on [http://markitup.jaysalvat.com/home/ markitup]
 
