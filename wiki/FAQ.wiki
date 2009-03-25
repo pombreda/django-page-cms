@@ -60,4 +60,4 @@ Don't forget to also add:
 "pages.context_processors.media",
 }}}
 
-in your TEMPLATE_CONTEXT_PROCESSORS section to the media files.
+in your TEMPLATE_CONTEXT_PROCESSORS section to get the media files that comes with this CMS.
