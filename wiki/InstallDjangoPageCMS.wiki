@@ -89,21 +89,6 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 )
 }}}
 
-If you use *trunk version* the template context processor would be just:
-
-{{{
-TEMPLATE_CONTEXT_PROCESSORS = (
-    ...
-    "django.core.context_processors.auth",
-    "django.core.context_processors.i18n",
-    "django.core.context_processors.debug",
-    "django.core.context_processors.media",
-    "django.core.context_processors.request",
-    "pages.context_processors.media",
-    ...
-)
-}}}
-
 You *must* have these middleware into your MIDDLEWARE_CLASSES settings:
 
 {{{
