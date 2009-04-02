@@ -3,6 +3,15 @@
 
 = Backwards Incompatible Changes =
 
+=== r430 (Apr 2, 2009) ===
+Page redirection has been added to the code base. Page Model change and DB synchronisation is needed.
+
+The TinyMCE widget is now handle by the very good [http://code.google.com/p/django-tinymce/ django-tinymce project]. you can enable it in your settings with PAGE_TINYMCE to True (default: False).
+
+=== r399 (Marsh 14, 2009) ===
+
+Directory like URLs has been added to the code base. Now if you set PAGE_UNIQUE_SLUG_REQUIRED to False you will get this directory like URLs instead of the the id trick at the end of the page name.
+
 === r399 (Marsh 14, 2009) ===
 
 Directory like URLs has been added to the code base. Now if you set PAGE_UNIQUE_SLUG_REQUIRED to False you will get this directory like URLs instead of the the id trick at the end of the page name.
