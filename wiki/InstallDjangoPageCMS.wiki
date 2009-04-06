@@ -76,8 +76,8 @@ Django page CMS use the caching framework quite intensively. You should definite
 
 Please first read how django handle languages: 
 
-http://docs.djangoproject.com/en/dev/ref/settings/#languages
-http://docs.djangoproject.com/en/dev/ref/settings/#language-code
+ * http://docs.djangoproject.com/en/dev/ref/settings/#languages
+ * http://docs.djangoproject.com/en/dev/ref/settings/#language-code
 
 This CMS use the PAGE_LANGUAGES setting. By default PAGE_LANGUAGES value is set to settings.LANGUAGES, but you certainly want to set this setting yourself to include only the languages you want to support.
 
