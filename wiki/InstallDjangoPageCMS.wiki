@@ -72,6 +72,45 @@ For the settings have a look in pages/settings.py for available options.
 
 Django page CMS use the caching framework quite intensively. You should definitely set-up [http://docs.djangoproject.com/en/dev/topics/cache/#setting-up-the-cache use one of the caching backend] to have decent performance.
 
+===Languages===
+
+Please first read how django handle languages: 
+
+ * [http://docs.djangoproject.com/en/dev/ref/settings/#languages settings.LANGUAGES]
+ * http://docs.djangoproject.com/en/dev/ref/settings/#language-code settings.LANGUAGE_CODE]
+
+This CMS use the PAGE_LANGUAGES setting. By default PAGE_LANGUAGES value is set to settings.LANGUAGES, but you certainly want to set this setting yourself to include only the languages you want to support.
+
+Django use settings.LANGUAGE constant for setting the request.LANGUAGE_CODE that is used by this CMS. So if the language you want to support is not present in settings.LANGUAGE, request.LANGUAGE_CODE will not be set correctly with your language.
+
+A possible workaround is to redefine settings.LANGUAGE. For example you could do :
+
+{{{
+# here is all the languages you want to be supported by the CMS
+PAGE_LANGUAGES = (
+    ('de', gettext_noop('German')),
+    ('fr-ch', gettext_noop('Swiss french')),
+    ('en-us', gettext_noop('US English')),
+)
+
+# You should add here all language you want to accept as valid client language
+languages = list(PAGE_LANGUAGES)
+languages.append(('fr-fr', gettext_noop('French')))
+languages.append(('fr-be', gettext_noop('Belgium french')))
+# redefine the settings.LANGUAGE constant
+LANGUAGES = languages
+
+# This enable you to map a language(s) to another one, these languages should
+# be in the LANGUAGES config
+def language_mapping(lang):
+    if lang.startswith('fr'):
+        # serve swiss french for everyone
+        return 'fr-ch'
+    return lang
+
+PAGE_LANGUAGE_MAPPING = language_mapping
+}}}
+
 ===Template context processors and Middlewares===
 
 You *must* have these context processors into your TEMPLATE_CONTEXT_PROCESSORS:
