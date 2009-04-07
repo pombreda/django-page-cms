@@ -38,7 +38,25 @@ mptt                    http://django-mptt.googlecode.com/svn/trunk/mptt
 tagging                 http://django-tagging.googlecode.com/svn/trunk/tagging
 }}}
 
-==Urls and settings==
+==Urls==
+
+Please take a look in the urls.py of the default project and copy desired urls in your settings. Basically you need to have something like this:
+
+{{{
+urlpatterns = patterns('',
+    ...
+    url(r'^pages/', include('pages.urls')),
+    (r'^admin/(.*)', admin.site.root),
+)
+}}}
+
+==Settings==
+
+All the Django page CMS specific settings and options are listed and explained in the pages/settings.py file.
+
+Django page CMS require that several of these to be set correctly to be able to run. You will recognize these settings in the following document by a bold "*must*". 
+
+===Tagging===
 
 Tagging is optional. If you don't want it please don't set PAGE_TAGGING setting into your settings. After that simply add wanted apps to your installed apps :
 
@@ -55,18 +73,6 @@ INSTALLED_APPS = (
     ...
 )
 }}}
-
-Please take a look in the urls.py of the default project and copy desired urls in your settings. Basically you need to have something like this:
-
-{{{
-urlpatterns = patterns('',
-    ...
-    url(r'^pages/', include('pages.urls')),
-    (r'^admin/(.*)', admin.site.root),
-)
-}}}
-
-For the settings have a look in pages/settings.py for available options.
 
 ===Caching===
 
