@@ -91,11 +91,15 @@ Please first read how django handle languages:
  * http://docs.djangoproject.com/en/dev/ref/settings/#languages
  * http://docs.djangoproject.com/en/dev/ref/settings/#language-code
 
-This CMS use the PAGE_LANGUAGES setting. By default PAGE_LANGUAGES value is set to settings.LANGUAGES, but you certainly want to set this setting yourself to include only the languages you want to support.
+This CMS use the PAGE_LANGUAGES setting in order to present which language are supported by the CMS. 
 
-Django use settings.LANGUAGES constant for setting the request.LANGUAGE_CODE that is used by this CMS. So if the language you want to support is not present in settings.LANGUAGES, request.LANGUAGE_CODE will not be set correctly with your language.
+By default PAGE_LANGUAGES value is set to LANGUAGES settings so you can directly set the LANGUAGES setting if you want. 
 
-A possible workaround is to redefine settings.LANGUAGES. For example you could do :
+You *should set* PAGE_LANGUAGES yourself because by default the LANGUAGES list is big.
+
+Django use LANGUAGES setting to set the request.LANGUAGE_CODE that is used by this CMS. So if the language you want to support is not present in the LANGUAGES setting, request.LANGUAGE_CODE will not be set correctly.
+
+A possible solution is to redefine settings.LANGUAGES. For example you can do :
 
 {{{
 # here is all the languages you want to be supported by the CMS
@@ -109,7 +113,7 @@ PAGE_LANGUAGES = (
 languages = list(PAGE_LANGUAGES)
 languages.append(('fr-fr', gettext_noop('French')))
 languages.append(('fr-be', gettext_noop('Belgium french')))
-# redefine the settings.LANGUAGE constant
+# redefine the LANGUAGES setting in order to set request.LANGUAGE_CODE correctly
 LANGUAGES = languages
 
 # This enable you to map a language(s) to another one, these languages should
@@ -153,18 +157,11 @@ MIDDLEWARE_CLASSES = (
 )
 }}}
 
-===Default language and template===
+===Default templates===
 
-You *must* set DEFAULT_PAGE_TEMPLATE to the name of your default CMS template. And LANGUAGES with wanted languages.
+You *must* set DEFAULT_PAGE_TEMPLATE to the name of your default CMS template.
 
 {{{
-gettext_noop = lambda s: s
-LANGUAGES = (
-    ('fr', gettext_noop('French')),
-    ('de', gettext_noop('German')),
-    ('en', gettext_noop('English')),
-)
-
 DEFAULT_PAGE_TEMPLATE = 'pages/index.html'
 }}}
 
