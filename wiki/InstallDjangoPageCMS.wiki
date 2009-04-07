@@ -72,6 +72,12 @@ For the settings have a look in pages/settings.py for available options.
 
 Django page CMS use the caching framework quite intensively. You should definitely set-up [http://docs.djangoproject.com/en/dev/topics/cache/#setting-up-the-cache use one of the caching backend] to have decent performance.
 
+If you cannot setup memcache or a database cache, you can use the local memory cache this way:
+
+{{{
+CACHE_BACKEND = "locmem:///"
+}}}
+
 ===Languages===
 
 Please first read how django handle languages: 
