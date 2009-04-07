@@ -75,7 +75,7 @@ Django page CMS use the caching framework quite intensively. You should definite
 If you cannot setup memcache or a database cache, you can use the local memory cache this way:
 
 {{{
-CACHE_BACKEND = "locmem:///"
+CACHE_BACKEND = "locmem:///?max_entries=5000"
 }}}
 
 ===Languages===
