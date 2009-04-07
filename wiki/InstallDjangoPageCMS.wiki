@@ -113,7 +113,7 @@ PAGE_LANGUAGE_MAPPING = language_mapping
 
 ===Template context processors and Middlewares===
 
-You *must* have these context processors into your TEMPLATE_CONTEXT_PROCESSORS setting:
+You *must* have this TEMPLATE_CONTEXT_PROCESSORS constant into your  setting:
 
 {{{
 TEMPLATE_CONTEXT_PROCESSORS = (
