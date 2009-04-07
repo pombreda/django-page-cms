@@ -81,9 +81,9 @@ Please first read how django handle languages:
 
 This CMS use the PAGE_LANGUAGES setting. By default PAGE_LANGUAGES value is set to settings.LANGUAGES, but you certainly want to set this setting yourself to include only the languages you want to support.
 
-Django use settings.LANGUAGE constant for setting the request.LANGUAGE_CODE that is used by this CMS. So if the language you want to support is not present in settings.LANGUAGE, request.LANGUAGE_CODE will not be set correctly with your language.
+Django use settings.LANGUAGES constant for setting the request.LANGUAGE_CODE that is used by this CMS. So if the language you want to support is not present in settings.LANGUAGES, request.LANGUAGE_CODE will not be set correctly with your language.
 
-A possible workaround is to redefine settings.LANGUAGE. For example you could do :
+A possible workaround is to redefine settings.LANGUAGES. For example you could do :
 
 {{{
 # here is all the languages you want to be supported by the CMS
@@ -113,7 +113,7 @@ PAGE_LANGUAGE_MAPPING = language_mapping
 
 ===Template context processors and Middlewares===
 
-You *must* have these context processors into your TEMPLATE_CONTEXT_PROCESSORS:
+You *must* have these context processors into your TEMPLATE_CONTEXT_PROCESSORS setting:
 
 {{{
 TEMPLATE_CONTEXT_PROCESSORS = (
@@ -128,7 +128,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 )
 }}}
 
-You *must* have these middleware into your MIDDLEWARE_CLASSES settings:
+You *must* have these middleware into your MIDDLEWARE_CLASSES setting:
 
 {{{
 MIDDLEWARE_CLASSES = (
