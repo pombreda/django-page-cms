@@ -54,7 +54,7 @@ urlpatterns = patterns('',
 
 All the Django page CMS specific settings and options are listed and explained in the pages/settings.py file.
 
-Django page CMS require that several of these to be set correctly to be able to run. You will recognize these settings in the following document by a bold "*must*". 
+Django page CMS require that several of these settings to be set. You will recognize these settings in the following document by a bold "*must*". 
 
 ===Tagging===
 
@@ -157,7 +157,7 @@ MIDDLEWARE_CLASSES = (
 )
 }}}
 
-===Default templates===
+===Default template===
 
 You *must* set DEFAULT_PAGE_TEMPLATE to the name of your default CMS template.
 
