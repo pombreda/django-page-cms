@@ -95,7 +95,7 @@ This CMS use the PAGE_LANGUAGES setting in order to present which language are s
 
 By default PAGE_LANGUAGES value is set to LANGUAGES settings so you can directly set the LANGUAGES setting if you want. 
 
-You *should set* PAGE_LANGUAGES yourself because by default the LANGUAGES list is big.
+You *should set* PAGE_LANGUAGES or LANGUAGES yourself because by default the LANGUAGES list is big.
 
 Django use LANGUAGES setting to set the request.LANGUAGE_CODE that is used by this CMS. So if the language you want to support is not present in the LANGUAGES setting, request.LANGUAGE_CODE will not be set correctly.
 
