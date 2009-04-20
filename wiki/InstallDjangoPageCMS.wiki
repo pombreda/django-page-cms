@@ -65,7 +65,9 @@ Django page CMS require that several of these settings to be set. You will recog
 
 ===Tagging===
 
-Tagging is optional. If you don't want it please don't set `PAGE_TAGGING` setting into your settings. After that simply add wanted apps to your installed apps :
+Tagging is optional and disabled by default. 
+
+If you want to use it set `PAGE_TAGGING` at `True` into your setting file and add it to your installed apps :
 
 {{{
 INSTALLED_APPS = (
