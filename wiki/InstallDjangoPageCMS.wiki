@@ -5,9 +5,11 @@
 
 To install django-page-cms please read carefully this document. Pay a special attention to the bold *must* statements.
 
+If you have any problem installing this CMS, take a look at the example application that stands in the example directory first. It will certainly help you to get started. 
+
 ==Install by using pip==
 
-The pip install is the easiest one. Please use this method if you have the choice. 
+The pip install is by far the easiest one. Please use this method if you have the choice. 
 
 use :
 
@@ -196,7 +198,9 @@ The Site object should have the domain that match your actual domain (ie: 127.0.
 
 ===Media directory===
 
-The django CMS come with some javascript and CSS files. These files are standing in the ´pages/media/pages´ directory. The CMS setting ´PAGES_MEDIA_URL´ enable you to tell the CMS where to search for these files. By default the value of ´PAGES_MEDIA_URL´ is set to :
+The django CMS come with some javascript and CSS files. These files are standing in the `pages/media/pages` directory.
+ 
+The CMS setting `PAGES_MEDIA_URL` enable you to tell the the browser where to request these files. By default the value of `PAGES_MEDIA_URL` is set to :
 
 {{{
 PAGES_MEDIA_URL = getattr(settings, 'PAGES_MEDIA_URL', join(settings.MEDIA_URL, 'pages/'))
@@ -208,6 +212,6 @@ Or in a simpler way :
 PAGES_MEDIA_URL = settings.MEDIA_URL + "pages/"
 }}}
 
-You can off course redefine this variable in your own setting if you are not happy with the default.
+You can off course redefine this variable in your setting file if you are not happy with this default.
 
-So it means that *you must at least create a symbolic link or copy the directory "pages/media/pages/"* into your own media directory to have a fully functioning admin interface.
+So it means that *you must at least create a symbolic link or copy the directory `pages/media/pages/`* into your media directory to have a fully functioning administration interface.
