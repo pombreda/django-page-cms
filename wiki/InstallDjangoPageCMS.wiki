@@ -3,7 +3,11 @@
 
 =Install in legacy project=
 
+To install django-page-cms please read carefully this document. Pay a special attention to the bold *must* statements.
+
 ==Install by using pip==
+
+The pip install is the easiest one. Please use this method if you have the choice. 
 
 use :
 
