@@ -196,6 +196,10 @@ The Site object should have the domain that match your actual domain (ie: 127.0.
 
 ===Media directory===
 
-The django CMS come with some javascript and CSS files. These files are in the pages/media/pages directory. The setting PAGES_MEDIA_URL tell the CMS where to search for these files. By default the value of PAGES_MEDIA_URL is <MEDIA_ROOT>/pages.
+The django CMS come with some javascript and CSS files. These files are standing in the ´pages/media/pages´ directory. The setting ´PAGES_MEDIA_URL´ enable you to tell the CMS where to search for these files. By default the value of ´PAGES_MEDIA_URL´ is set to :
 
-So it means that *you must create a symbolic link* or copy the directory "pages/media/pages/" into your own media directory to have a fully functioning admin interface.
+{{{
+PAGES_MEDIA_URL = getattr(settings, 'PAGES_MEDIA_URL', join(settings.MEDIA_URL, 'pages/'))
+}}}
+
+So it means that *you must at least create a symbolic link or copy the directory "pages/media/pages/"* into your own media directory to have a fully functioning admin interface.
