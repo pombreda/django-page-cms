@@ -47,7 +47,7 @@ tagging                 http://django-tagging.googlecode.com/svn/trunk/tagging
 
 ==Urls==
 
-Please take a look in the urls.py of the default project and copy desired urls in your settings. Basically you need to have something like this:
+Please take a look in the `urls.py` of the default project and copy desired URLs in your settings. Basically you need to have something like this:
 
 {{{
 urlpatterns = patterns('',
@@ -59,13 +59,13 @@ urlpatterns = patterns('',
 
 ==Settings==
 
-All the Django page CMS specific settings and options are listed and explained in the pages/settings.py file.
+All the Django page CMS specific settings and options are listed and explained in the `pages/settings.py` file.
 
 Django page CMS require that several of these settings to be set. You will recognize these settings in the following document by a bold "*must*". 
 
 ===Tagging===
 
-Tagging is optional. If you don't want it please don't set PAGE_TAGGING setting into your settings. After that simply add wanted apps to your installed apps :
+Tagging is optional. If you don't want it please don't set `PAGE_TAGGING` setting into your settings. After that simply add wanted apps to your installed apps :
 
 {{{
 INSTALLED_APPS = (
@@ -98,15 +98,15 @@ Please first read how django handle languages:
  * http://docs.djangoproject.com/en/dev/ref/settings/#languages
  * http://docs.djangoproject.com/en/dev/ref/settings/#language-code
 
-This CMS use the PAGE_LANGUAGES setting in order to present which language are supported by the CMS. 
+This CMS use the `PAGE_LANGUAGES` setting in order to present which language are supported by the CMS. 
 
-By default PAGE_LANGUAGES value is set to LANGUAGES settings so you can directly set the LANGUAGES setting if you want. 
+By default `PAGE_LANGUAGES` value is set by `settings.LANGUAGES` so you can directly set the `LANGUAGES` setting if you want. 
 
-You *should set* PAGE_LANGUAGES or LANGUAGES yourself because by default the LANGUAGES list is big.
+In any case *you should set* `PAGE_LANGUAGES` or `LANGUAGES` yourself because by default the `LANGUAGES` list is big.
 
-Django use LANGUAGES setting to set the request.LANGUAGE_CODE that is used by this CMS. So if the language you want to support is not present in the LANGUAGES setting, request.LANGUAGE_CODE will not be set correctly.
+Django use `LANGUAGES` setting to set the `request.LANGUAGE_CODE` value that is used by this CMS. So if the language you want to support is not present in the `LANGUAGES` setting the `request.LANGUAGE_CODE` will not be set correctly.
 
-A possible solution is to redefine settings.LANGUAGES. For example you can do :
+A possible solution is to redefine `settings.LANGUAGES`. For example you can do :
 
 {{{
 # here is all the languages you want to be supported by the CMS
@@ -136,7 +136,7 @@ PAGE_LANGUAGE_MAPPING = language_mapping
 
 ===Template context processors and Middlewares===
 
-You *must* have this TEMPLATE_CONTEXT_PROCESSORS constant into your  setting:
+You *must* have this `TEMPLATE_CONTEXT_PROCESSORS` constant into your  setting:
 
 {{{
 TEMPLATE_CONTEXT_PROCESSORS = (
@@ -151,7 +151,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 )
 }}}
 
-You *must* have these middleware into your MIDDLEWARE_CLASSES setting:
+You *must* have these middleware into your `MIDDLEWARE_CLASSES` setting:
 
 {{{
 MIDDLEWARE_CLASSES = (
@@ -166,17 +166,17 @@ MIDDLEWARE_CLASSES = (
 
 ===Default template===
 
-You *must* set DEFAULT_PAGE_TEMPLATE to the name of your default CMS template.
+You *must* set `DEFAULT_PAGE_TEMPLATE` to the name of your default CMS template.
 
 {{{
 DEFAULT_PAGE_TEMPLATE = 'pages/index.html'
 }}}
 
-And you *must* copy the directory "example/templates/pages" into your root template directory.
+And you *must* copy the directory `example/templates/pages` into your root template directory.
 
 ===Additional templates===
 
-Optionally you can set PAGE_TEMPLATES if you want additional templates choices. In the the example application you have actually this:
+Optionally you can set `PAGE_TEMPLATES` if you want additional templates choices. In the the example application you have actually this:
 
 {{{
 PAGE_TEMPLATES = (
@@ -187,7 +187,7 @@ PAGE_TEMPLATES = (
 
 ===The sites framework===
 
-If you want to use the [http://docs.djangoproject.com/en/dev/ref/contrib/sites/#ref-contrib-sites Django sites framework] with django-page-cms, you *must* define the SITE_ID and PAGE_USE_SITE_ID settings and create the appropriate Site object into the admin interface.
+If you want to use the [http://docs.djangoproject.com/en/dev/ref/contrib/sites/#ref-contrib-sites Django sites framework] with django-page-cms, you *must* define the `SITE_ID` and `PAGE_USE_SITE_ID` settings and create the appropriate Site object into the admin interface.
 
 {{{
 PAGE_USE_SITE_ID = True
@@ -214,4 +214,16 @@ PAGES_MEDIA_URL = settings.MEDIA_URL + "pages/"
 
 You can off course redefine this variable in your setting file if you are not happy with this default.
 
-So it means that *you must at least create a symbolic link or copy the directory `pages/media/pages/`* into your media directory to have a fully functioning administration interface.
+It means that *you must at least create a symbolic link or copy the directory `pages/media/pages/`* into your media directory to have a fully functioning administration interface.
+
+The example application directly point the `MEDIA_ROOT` on `page/media` directory :
+
+{{{
+# Absolute path to the directory that holds media.
+MEDIA_ROOT = os.path.join(PROJECT_DIR, '../pages/media/')
+ADMIN_MEDIA_ROOT = os.path.join(PROJECT_DIR, '../admin_media/')
+MEDIA_URL = '/media/'
+ADMIN_MEDIA_PREFIX = '/admin_media/'
+}}}
+
+But you certainly want to redefine these variables to your own project media directory.
