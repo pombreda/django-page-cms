@@ -23,10 +23,10 @@ sudo easy_install html5lib
 sudo easy_install django-page-cms
 }}}
 
-Tagging *must be installed by hand or with subversion* because the available package is not 
+*Tagging must be installed by hand or with subversion* because the available package is not 
 compatible with django 1.0.
 
-Django-mptt should be installed by hand or with subversion because the available package is not compatible with django 1.0.
+*Django-mptt must be installed by hand or with subversion* because the available package is not compatible with django 1.0.
 
 ==Install by using subversion externals==
 
