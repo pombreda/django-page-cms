@@ -6,6 +6,13 @@
 === r450 (Apr 15, 2009) ===
 last_modification_date (models.DateTimeField) has been added to the Page model.
 
+{{{
+BEGIN;
+ALTER TABLE pages_page
+    ADD COLUMN publication_end_date datetime;
+COMMIT;
+}}}
+
 === r430 (Apr 2, 2009) ===
 Page redirection has been added to the code base. Page Model change and DB synchronisation is needed.
 
