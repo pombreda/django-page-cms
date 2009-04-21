@@ -9,7 +9,7 @@ last_modification_date (models.DateTimeField) has been added to the Page model.
 {{{
 BEGIN;
 ALTER TABLE pages_page
-    ADD COLUMN publication_end_date datetime;
+    ADD COLUMN last_modification_date datetime;
 COMMIT;
 }}}
 
