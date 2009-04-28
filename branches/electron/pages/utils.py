@@ -1,16 +1,16 @@
 # -*- coding: utf-8 -*-
-from django.template import loader, Context, RequestContext, TemplateDoesNotExist
-from django.template.loader_tags import ExtendsNode
-from django.http import Http404
-from django.shortcuts import render_to_response
-from django.template import RequestContext
-from django.db.models import signals
-from django.http import HttpResponse, HttpResponseRedirect, HttpResponsePermanentRedirect
-from django.core.handlers.wsgi import WSGIRequest
+from django.conf import settings as django_settings
 from django.contrib.sites.models import Site, RequestSite, SITE_CACHE
 from django.core.handlers.base import BaseHandler
+from django.core.handlers.wsgi import WSGIRequest
+from django.db.models import signals
+from django.http import Http404
+from django.http import HttpResponse, HttpResponseRedirect, HttpResponsePermanentRedirect
+from django.shortcuts import render_to_response
+from django.template import RequestContext
+from django.template import loader, Context, RequestContext, TemplateDoesNotExist
+from django.template.loader_tags import ExtendsNode
 from pages import settings
-from exceptions import Exception as Except
 
 def get_request_mock():
     bh = BaseHandler()
@@ -169,3 +169,12 @@ def get_page_from_slug(slug, request, lang=None):
             if page.get_url(lang) == relative_url:
                 return page
     return None
+
+def break_here():
+    """ your friendly pdf debug prompt """
+    if django_settings.DEBUG:
+        try:
+            import ipdb as pdb
+        except ImportError:
+            import pdb;
+        pdb.set_trace()

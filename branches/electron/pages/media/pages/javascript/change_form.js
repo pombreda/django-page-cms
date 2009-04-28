@@ -46,10 +46,12 @@ $(function() {
     $.each(['language', 'template'], function(i, label) {
         var select = $('#id_'+label);
         if (select.length) {
+            var orig_ = select.val();
             select.change(function() {
-                var href = window.location.href.split('?');
-                var query = $.query.set(label, select.val()).toString();
-                window.location.href = href[0]+query;
+                var query = $.query.set(label, orig_).set('new_'+label,select.val()).toString();
+                select.val(orig_);
+                $('#page_form').attr('action',query);
+                $('input[name=_continue]').click();
             });
         }
     });
