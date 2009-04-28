@@ -50,7 +50,8 @@ $(document).ready(function() {
         $('a.expanded').each(function() {
             col.push(this.id.substring(1));
         });
-        $.cookie('tree_expanded', col.join(','), { 'expires': 12 }); // expire in 12 days
+        // expire in 12 days
+        $.cookie('tree_expanded', col.join(','), {"expires":12});
     }
     
     function remove_children(id) {

@@ -29,12 +29,13 @@
     {% endfor %}
 </td>
 <td class="publish-cell">
-
 {% ifequal page.status page.DRAFT %}
-    <img alt="False" src="{% admin_media_prefix %}img/admin/icon-no.gif" />
+    <img src="/media/pages/images/icon-draft.gif" alt="Draft" />
+{% else %}{% ifequal page.status page.PUBLISHED %}
+    <img src="/media/pages/images/icon-published.gif" alt="Published" />
 {% else %}
-    <img alt="True" src="{% admin_media_prefix %}img/admin/icon-yes.gif"/>
-{% endifequal %}
+    <img src="/media/pages/images/icon-hidden.gif" alt="Hidden"/>
+{% endifequal %}{% endifequal %}
     &nbsp;
     <select class="publish-select" name="select-status-{{ page.id }}">
         <option {% ifequal page.status page.DRAFT %}selected="selected"{% endifequal %}>{% trans "Draft" %}</option>
