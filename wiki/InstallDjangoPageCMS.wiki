@@ -130,6 +130,8 @@ A possible solution is to redefine `settings.LANGUAGES`. For example you can do 
 # http://www.i18nguy.com/unicode/language-identifiers.html
 LANGUAGE_CODE = 'en-us'
 
+# This is defined here as a do-nothing function because we can't import
+# django.utils.translation -- that module depends on the settings.
 gettext_noop = lambda s: s
 
 # here is all the languages you want to be supported by the CMS
