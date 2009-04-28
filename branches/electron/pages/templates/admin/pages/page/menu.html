@@ -30,11 +30,11 @@
 </td>
 <td class="publish-cell">
 {% ifequal page.status page.DRAFT %}
-    <img src="/media/pages/images/icon-draft.gif" alt="Draft" />
+    <img src="/media/pages/images/icons/draft.gif" alt="Draft" />
 {% else %}{% ifequal page.status page.PUBLISHED %}
-    <img src="/media/pages/images/icon-published.gif" alt="Published" />
+    <img src="/media/pages/images/icons/published.gif" alt="Published" />
 {% else %}
-    <img src="/media/pages/images/icon-hidden.gif" alt="Hidden"/>
+    <img src="/media/pages/images/icons/hidden.gif" alt="Hidden"/>
 {% endifequal %}{% endifequal %}
     &nbsp;
     <select class="publish-select" name="select-status-{{ page.id }}">

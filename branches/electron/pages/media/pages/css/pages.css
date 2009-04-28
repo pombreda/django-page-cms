@@ -30,9 +30,13 @@
     margin-bottom:1px;
 }
 
-.change-list .publish-select {
-    margin:2px;
-    padding:1px;
+.change-list .publish-cell img {
+    width: 10px;
+    height: 10px;
+}
+.change-list .publish-cell .publish-select {
+    margin: 2px;
+    padding: 1px;
 }
 
 .change-list .publish-cell {
@@ -137,7 +141,7 @@
 }
 
 .ac_loading {
-    background: white url('../indicator.gif') right center no-repeat;
+    background: white url('../waiting.gif') right center no-repeat;
 }
 
 .ac_odd {
