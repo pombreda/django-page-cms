@@ -175,8 +175,7 @@ $(document).ready(function() {
         if(jtarget.hasClass("publish-select")) {
             var p = jtarget.attr("name").split("status-")[1];
             var img = $('img', jtarget.parent())[0];
-            img.src = img.src.replace("-yes.gif", "-unknown.gif");
-            img.src = img.src.replace("-no.gif", "-unknown.gif");
+            img.src = img.src.replace("icon-draft.gif", "indicator.gif").replace("icon-published.gif", "indicator.gif").replace("icon-hidden.gif", "indicator.gif");
             img.alt = "Busy";
             index = target.selectedIndex;
 
@@ -186,14 +185,16 @@ $(document).ready(function() {
                 statusopt = "published";
             else if (index == 2)
                 statusopt = "hidden";
-
             // if I don't put data in the post, django doesn't get it
             $.post(p+"/change-status-"+statusopt+"/", {1:1}, function(val) {
-                // the first option is Draft
-                if(index==0) {
-                    img.src = img.src.replace("-unknown.gif", "-no.gif");
-                } else {
-                    img.src = img.src.replace("-unknown.gif", "-yes.gif");
+                img.alt = statusopt;
+                switch(val) {
+                    case '0': img.src = img.src.replace("indicator.gif", "icon-draft.gif"); break;
+                    case '1': img.src = img.src.replace("indicator.gif", "icon-published.gif"); break;
+                    case '3': img.src = img.src.replace("indicator.gif", "icon-hidden.gif"); break;
+                    default: 
+                        alert(val);
+                    break;
                 }
             });
             return true;
