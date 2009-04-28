@@ -13,15 +13,13 @@ from django.contrib.admin.util import unquote
 
 from pages import settings
 from pages.models import Page, Content
-from pages.utils import get_template_from_request, has_page_add_permission, \
-    get_language_from_request
+from pages.utils import get_template_from_request, has_page_add_permission, get_language_from_request
 
 from pages.admin import widgets
 from pages.utils import get_placeholders
 from pages.admin.forms import PageForm
 from pages.admin.utils import get_connected_models
-from pages.admin.views import traduction, get_content, sub_menu, \
-    change_status, modify_content
+from pages.admin.views import traduction, get_content, sub_menu, change_status, modify_content
 
 class PageAdmin(admin.ModelAdmin):
 
@@ -52,12 +50,11 @@ class PageAdmin(admin.ModelAdmin):
     fieldsets = (
         (_('General'), {
             'fields': general_fields,
-            'classes': ('sidebar',),
+            'classes': ('module-general', 'sidebar',),
         }),
         (_('Options'), {
             'fields': normal_fields,
-            'classes': ('sidebar', 'clear'),
-            'description': _('Note: This page reloads if you change the selection'),
+            'classes': ('module-options', 'clearfix',),
         }),
     )
 
@@ -76,6 +73,8 @@ class PageAdmin(admin.ModelAdmin):
         )]
 
     def __call__(self, request, url):
+        print  request.GET
+        
         # Delegate to the appropriate method, based on the URL.
         if url is None:
             return self.list_pages(request)
@@ -171,7 +170,10 @@ class PageAdmin(admin.ModelAdmin):
             if placeholder.name not in self.mandatory_placeholders:
                 placeholder_fieldsets.append(placeholder.name)
 
-        additional_fieldsets.append((_('Content'), {'fields': placeholder_fieldsets}))
+        additional_fieldsets.append((_('Content'), {
+            'fields': placeholder_fieldsets,
+            'classes': ('module-content',),
+        }))
 
         # deactived for now, create bugs with page with same slug title
         connected_fieldsets = []
@@ -297,7 +299,7 @@ class PageAdmin(admin.ModelAdmin):
             extra_context = {
                 'placeholders': get_placeholders(template),
                 'language': get_language_from_request(request),
-                'traduction_language': settings.PAGE_LANGUAGES,
+                'traduction_language': [l for l in settings.PAGE_LANGUAGES if Content.objects.get_content(obj, l[0], "title")],
                 'page': obj,
             }
         return super(PageAdmin, self).change_view(request, object_id, extra_context)
