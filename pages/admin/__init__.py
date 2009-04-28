@@ -13,7 +13,7 @@ from django.contrib.admin.util import unquote
 
 from pages import settings
 from pages.models import Page, Content
-from pages.utils import get_template_from_request, has_page_add_permission, get_language_from_request
+from pages.utils import get_template_from_request, has_page_add_permission, get_language_from_request, break_here
 
 from pages.admin import widgets
 from pages.utils import get_placeholders
@@ -73,7 +73,6 @@ class PageAdmin(admin.ModelAdmin):
         )]
 
     def __call__(self, request, url):
-        print  request.GET
         
         # Delegate to the appropriate method, based on the URL.
         if url is None:
@@ -100,7 +99,22 @@ class PageAdmin(admin.ModelAdmin):
             return change_status(request, unquote(url[:-24]), Page.PUBLISHED)
         elif url.endswith('/change-status-hidden'):
             return change_status(request, unquote(url[:-21]), Page.HIDDEN)
-        return super(PageAdmin, self).__call__(request, url)
+        ret = super(PageAdmin, self).__call__(request, url)
+        
+        
+        """
+        Persist the language and template GET arguments, both on "save and keep 
+        editing" and when switching language and template (which also submits)
+        """
+        if HttpResponseRedirect == type(ret) and (request.GET.get('new_language', False) or request.GET.get('new_template', False) or request.GET.get('language', False) or request.GET.get('template', False)):
+            for item in ret.items():
+                if 'Location' == item[0]:
+                    new_uri = item[1] + \
+                        '?language=' + request.GET.get('new_language', request.GET.get('language', '')) + \
+                        '&template=' + request.GET.get('new_template', request.GET.get('template', ''))
+                    ret = HttpResponseRedirect(new_uri)
+                    break
+        return ret
 
     def i18n_javascript(self, request):
         """
