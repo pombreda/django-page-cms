@@ -175,7 +175,7 @@ $(document).ready(function() {
         if(jtarget.hasClass("publish-select")) {
             var p = jtarget.attr("name").split("status-")[1];
             var img = $('img', jtarget.parent())[0];
-            img.src = img.src.replace("icon-draft.gif", "indicator.gif").replace("icon-published.gif", "indicator.gif").replace("icon-hidden.gif", "indicator.gif");
+            img.src = img.src.replace("icons/draft.gif", "waiting.gif").replace("icons/published.gif", "waiting.gif").replace("icons/hidden.gif", "waiting.gif");
             img.alt = "Busy";
             index = target.selectedIndex;
 
@@ -189,9 +189,9 @@ $(document).ready(function() {
             $.post(p+"/change-status-"+statusopt+"/", {1:1}, function(val) {
                 img.alt = statusopt;
                 switch(val) {
-                    case '0': img.src = img.src.replace("indicator.gif", "icon-draft.gif"); break;
-                    case '1': img.src = img.src.replace("indicator.gif", "icon-published.gif"); break;
-                    case '3': img.src = img.src.replace("indicator.gif", "icon-hidden.gif"); break;
+                    case '0': img.src = img.src.replace("waiting.gif", "icons/draft.gif"); break;
+                    case '1': img.src = img.src.replace("waiting.gif", "icons/published.gif"); break;
+                    case '3': img.src = img.src.replace("waiting.gif", "icons/hidden.gif"); break;
                     default: 
                         alert(val);
                     break;
