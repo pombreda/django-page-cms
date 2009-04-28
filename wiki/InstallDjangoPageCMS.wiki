@@ -126,6 +126,12 @@ Django use `LANGUAGES` setting to set the `request.LANGUAGE_CODE` value that is 
 A possible solution is to redefine `settings.LANGUAGES`. For example you can do :
 
 {{{
+# Default language code for this installation. All choices can be found here:
+# http://www.i18nguy.com/unicode/language-identifiers.html
+LANGUAGE_CODE = 'en-us'
+
+gettext_noop = lambda s: s
+
 # here is all the languages you want to be supported by the CMS
 PAGE_LANGUAGES = (
     ('de', gettext_noop('German')),
