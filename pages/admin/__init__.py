@@ -69,7 +69,8 @@ class PageAdmin(admin.ModelAdmin):
             'javascript/jquery.js',
             'javascript/jquery.rte.js',
             'javascript/jquery.query.js',
-            'javascript/change_form.js',
+            'javascript/pages.js',
+            'javascript/pages_form.js',
         )]
 
     def __call__(self, request, url):

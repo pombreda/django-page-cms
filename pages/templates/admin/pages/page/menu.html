@@ -29,18 +29,18 @@
     {% endfor %}
 </td>
 <td class="publish-cell">
-{% ifequal page.status page.DRAFT %}
-    <img src="/media/pages/images/icons/draft.gif" alt="Draft" />
-{% else %}{% ifequal page.status page.PUBLISHED %}
-    <img src="/media/pages/images/icons/published.gif" alt="Published" />
-{% else %}
-    <img src="/media/pages/images/icons/hidden.gif" alt="Hidden"/>
-{% endifequal %}{% endifequal %}
+    {% ifequal page.status page.DRAFT %}
+        <img src="/media/pages/images/icons/draft.gif" alt="draft" />
+    {% else %}{% ifequal page.status page.PUBLISHED %}
+        <img src="/media/pages/images/icons/published.gif" alt="published" />
+    {% else %}
+        <img src="/media/pages/images/icons/hidden.gif" alt="hidden"/>
+    {% endifequal %}{% endifequal %}
     &nbsp;
     <select class="publish-select" name="select-status-{{ page.id }}">
-        <option {% ifequal page.status page.DRAFT %}selected="selected"{% endifequal %}>{% trans "Draft" %}</option>
-        <option {% ifequal page.status page.PUBLISHED %}selected="selected"{% endifequal %}>{% trans "In navigation" %}</option>
-        <option {% ifequal page.status page.HIDDEN %}selected="selected"{% endifequal %}>{% trans "Hidden" %}</option>
+        <option value="0" {% ifequal page.status page.DRAFT %}selected="selected"{% endifequal %}>{% trans "Draft" %}</option>
+        <option value="1" {% ifequal page.status page.PUBLISHED %}selected="selected"{% endifequal %}>{% trans "In navigation" %}</option>
+        <option value="3" {% ifequal page.status page.HIDDEN %}selected="selected"{% endifequal %}>{% trans "Hidden" %}</option>
     </select>
 
 </td>

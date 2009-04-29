@@ -1,50 +1,9 @@
 /* specific CSS for the django page admin application */
 
-.change-list tr {
-    padding-left:1.5em;
-}
-
-.change-list .move-target-container {
-    display:none;
-    float:right;
-}
-
-.change-list .table-selected .move-target-container {
-    display:block;
-}
-
-.change-list .table-selected .selected .move-target-container {
-    display:none;
-}
-
-.change-list tr.selected {
-    background:#ffb;
-}
-
-.change-list table tr.target {
-    background:#fff;
-}
-
-.change-list table td input {
-    margin-top:-1px;
-    margin-bottom:1px;
-}
-
-.change-list .publish-cell img {
-    width: 10px;
-    height: 10px;
-}
-.change-list .publish-cell .publish-select {
-    margin: 2px;
-    padding: 1px;
-}
-
-.change-list .publish-cell {
-    padding:0 5px;
-}
 
 
-.placeholder-row textarea, .placeholder-row input {
+.placeholder-row textarea,
+.placeholder-row input {
     float:left;
 }
 
@@ -58,36 +17,11 @@
     margin-left:0;
 }
 
-.revisions-list .selected {
-    font-weight:bold;
-}
-
 #status-row ul li {
     list-style-type:none;
 }
 
 
-.expand-collapse span {
-    font-family: monospace;
-    font-size:16px;
-    margin:2px 4px;
-}
-
-.expand-collapse .collapse {
-    display: none;
-}
-
-.expand-collapse .expand {
-    display: inline;
-}
-
-.expanded .collapse {
-    display: inline;
-}
-
-.expanded .expand {
-    display: none;
-}
 
 /* **** */
 
@@ -104,6 +38,8 @@
     width: 60%;
 }
 
+/* auto-complete =========================================== */
+
 .ac_results {
     padding: 0px;
     border: 1px solid #ccc;
@@ -111,7 +47,6 @@
     overflow: hidden;
     z-index: 99999;
 }
-
 .ac_results ul {
     width: 100%;
     list-style-position: outside;
@@ -119,7 +54,6 @@
     padding: 0;
     margin: 0;
 }
-
 .ac_results li {
     margin: 0px;
     padding: 2px 4px;
@@ -139,18 +73,36 @@
     line-height: 14px;
     overflow: hidden;
 }
-
 .ac_loading {
     background: white url('../waiting.gif') right center no-repeat;
 }
-
 .ac_odd {
     background-color: #eee;
 }
-
 .ac_over {
     background-color: #999;
     color: white;
+}
+
+
+/* clearfix =========================================== */
+
+.clearfix:after {
+    content: ".";
+    display: block;
+    clear: both;
+    visibility: hidden;
+    line-height: 0;
+    height: 0;
+}
+.clearfix {
+    display: inline-block;
+}
+html[xmlns] .clearfix {
+    display: block;
+}
+* html .clearfix {
+    height: 1%;
 }
 
 /* change-form page =========================================== */
@@ -182,6 +134,18 @@
 .module-general .title input {
     width: 256px;
     font-size: 16px;
+}
+
+/* Status */
+.module-general .status div {
+    position: relative;
+}
+.module-general .status img {
+    position: absolute;
+    top: 8px;
+    left: 8em;
+    width: 10px;
+    height: 10px;
 }
 
 /* Options */
@@ -274,22 +238,57 @@
 }
 
 
-/* clearfix =========================================== */
+/* change-list page =========================================== */
 
-.clearfix:after {
-    content: ".";
-    display: block;
-    clear: both;
-    visibility: hidden;
-    line-height: 0;
-    height: 0;
+.change-list tr {
 }
-.clearfix {
-    display: inline-block;
+.change-list .move-target-container {
+    display: none;
+    float: right;
 }
-html[xmlns] .clearfix {
+.change-list .table-selected .move-target-container {
     display: block;
 }
-* html .clearfix {
-    height: 1%;
+.change-list .table-selected .selected .move-target-container {
+    display: none;
+}
+.change-list tr.selected {
+    background: #ffb;
+}
+.change-list table tr.target {
+    background: white;
+}
+.change-list table td input {
+    margin-top: -1px;
+    margin-bottom: 1px;
+}
+
+.change-list .publish-cell img {
+    width: 10px;
+    height: 10px;
+}
+.change-list .publish-cell .publish-select {
+    margin: 2px;
+    padding: 1px;
+}
+.change-list .publish-cell {
+    padding: 0 5px;
+}
+
+.expand-collapse span {
+    font-family: monospace;
+    font-size: 16px;
+    margin: 2px 4px;
+}
+.expand-collapse .collapse {
+    display: none;
+}
+.expand-collapse .expand {
+    display: inline;
+}
+.expanded .collapse {
+    display: inline;
+}
+.expanded .expand {
+    display: none;
 }

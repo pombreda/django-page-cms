@@ -1,3 +1,5 @@
+/* Initialization of the change_form page - this script is run once everything is ready. */
+
 $(function() {
     // Hide form rows containing only hidden inputs
     $('.form-row').each(function() {
@@ -16,6 +18,14 @@ $(function() {
     });
     $("#id_title").keyup(function() {
         slug_auto && slug.val(URLify(this.value, 64));
+    });
+    
+    // Set the publication status
+    var select = $('#id_status');
+    var opt = ({ 0: 'draft', 1: 'published', 3: 'hidden' })[select.val()];
+    var img = $('<img src="/media/pages/images/icons/'+opt+'.gif" alt="'+opt+'" />').insertAfter(select);
+    select.change(function(e) {
+        pages.update_published_icon('', select, img);
     });
     
     // Translation helper
