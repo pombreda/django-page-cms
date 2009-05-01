@@ -240,28 +240,108 @@ html[xmlns] .clearfix {
 
 /* change-list page =========================================== */
 
-.change-list tr {
+/* Table-wide */
+.change-list tbody tr:hover {
+    background: #f0f2f8;
 }
-.change-list .move-target-container {
-    display: none;
-    float: right;
-}
-.change-list .table-selected .move-target-container {
-    display: block;
-}
-.change-list .table-selected .selected .move-target-container {
-    display: none;
-}
-.change-list tr.selected {
+.change-list tbody tr.highlighted {
     background: #ffb;
 }
-.change-list table tr.target {
-    background: white;
+
+/* Title cell */
+.change-list .title-cell {
+    position: relative;
+    text-align: left;
+    font-weight: bold;
+    height: 100%;
 }
-.change-list table td input {
-    margin-top: -1px;
-    margin-bottom: 1px;
+.change-list .title-cell .changelink {
+    float: left;
+    margin-left: 20px;
+    padding: 0 14px 0 0;
+    background: none;
 }
+.change-list .title-cell .changelink:hover {
+    background: url(../images/icons/edit.gif) right 0.2em no-repeat;
+}
+
+/* Expand-collapse link */
+.change-list .title-cell .expand-collapse span {
+    position: absolute;
+    left: 4px; top: 1px;
+    font-family: monospace;
+    font-size: 16px;
+}
+.change-list .title-cell .collapse,
+.change-list .title-cell .expanded .expand {
+    display: none;
+}
+.change-list .title-cell .expand,
+.change-list .title-cell .expanded .collapse {
+    display: block;
+}
+
+/* Move links */
+.change-list .insert {
+    display: none;
+    position: absolute;
+    right: 4px; top: -4px;
+}
+.change-list .insertable .insert {
+    display: block;
+}
+.change-list .insert a {
+    float: left;
+    width: 10px; height: 21px;
+    padding: 0 5px;
+    background: url(../images/icons/insert.gif) no-repeat;
+}
+.change-list .insert a.left              { background-position:  5px  0; }
+.change-list .insert a.right             { background-position: -10px 0; }
+.change-list .insert a.first-child       { background-position: -25px 0; width: 14px; }
+.change-list tr:hover .insert a.left,
+.change-list .insert a.left:hover        { background-position:  5px  -21px; }
+.change-list tr:hover .insert a.right,
+.change-list .insert a.right:hover       { background-position: -10px -21px; }
+.change-list tr:hover .insert a.first-child,
+.change-list .insert a.first-child:hover { background-position: -25px -21px; }
+.change-list .insert a span {
+    display: none;
+    position: absolute;
+    top: -24px;
+    padding: 2px;
+    border: 1px solid #888;
+    font-size: 12px;
+    font-weight: normal;
+    color: #333;
+    background: #ffb;
+    white-space: nowrap;
+}
+.change-list .insert a:hover span {
+    display: block;
+}
+
+/* **** */
+
+.change-list .action-cell a.viewlink {
+    padding-left: 13px;
+    background: url(../images/icons/view.gif) no-repeat 0 0.25em;
+}
+.change-list .action-cell a.movelink {
+    padding-left: 13px;
+    background: url(../images/icons/move.gif) no-repeat 0 0.25em;
+}
+.change-list .action-cell a.addlink {
+    padding-left: 14px;
+    color: #28662C;
+}
+.change-list .action-cell a.addlink:hover {
+    color: #091B0B;
+}
+.change-list .action-cell a.deletelink {
+    padding-left: 13px;
+}
+
 
 .change-list .publish-cell img {
     width: 10px;
@@ -275,20 +355,3 @@ html[xmlns] .clearfix {
     padding: 0 5px;
 }
 
-.expand-collapse span {
-    font-family: monospace;
-    font-size: 16px;
-    margin: 2px 4px;
-}
-.expand-collapse .collapse {
-    display: none;
-}
-.expand-collapse .expand {
-    display: inline;
-}
-.expanded .collapse {
-    display: inline;
-}
-.expanded .expand {
-    display: none;
-}

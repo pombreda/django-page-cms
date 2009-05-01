@@ -2,27 +2,30 @@
 
 {% if has_permission %}
 <tr id="page-row-{{ page.id }}" class="child-of-{{ page.parent_id }}">
-<td style="text-align:left;padding-left:{{ page.margin_level }}em">
-    <span id="move-target-{{ page.id }}" class="move-target-container">
-        <a href="#" class="move-target left" title="{% trans "as left sibling"%}"><img alt="" src="{% admin_media_prefix %}img/admin/arrow-up.gif"/></a> |
-        <a href="#" class="move-target right" title="{% trans "as right sibling"%}"><img alt="" src="{% admin_media_prefix %}img/admin/arrow-down.gif"/></a></a> |
-        <a href="#" class="move-target first-child" title="{% trans "as child"%}">↘</a>
-    </span>
-    {% if page.children.count %}
-    <a href="#" class="expand-collapse {% if expanded %}expanded{% endif %}" id="c{{ page.id }}">
-        <span class="expand">+</span>
-        <span class="collapse">-</span>
-    </a>
-    {% endif %} 
-    <a href="{{ url }}{{ page.id }}/" class="changelink" style="margin-right:1em;">{% show_content page "slug" %}</a>
+<th>
+    <div class="title-cell" style="margin-left:{{ page.margin_level }}em">
+        {% if page.children.count %}
+            <a href="#" class="expand-collapse {% if expanded %}expanded{% endif %}" id="c{{ page.id }}">
+                <span class="expand">+</span>
+                <span class="collapse">-</span>
+            </a>
+        {% endif %} 
+        <a href="{{ url }}{{ page.id }}/" class="changelink">{% show_content page "slug" %}</a>
+        
+        <div id="move-target-{{ page.id }}" class="insert container">
+            <a href="#" class="move-target left"><span>{% trans "insert above" %}</span></a>
+            <a href="#" class="move-target right"><span>{% trans "insert below" %}</span></a>
+            <a href="#" class="move-target first-child"><span>{% trans "insert as child" %}</span></a>
+        </div>
+    </div>
+</th>
+<td class="action-cell">
+    <a class="viewlink" href="{{ page.get_absolute_url }}" target="_blank">{% trans "view" %}</a> |
+    <a class="movelink" id="move-link-{{ page.id }}" href="#">{% trans "move" %}</a> |
+    <a class="addlink" id="add-link-{{ page.id }}" href="#">{% trans "add" %}</a> |
+    <a class="deletelink" href="{{ page.id }}/delete/">{% trans "delete" %}</a>
 </td>
-<td>
-    <a href="#" class="move" id="move-link-{{ page.id }}">{% trans "move" %}</a> |
-    <a href="#" class="addlink" id="add-link-{{ page.id }}">{% trans "add" %}</a> |
-    <a href="{{ page.get_absolute_url }}" class="selector-add">{% trans "view" %}</a> |
-    <a href="{{ page.id }}/delete/" class="deletelink">{% trans "delete" %}</a>
-</td>
-<td>
+<td class="translation-cell">
     {% for lang in page.get_languages %} 
         <a href="{{ url }}{{ page.id }}/?language={{ lang }}" class="changelink">{{ lang }}</a>
         <span style="font-weight:normal">{% if not forloop.last %}|{% endif %}</span>
