@@ -230,11 +230,11 @@ class Page(models.Model):
         level = ''
         if self.level:
             for n in range(0, self.level):
-                level += '&nbsp;&nbsp;&nbsp;'  
+                level += '&nbsp;&nbsp;&nbsp;'
         return mark_safe(level + self.__unicode__())
         
     def margin_level(self):
-        return self.level * 4 + 1
+        return self.level * 2
 
     def __unicode__(self):
         slug = self.slug()

@@ -32,8 +32,7 @@ $(function() {
     $('#translation-helper-select').change(function() {
         var index = this.selectedIndex;
         if (index) {
-            var array = window.location.href.split('?');
-            $.get(array[0]+'traduction/'+this.options[index].value+'/', function(html) {
+            $.get(window.location.href.split('?')[0]+'traduction/'+this.options[index].value+'/', function(html) {
                 $('#translation-helper-content').html(html).show();
             });
         } else {
