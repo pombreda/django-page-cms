@@ -1,42 +1,26 @@
 /* specific CSS for the django page admin application */
 
 
+/* clearfix =========================================== */
 
-.placeholder-row textarea,
-.placeholder-row input {
-    float:left;
-}
-
-.placeholder-row .revisions {
-    float:left;
-    margin-left:2em;
-}
-
-.placeholder-row .revisions ul {
-    padding:0;
-    margin-left:0;
-}
-
-#status-row ul li {
-    list-style-type:none;
-}
-
-
-
-/* **** */
-
-.sidebar div.description {
-    margin: 5px;
-}
-
-.clear {
+.clearfix:after {
+    content: ".";
+    display: block;
     clear: both;
+    visibility: hidden;
+    line-height: 0;
+    height: 0;
+}
+.clearfix {
+    display: inline-block;
+}
+html[xmlns] .clearfix {
+    display: block;
+}
+* html .clearfix {
+    height: 1%;
 }
 
-.float-left {
-    float: left;
-    width: 60%;
-}
 
 /* auto-complete =========================================== */
 
@@ -74,7 +58,7 @@
     overflow: hidden;
 }
 .ac_loading {
-    background: white url('../waiting.gif') right center no-repeat;
+    background: white url('../loading.gif') right center no-repeat;
 }
 .ac_odd {
     background-color: #eee;
@@ -85,25 +69,193 @@
 }
 
 
-/* clearfix =========================================== */
+/* change-list page =========================================== */
 
-.clearfix:after {
-    content: ".";
+.object-tools {
+    display: none;
+}
+
+/* Table-wide */
+.change-list tbody tr:hover {
+    background: #f0f2f8;
+}
+.change-list tbody tr.highlighted {
+    background: #ffb;
+}
+
+/* Title cell */
+.change-list thead th.title-cell {
+    padding: 5px 10px;
+}
+.change-list .title-cell-container {
+    position: relative;
+    text-align: left;
+    font-weight: bold;
+    height: 100%;
+}
+.change-list .title-cell .changelink {
+    margin: 0 0 0 20px;
+    padding: 0 14px 0 0;
+    background: none;
+}
+.change-list .title-cell .changelink:hover {
+    background: url(../images/icons/edit.gif) right 0.2em no-repeat;
+}
+
+/* Expand-collapse link */
+.change-list .expand-collapse {
+    position: absolute;
+    left: 4px; top: 1px;
+    font-family: monospace;
+    font-size: 16px;
+}
+.change-list .expand,
+.change-list .expanded .collapse,
+.change-list .loading .expand-loading {
     display: block;
-    clear: both;
-    visibility: hidden;
-    line-height: 0;
-    height: 0;
 }
-.clearfix {
-    display: inline-block;
+.change-list .collapse,
+.change-list .expanded .expand,
+.change-list .loading .expand,
+.change-list .loading .collapse,
+.change-list .expand-loading {
+    display: none;
 }
-html[xmlns] .clearfix {
+.change-list .expand-loading {
+    position: relative;
+    top: -2px;
+    left: -4px;
+}
+
+/* Languages */
+.change-list .translation {
+    position: absolute;
+    right: -5px; top: 0;
+    margin: 0; padding: 0;
+}
+.change-list .highlighted .translation,
+.change-list .insertable .translation {
+    display: none;
+}
+.change-list .translation li {
+    float: left;
+    list-style: none;
+    padding: 0
+}
+.change-list .translation .changelink {
+    margin: 0 4px 0 0;
+    padding: 0 14px 0 0;
+    font-weight: normal;
+    text-transform: uppercase;
+}
+
+/* Move links */
+.change-list .insert {
+    display: none;
+    position: absolute;
+    right: 4px; top: -4px;
+}
+.change-list .insertable .insert {
     display: block;
 }
-* html .clearfix {
-    height: 1%;
+.change-list .insert a {
+    float: left;
+    width: 10px; height: 21px;
+    padding: 0 5px;
+    background: url(../images/icons/insert.gif) no-repeat;
 }
+.change-list .insert a.left                             { background-position:   5px 0; }
+.change-list .insert a.right                            { background-position: -10px 0; }
+.change-list .insert a.first-child                      { background-position: -25px 0; width: 14px; }
+.change-list .insert-add tr:hover .insert a.left,
+.change-list .insert-add .insert a.left:hover           { background-position:   5px -21px; }
+.change-list .insert-add tr:hover .insert a.right,
+.change-list .insert-add .insert a.right:hover          { background-position: -10px -21px; }
+.change-list .insert-add tr:hover .insert a.first-child,
+.change-list .insert-add .insert a.first-child:hover    { background-position: -25px -21px; }
+.change-list .insert-move tr:hover .insert a.left,
+.change-list .insert-move .insert a.left:hover          { background-position:   5px -42px; }
+.change-list .insert-move tr:hover .insert a.right,
+.change-list .insert-move .insert a.right:hover         { background-position: -10px -42px; }
+.change-list .insert-move tr:hover .insert a.first-child,
+.change-list .insert-move .insert a.first-child:hover   { background-position: -25px -42px; }
+.change-list .insert a span {
+    display: none;
+    position: absolute;
+    top: -24px;
+    padding: 2px;
+    border: 1px solid #888;
+    font-size: 12px;
+    font-weight: normal;
+    color: #333;
+    background: #ffb;
+    white-space: nowrap;
+}
+.change-list .insert a:hover span {
+    display: block;
+}
+.change-list .insert-loading {
+    position: absolute;
+    right: 12px; top: -2px;
+}
+
+/* Actions */
+.change-list .action-cell {
+    width: 1%;
+    white-space: nowrap;
+    padding: 5px 10px;
+}
+.change-list .action-cell a.viewlink {
+    padding-left: 13px;
+    background: url(../images/icons/view.gif) no-repeat 0 0.25em;
+}
+.change-list .action-cell a.movelink {
+    padding-left: 13px;
+    background: url(../images/icons/move.gif) no-repeat 0 0.25em;
+}
+.change-list .action-cell a.addlink {
+    padding-left: 14px;
+    color: #28662C;
+}
+.change-list .action-cell a.addlink:hover {
+    color: #091B0B;
+}
+.change-list .action-cell a.deletelink {
+    padding-left: 13px;
+}
+
+/* Publication status */
+.change-list .publish-cell {
+    width: 1%;
+    white-space: nowrap;
+    padding: 0 10px;
+}
+.change-list th.publish-cell {
+    padding: 5px 10px;
+}
+.change-list .publish-cell img {
+    width: 10px;
+    height: 10px;
+}
+.change-list .publish-cell .publish-select {
+    margin: 2px;
+    padding: 1px;
+}
+
+/* Publication status */
+.change-list .template-cell {
+    width: 1%;
+    white-space: nowrap;
+    padding: 5px 10px;
+}
+
+/* Publication status */
+.change-list .author-cell {
+    width: 1%;
+    white-space: nowrap;
+    padding: 5px 10px;
+}
+
 
 /* change-form page =========================================== */
 
@@ -125,6 +277,9 @@ html[xmlns] .clearfix {
 .change-form .sidebar .form-row p.help {
     margin-left: 0;
     padding: 0;
+}
+.change-form .sidebar div.description {
+    margin: 5px;
 }
 
 /* Title */
@@ -235,123 +390,5 @@ html[xmlns] .clearfix {
 /* Submit */
 .change-form .submit-row {
     clear: both;
-}
-
-
-/* change-list page =========================================== */
-
-/* Table-wide */
-.change-list tbody tr:hover {
-    background: #f0f2f8;
-}
-.change-list tbody tr.highlighted {
-    background: #ffb;
-}
-
-/* Title cell */
-.change-list .title-cell {
-    position: relative;
-    text-align: left;
-    font-weight: bold;
-    height: 100%;
-}
-.change-list .title-cell .changelink {
-    float: left;
-    margin-left: 20px;
-    padding: 0 14px 0 0;
-    background: none;
-}
-.change-list .title-cell .changelink:hover {
-    background: url(../images/icons/edit.gif) right 0.2em no-repeat;
-}
-
-/* Expand-collapse link */
-.change-list .title-cell .expand-collapse span {
-    position: absolute;
-    left: 4px; top: 1px;
-    font-family: monospace;
-    font-size: 16px;
-}
-.change-list .title-cell .collapse,
-.change-list .title-cell .expanded .expand {
-    display: none;
-}
-.change-list .title-cell .expand,
-.change-list .title-cell .expanded .collapse {
-    display: block;
-}
-
-/* Move links */
-.change-list .insert {
-    display: none;
-    position: absolute;
-    right: 4px; top: -4px;
-}
-.change-list .insertable .insert {
-    display: block;
-}
-.change-list .insert a {
-    float: left;
-    width: 10px; height: 21px;
-    padding: 0 5px;
-    background: url(../images/icons/insert.gif) no-repeat;
-}
-.change-list .insert a.left              { background-position:  5px  0; }
-.change-list .insert a.right             { background-position: -10px 0; }
-.change-list .insert a.first-child       { background-position: -25px 0; width: 14px; }
-.change-list tr:hover .insert a.left,
-.change-list .insert a.left:hover        { background-position:  5px  -21px; }
-.change-list tr:hover .insert a.right,
-.change-list .insert a.right:hover       { background-position: -10px -21px; }
-.change-list tr:hover .insert a.first-child,
-.change-list .insert a.first-child:hover { background-position: -25px -21px; }
-.change-list .insert a span {
-    display: none;
-    position: absolute;
-    top: -24px;
-    padding: 2px;
-    border: 1px solid #888;
-    font-size: 12px;
-    font-weight: normal;
-    color: #333;
-    background: #ffb;
-    white-space: nowrap;
-}
-.change-list .insert a:hover span {
-    display: block;
-}
-
-/* **** */
-
-.change-list .action-cell a.viewlink {
-    padding-left: 13px;
-    background: url(../images/icons/view.gif) no-repeat 0 0.25em;
-}
-.change-list .action-cell a.movelink {
-    padding-left: 13px;
-    background: url(../images/icons/move.gif) no-repeat 0 0.25em;
-}
-.change-list .action-cell a.addlink {
-    padding-left: 14px;
-    color: #28662C;
-}
-.change-list .action-cell a.addlink:hover {
-    color: #091B0B;
-}
-.change-list .action-cell a.deletelink {
-    padding-left: 13px;
-}
-
-
-.change-list .publish-cell img {
-    width: 10px;
-    height: 10px;
-}
-.change-list .publish-cell .publish-select {
-    margin: 2px;
-    padding: 1px;
-}
-.change-list .publish-cell {
-    padding: 0 5px;
 }
 
