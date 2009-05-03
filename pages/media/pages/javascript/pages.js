@@ -46,7 +46,7 @@ pages.cookie = function(name, value, options) {
 
 pages.fade_color = function (elem, o) {
     o = $.extend({
-        duration: 1000,     // Time [ms] the animation should last
+        duration: 2000,     // Time [ms] the animation should last
         frame: 50,          // Time [ms] a frame lasts
         color1: 'FFFFBB',   // Color to start the animation with
         color2: 'FFFFFF',   // Color to end the animation with
@@ -78,12 +78,12 @@ pages.fade_color = function (elem, o) {
 pages.update_published_icon = function (url, select, img) {
     var opt = { 0: 'draft', 1: 'published', 3: 'hidden' };
     img.attr({
-        'src': img.attr('src').replace(/icons\/.*/, 'waiting.gif'),
+        'src': img.attr('src').replace(/icons\/.*/, 'loading.gif'),
         'alt': 'Loading'
     });
     $.post(url+'change-status-'+opt[select.val()]+'/', {1:1}, function(val) {
         img.attr({
-            'src': img.attr('src').replace('waiting.gif', 'icons/'+opt[val]+'.gif'),
+            'src': img.attr('src').replace('loading.gif', 'icons/'+opt[val]+'.gif'),
             'alt': opt[val]
         });
     });
