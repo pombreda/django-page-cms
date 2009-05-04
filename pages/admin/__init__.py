@@ -28,7 +28,7 @@ class PageAdmin(admin.ModelAdmin):
     # these mandatory fields are not versioned
     mandatory_placeholders = ('title', 'slug')
     general_fields = ['title', 'slug', 'status', 'target', 'position']
-
+    
     # TODO: find solution to do this dynamically
     #if getattr(settings, 'PAGE_USE_SITE_ID'):
     general_fields.append('sites')
