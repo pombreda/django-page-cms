@@ -9,7 +9,7 @@ from django.http import HttpResponse, HttpResponseRedirect, HttpResponsePermanen
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.template import loader, Context, RequestContext, TemplateDoesNotExist
-from django.template.loader_tags import ExtendsNode
+from django.template.loader_tags import ExtendsNode, ConstantIncludeNode
 from pages import settings
 
 def get_request_mock():
@@ -70,6 +70,9 @@ def placeholders_recursif(nodelist, plist):
     for node in nodelist:
         if isinstance(node, ExtendsNode):
             placeholders_recursif(node.get_parent(Context()).nodelist, plist)
+        elif isinstance(node, ConstantIncludeNode):
+            placeholders_recursif(node.template.nodelist, plist)
+
 
 class AutoRenderHttpError(Exception):
     """cannot return context dictionary because a view returned an HTTP
