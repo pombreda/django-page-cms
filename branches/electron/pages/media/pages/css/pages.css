@@ -1,6 +1,13 @@
 /* specific CSS for the django page admin application */
 
 
+/* general =========================================== */
+
+a:focus {
+    outline: none;
+}
+
+
 /* clearfix =========================================== */
 
 .clearfix:after {
@@ -19,6 +26,33 @@ html[xmlns] .clearfix {
 }
 * html .clearfix {
     height: 1%;
+}
+
+
+/* help popups =========================================== */
+
+a.popup,
+.popup a {
+    position: relative;
+}
+a.popup .help,
+.popup a .help {
+    display: none;
+    position: absolute;
+    top: -24px;
+    padding: 2px 4px;
+    border: 1px solid #888;
+    font-size: 10px !important;
+    line-height: 12px;
+    font-weight: normal;
+    color: #333;
+    background: #ffb;
+    white-space: nowrap;
+    text-transform: none;
+}
+a.popup:hover .help,
+.popup a:hover .help {
+    display: block;
 }
 
 
@@ -70,10 +104,6 @@ html[xmlns] .clearfix {
 
 
 /* change-list page =========================================== */
-
-.object-tools {
-    display: none;
-}
 
 /* Table-wide */
 .change-list tbody tr:hover {
@@ -179,20 +209,8 @@ html[xmlns] .clearfix {
 .change-list .insert-move .insert a.right:hover         { background-position: -10px -42px; }
 .change-list .insert-move tr:hover .insert a.first-child,
 .change-list .insert-move .insert a.first-child:hover   { background-position: -25px -42px; }
-.change-list .insert a span {
-    display: none;
-    position: absolute;
-    top: -24px;
-    padding: 2px;
-    border: 1px solid #888;
-    font-size: 12px;
-    font-weight: normal;
-    color: #333;
-    background: #ffb;
-    white-space: nowrap;
-}
-.change-list .insert a:hover span {
-    display: block;
+.change-list .insert .help {
+    top: -20px;
 }
 .change-list .insert-loading {
     position: absolute;
@@ -202,26 +220,24 @@ html[xmlns] .clearfix {
 /* Actions */
 .change-list .action-cell {
     width: 1%;
+    min-width: 80px;
     white-space: nowrap;
     padding: 5px 10px;
 }
+.change-list .action-cell a {
+    float: left;
+    width: 15px;
+    height: 14px;
+    padding: 0;
+    margin-right: 5px;
+    background-repeat: no-repeat;
+    background-position: center 0.25em;
+}
 .change-list .action-cell a.viewlink {
-    padding-left: 13px;
-    background: url(../images/icons/view.gif) no-repeat 0 0.25em;
+    background-image: url(../images/icons/view.gif);
 }
 .change-list .action-cell a.movelink {
-    padding-left: 13px;
-    background: url(../images/icons/move.gif) no-repeat 0 0.25em;
-}
-.change-list .action-cell a.addlink {
-    padding-left: 14px;
-    color: #28662C;
-}
-.change-list .action-cell a.addlink:hover {
-    color: #091B0B;
-}
-.change-list .action-cell a.deletelink {
-    padding-left: 13px;
+    background-image: url(../images/icons/move.gif);
 }
 
 /* Publication status */
