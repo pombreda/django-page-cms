@@ -13,10 +13,13 @@ def change_status(request, page_id, status):
     Switch the status of a page
     """
     if request.method == 'POST':
-        page = Page.objects.get(pk=page_id)
-        page.status = status
-        page.save()
-        return HttpResponse(unicode(page.status))
+        try:
+            page = Page.objects.get(pk=page_id)
+            page.status = status
+            page.save()
+            return HttpResponse(unicode(page.status))
+        except:
+            return HttpResponse(unicode(status))
     raise Http404
 change_status = staff_member_required(change_status)
 
