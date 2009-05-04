@@ -50,7 +50,7 @@
             </select>
         </td>
         <td class="template-cell">
-            {{ page.get_template }}
+            {{ page.get_template_name }}
         </td>
         <td class="author-cell">
             {% cache 10000 page_author page.author_id %}

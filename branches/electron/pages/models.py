@@ -205,6 +205,14 @@ class Page(models.Model):
 
         return template
 
+    def get_template_name(self):
+        template = self.get_template()
+        for  t in settings.PAGE_TEMPLATES:
+            if t[0] == template:
+                return t[1]
+        return template
+        
+        
     def traductions(self):
         langs = ""
         for lang in self.get_languages():
