@@ -13,26 +13,26 @@
                 {% endif %} 
                 <a href="{{ url }}{{ page.id }}/" class="changelink">{% show_content page "slug" %}</a>
                 
-                <ul class="translation">
+                <ul class="translation popup">
                     {% for lang in page.get_languages %} 
                         <li class="{% if not forloop.last %}last{% endif %}">
-                            <a href="{{ url }}{{ page.id }}/?language={{ lang }}" class="changelink">{{ lang }}</a>
+                            <a href="{{ url }}{{ page.id }}/?language={{ lang }}" class="changelink">{{ lang }} <span class="help">{% trans "edit the page in this language" %}</span></a>
                         </li>
                     {% endfor %}
                 </ul>
                 
-                <div id="move-target-{{ page.id }}" class="insert container">
-                    <a href="#" class="move-target left"><span>{% trans "insert above" %}</span></a>
-                    <a href="#" class="move-target right"><span>{% trans "insert below" %}</span></a>
-                    <a href="#" class="move-target first-child"><span>{% trans "insert as child" %}</span></a>
+                <div id="move-target-{{ page.id }}" class="insert popup container">
+                    <a href="#" class="move-target left"><span class="help">{% trans "insert above" %}</span></a>
+                    <a href="#" class="move-target right"><span class="help">{% trans "insert below" %}</span></a>
+                    <a href="#" class="move-target first-child"><span class="help">{% trans "insert as child" %}</span></a>
                 </div>
             </div>
         </th>
-        <td class="action-cell">
-            <a class="viewlink" href="{{ page.get_absolute_url }}" target="_blank">{% trans "view" %}</a> |
-            <a class="movelink" id="move-link-{{ page.id }}" href="#">{% trans "move" %}</a> |
-            <a class="addlink" id="add-link-{{ page.id }}" href="#">{% trans "add" %}</a> |
-            <a class="deletelink" href="{{ page.id }}/delete/">{% trans "delete" %}</a>
+        <td class="action-cell popup">
+            <a class="viewlink" href="{{ page.get_absolute_url }}" target="_blank"><span class="help">{% trans "view this page" %}</span></a>
+            <a class="movelink" id="move-link-{{ page.id }}" href="#"><span class="help">{% trans "move this page" %}</span></a>
+            <a class="addlink" id="add-link-{{ page.id }}" href="#"><span class="help">{% trans "insert a new page here" %}</span></a>
+            <a class="deletelink" href="{{ page.id }}/delete/"><span class="help">{% trans "delete this page" %}</span></a>
         </td>
         <td class="publish-cell">
             {% ifequal page.status page.DRAFT %}
