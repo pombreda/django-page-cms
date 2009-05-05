@@ -14,16 +14,16 @@
                 <a href="{{ url }}{{ page.id }}/" class="title changelink">{% show_content page "slug" %}</a>
                 
                 
-                <div class="actions popup">
+                <div class="actions">
                     <a class="viewlink" href="{{ page.get_absolute_url }}" target="_blank" title="{% trans "view this page" %}"></a>
                     <a class="movelink" id="move-link-{{ page.id }}" href="#" title="{% trans "move this page" %}"></a>
                     <a class="addlink" id="add-link-{{ page.id }}" href="#" title="{% trans "insert a new page here" %}"></a>
                     <a class="deletelink" href="{{ page.id }}/delete/" title="{% trans "delete this page" %}"></a>
-                    <a class="cancellink popup" href="#" title="{% trans "don&#x27;t move this page" %}">{% trans "cancel" %}</a>
+                    <a class="cancellink" href="#" title="{% trans "don&#x27;t move this page" %}">{% trans "cancel" %}</a>
                 </div>
                 
-                <div id="move-target-{{ page.id }}" class="insert popup container">
-                    <a class="cancellink popup" href="#" title="{% trans "don&#x27;t insert a new page here" %}">{% trans "cancel" %}</a>
+                <div id="move-target-{{ page.id }}" class="insert container">
+                    <a class="cancellink" href="#" title="{% trans "don&#x27;t insert a new page here" %}">{% trans "cancel" %}</a>
                     <a href="#" class="move-target left" title="{% trans "insert above" %}"></a>
                     <a href="#" class="move-target right" title="{% trans "insert below" %}"></a>
                     <a href="#" class="move-target first-child" title="{% trans "insert as child" %}"></a>
@@ -31,15 +31,15 @@
             </div>
         </th>
         <td class="language-cell">
-            <ul class="popup">
+            <ul>
                 {% for lang in page_languages %}
-                <li class="{% if not forloop.last %}last{% endif %}">
-                    {% if page|has_content_in:lang.0 %}
-                        <a href="{{ url }}{{ page.id }}/?language={{ lang.0 }}" class="changelink" title="{% blocktrans with lang.1|lower as lang %}edit {{ lang }} translation{% endblocktrans %}">{{ lang.0 }}</a>
-                    {% else %}
-                        <a href="{{ url }}{{ page.id }}/?language={{ lang.0 }}" class="changelink addlang" title="{% blocktrans with lang.1|lower as lang %}create {{ lang }} translation{% endblocktrans %}">{{ lang.0 }}</a>
-                    {% endif %}
-                </li>
+                    <li>
+                        {% if page|has_content_in:lang.0 %}
+                            <a href="{{ url }}{{ page.id }}/?language={{ lang.0 }}" class="changelink" title="{% blocktrans with lang.1|lower as lang %}edit {{ lang }} translation{% endblocktrans %}">{{ lang.0 }}</a>
+                        {% else %}
+                            <a href="{{ url }}{{ page.id }}/?language={{ lang.0 }}" class="changelink addlang" title="{% blocktrans with lang.1|lower as lang %}create {{ lang }} translation{% endblocktrans %}">{{ lang.0 }}</a>
+                        {% endif %}
+                    </li>
                 {% endfor %}
             </ul>
         </td>

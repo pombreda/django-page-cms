@@ -15,7 +15,12 @@
                             {{ field.field }}{{ field.label_tag }}
                         {% else %}
                             {% ifequal field.field.name 'language' %}
-                                <label>{% trans "Language" %}</label>
+                                <label>{% trans "Language:" %}</label>
+                                <ul>
+                                    <li><a title="edit french translation" class="editlink" href="11/?language=fr">fr</a></li>
+                                    <li><span title="current translation" class="current">de</li>
+                                    <li><a title="create english translation" class="addlink" href="11/?language=en">en</a></li>
+                                </ul>
                             {% else %}
                                 {{ field.label_tag }}{{ field.field }}
                             {% endifequal %}
