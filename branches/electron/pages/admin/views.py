@@ -35,7 +35,7 @@ def modify_content(request, page_id, content_id, language_id):
         else:
             Content.objects.set_or_create_content(page, language_id,
                                                   content_id, content)
-        page.invalidate()
+        page.invalidate(request.LANGUAGE_CODE)
         return HttpResponse('ok')
     raise Http404
 modify_content = staff_member_required(modify_content)
@@ -44,7 +44,7 @@ def traduction(request, page_id, language_id):
     page = Page.objects.get(pk=page_id)
     context = {}
     lang = language_id
-    placeholders = get_placeholders(page.get_template())
+    placeholders = get_placeholders(page.get_template(), request.LANGUAGE_CODE)
     if Content.objects.get_content(page, language_id, "title") is None:
         language_error = True
     return 'pages/traduction_helper.html', locals()

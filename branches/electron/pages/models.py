@@ -108,13 +108,13 @@ class Page(models.Model):
         """Return children of the page for the frontend """
         return Page.objects.filter_published(self.get_children())
 
-    def invalidate(self):
+    def invalidate(self, language_code=None):
         """Invalidate a page and it's descendants"""
 
         cache.delete(self.PAGE_LANGUAGES_KEY % (self.id))
         cache.delete(self.PAGE_TEMPLATE_KEY % (self.id))
 
-        p_names = [p.name for p in get_placeholders(self.get_template())]
+        p_names = [p.name for p in get_placeholders(self.get_template(), language_code)]
         if 'slug' not in p_names:
             p_names.append('slug')
         if 'title' not in p_names:
