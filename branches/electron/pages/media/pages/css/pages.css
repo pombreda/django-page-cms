@@ -39,6 +39,7 @@ a.popup .help,
 .popup a .help {
     display: none;
     position: absolute;
+    z-index: 100;
     top: -24px;
     padding: 2px 4px;
     border: 1px solid #888;
@@ -49,6 +50,7 @@ a.popup .help,
     background: #ffb;
     white-space: nowrap;
     text-transform: none;
+    cursor: default;
 }
 a.popup:hover .help,
 .popup a:hover .help {
@@ -113,22 +115,26 @@ a.popup:hover .help,
     background: #ffb;
 }
 
-/* Title cell */
-.change-list thead th.title-cell {
+/* Title cell theader */
+.change-list thead .title-cell {
     padding: 5px 10px;
 }
-.change-list .title-cell-container {
+
+/* Title cell tbody */
+.change-list tbody .title-cell-container {
     position: relative;
     text-align: left;
     font-weight: bold;
     height: 100%;
+    padding-right: 150px;
 }
-.change-list .title-cell .changelink {
+.change-list tbody .title-cell .title {
+    float: left;
     margin: 0 0 0 20px;
     padding: 0 14px 0 0;
     background: none;
 }
-.change-list .title-cell .changelink:hover {
+.change-list tbody .title-cell .title:hover {
     background: url(../images/icons/edit.gif) right 0.2em no-repeat;
 }
 
@@ -157,26 +163,46 @@ a.popup:hover .help,
     left: -4px;
 }
 
-/* Languages */
-.change-list .translation {
+/* Actions */
+.change-list .actions {
     position: absolute;
     right: -5px; top: 0;
     margin: 0; padding: 0;
 }
-.change-list .highlighted .translation,
-.change-list .insertable .translation {
+.change-list .actions a {
+    float: left;
+    width: 15px;
+    height: 14px;
+    padding: 0;
+    margin-right: 5px;
+    background-repeat: no-repeat;
+    background-position: center 0.25em;
+    opacity: 0.3;
+}
+.change-list .actions a:hover,
+.change-list tr:hover .actions a {
+    opacity: 1;
+}
+.change-list .insert-add .actions a,
+.change-list .insert-move .actions a {
     display: none;
 }
-.change-list .translation li {
-    float: left;
-    list-style: none;
-    padding: 0
+.change-list .actions a.viewlink {
+    background-image: url(../images/icons/view.gif);
 }
-.change-list .translation .changelink {
-    margin: 0 4px 0 0;
-    padding: 0 14px 0 0;
+.change-list .actions a.movelink {
+    background-image: url(../images/icons/move.gif);
+}
+.change-list .actions a.cancellink {
+    display: none;
     font-weight: normal;
-    text-transform: uppercase;
+    opacity: 1;
+}
+.change-list .insert-move .selected .actions a.cancellink {
+    display: block;
+    width: auto;
+    height: auto;
+    padding: 0 10px;
 }
 
 /* Move links */
@@ -212,32 +238,51 @@ a.popup:hover .help,
 .change-list .insert .help {
     top: -20px;
 }
+.change-list .insert a.cancellink {
+    display: none;
+    font-weight: normal;
+}
+.change-list .insert-add .selected .insert a.cancellink {
+    display: block;
+    width: auto;
+    height: auto;
+    margin: 4px 5px;
+    padding: 0 5px;
+    background: none;
+}
+.change-list .insert a.cancellink .help {
+    top: -24px;
+}
 .change-list .insert-loading {
     position: absolute;
-    right: 12px; top: -2px;
+    left: 0; top: -1px;
+    font-size: 16px;
 }
 
-/* Actions */
-.change-list .action-cell {
+/* Languages */
+.change-list .language-cell {
     width: 1%;
-    min-width: 80px;
     white-space: nowrap;
-    padding: 5px 10px;
+    padding: 5px 0 5px 10px;
 }
-.change-list .action-cell a {
-    float: left;
-    width: 15px;
-    height: 14px;
+.change-list .language-cell ul {
+    margin: 0;
     padding: 0;
-    margin-right: 5px;
-    background-repeat: no-repeat;
-    background-position: center 0.25em;
 }
-.change-list .action-cell a.viewlink {
-    background-image: url(../images/icons/view.gif);
+.change-list .language-cell li {
+    display: inline;
+    list-style: none;
+    padding: 0
 }
-.change-list .action-cell a.movelink {
-    background-image: url(../images/icons/move.gif);
+.change-list .language-cell .changelink {
+    margin: 0 4px;
+    padding: 0 12px 0 0;
+    font-weight: normal;
+    text-transform: uppercase;
+    background: none;
+}
+.change-list .language-cell .changelink:hover {
+    background: url(../images/icons/edit.gif) right 0.2em no-repeat;
 }
 
 /* Publication status */

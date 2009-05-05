@@ -11,28 +11,29 @@
                         <img class="expand-loading" src="/media/pages/images/loading.gif" alt="loading" />
                     </a>
                 {% endif %} 
-                <a href="{{ url }}{{ page.id }}/" class="changelink">{% show_content page "slug" %}</a>
+                <a href="{{ url }}{{ page.id }}/" class="title changelink">{% show_content page "slug" %}</a>
                 
-                <ul class="translation popup">
-                    {% for lang in page.get_languages %} 
-                        <li class="{% if not forloop.last %}last{% endif %}">
-                            <a href="{{ url }}{{ page.id }}/?language={{ lang }}" class="changelink">{{ lang }} <span class="help">{% trans "edit the page in this language" %}</span></a>
-                        </li>
-                    {% endfor %}
-                </ul>
+                
+                <div class="actions popup">
+                    <a class="viewlink" href="{{ page.get_absolute_url }}" target="_blank"><span class="help">{% trans "view this page" %}</span></a>
+                    <a class="movelink" id="move-link-{{ page.id }}" href="#"><span class="help">{% trans "move this page" %}</span></a>
+                    <a class="addlink" id="add-link-{{ page.id }}" href="#"><span class="help">{% trans "insert a new page here" %}</span></a>
+                    <a class="deletelink" href="{{ page.id }}/delete/"><span class="help">{% trans "delete this page" %}</span></a>
+                    <a class="cancellink popup" href="#">{% trans "cancel" %}<span class="help">{% trans "don&#x27;t move this page" %}</span></a>
+                </div>
                 
                 <div id="move-target-{{ page.id }}" class="insert popup container">
+                    <a class="cancellink popup" href="#">{% trans "cancel" %}<span class="help">{% trans "don&#x27;t insert a new page here" %}</span></a>
                     <a href="#" class="move-target left"><span class="help">{% trans "insert above" %}</span></a>
                     <a href="#" class="move-target right"><span class="help">{% trans "insert below" %}</span></a>
                     <a href="#" class="move-target first-child"><span class="help">{% trans "insert as child" %}</span></a>
                 </div>
             </div>
         </th>
-        <td class="action-cell popup">
-            <a class="viewlink" href="{{ page.get_absolute_url }}" target="_blank"><span class="help">{% trans "view this page" %}</span></a>
-            <a class="movelink" id="move-link-{{ page.id }}" href="#"><span class="help">{% trans "move this page" %}</span></a>
-            <a class="addlink" id="add-link-{{ page.id }}" href="#"><span class="help">{% trans "insert a new page here" %}</span></a>
-            <a class="deletelink" href="{{ page.id }}/delete/"><span class="help">{% trans "delete this page" %}</span></a>
+        <td class="language-cell">
+            <ul class="popup">
+                {% for lang in page.get_languages %}<li class="{% if not forloop.last %}last{% endif %}"><a href="{{ url }}{{ page.id }}/?language={{ lang }}" class="changelink">{{ lang }}<span class="help">{% trans "edit the page in this language" %}</span></a></li>{% endfor %}
+            </ul>
         </td>
         <td class="publish-cell">
             {% ifequal page.status page.DRAFT %}

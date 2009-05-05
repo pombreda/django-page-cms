@@ -1,6 +1,8 @@
 /* Common stuff used in pages_list.js as well as in pages_form.js */
 
+
 var pages = {};
+
 
 pages.cookie = function(name, value, options) {
     if (typeof value != 'undefined') { // name and value given, set cookie
@@ -44,6 +46,7 @@ pages.cookie = function(name, value, options) {
     }
 };
 
+
 pages.fade_color = function (elem, o) {
     o = $.extend({
         duration: 2000,     // Time [ms] the animation should last
@@ -75,6 +78,7 @@ pages.fade_color = function (elem, o) {
     }, o.frame);
 };
 
+
 pages.update_published_icon = function (url, select, img) {
     var opt = { 0: 'draft', 1: 'published', 3: 'hidden' };
     img.attr({
@@ -88,3 +92,16 @@ pages.update_published_icon = function (url, select, img) {
         });
     });
 };
+
+
+$(function () {
+    // Ignore clicks on help popups, just hide the help message
+    $('a.popup .help, .popup a .help').click(function (e) {
+        var help = $(this).css('display', 'none')
+        help.parents('a').mouseout(function() {
+            help.css('display', null);
+        });
+        e.stopPropagation();
+        return false;
+    });
+});
