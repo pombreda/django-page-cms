@@ -20,12 +20,13 @@ def get_request_mock(language_code=None):
         'SERVER_NAME': 'test',
         'SERVER_PORT': '8000',
     })
-    if language_code:
-        request.COOKIES[django_settings.LANGUAGE_COOKIE_NAME] = language_code
         
     # Apply request middleware
     for middleware_method in bh._request_middleware:
-        response = middleware_method(request)
+        # LocaleMiddleware should never be applied a second time because
+        # it would broke the current real request
+        if 'LocaleMiddleware' not in str(middleware_method.im_class):
+            response = middleware_method(request)
     return request
 
 def get_placeholders(template_name, language_code=None):
