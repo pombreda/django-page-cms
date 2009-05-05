@@ -12,7 +12,7 @@ from django.template import loader, Context, RequestContext, TemplateDoesNotExis
 from django.template.loader_tags import ExtendsNode, ConstantIncludeNode
 from pages import settings
 
-def get_request_mock():
+def get_request_mock(language_code=None):
     bh = BaseHandler()
     bh.load_middleware()
     request = WSGIRequest({
@@ -20,12 +20,15 @@ def get_request_mock():
         'SERVER_NAME': 'test',
         'SERVER_PORT': '8000',
     })
+    if language_code:
+        request.COOKIES[django_settings.LANGUAGE_COOKIE_NAME] = language_code
+        
     # Apply request middleware
     for middleware_method in bh._request_middleware:
         response = middleware_method(request)
     return request
 
-def get_placeholders(template_name):
+def get_placeholders(template_name, language_code=None):
     """
     Return a list of PlaceholderNode found in the given template
     """
@@ -33,8 +36,9 @@ def get_placeholders(template_name):
         temp = loader.get_template(template_name)
     except TemplateDoesNotExist:
         return []
-
-    request = get_request_mock()
+        
+    request = get_request_mock(language_code)
+    
     
     try:
         # to avoid circular import

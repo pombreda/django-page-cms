@@ -147,14 +147,14 @@ class PageAdmin(admin.ModelAdmin):
             except self.model.DoesNotExist:
                 pass
             else:
-                target.invalidate()
+                target.invalidate(request.LANGUAGE_CODE)
                 obj.move_to(target, position)
 
         for mandatory_placeholder in self.mandatory_placeholders:
             Content.objects.set_or_create_content(obj, language,
                 mandatory_placeholder, form.cleaned_data[mandatory_placeholder])
 
-        for placeholder in get_placeholders(obj.get_template()):
+        for placeholder in get_placeholders(obj.get_template(), request.LANGUAGE_CODE):
             if placeholder.name in form.cleaned_data:
                 if change:
                     if placeholder.name not in self.mandatory_placeholders:
@@ -170,7 +170,7 @@ class PageAdmin(admin.ModelAdmin):
                     Content.objects.set_or_create_content(obj, language,
                         placeholder.name, form.cleaned_data[placeholder.name])
 
-        obj.invalidate()
+        obj.invalidate(request.LANGUAGE_CODE)
 
     def get_fieldsets(self, request, obj=None):
         """
@@ -181,7 +181,7 @@ class PageAdmin(admin.ModelAdmin):
 
         placeholder_fieldsets = []
         template = get_template_from_request(request, obj)
-        for placeholder in get_placeholders(template):
+        for placeholder in get_placeholders(template, request.LANGUAGE_CODE):
             if placeholder.name not in self.mandatory_placeholders:
                 placeholder_fieldsets.append(placeholder.name)
 
@@ -278,7 +278,7 @@ class PageAdmin(admin.ModelAdmin):
                     if not validate_field:
                         form.base_fields[field_name].required = False
 
-        for placeholder in get_placeholders(template):
+        for placeholder in get_placeholders(template, request.LANGUAGE_CODE):
             widget = self.get_widget(request, placeholder.widget)()
             if placeholder.parsed:
                 help_text = _('Note: This field is evaluated as template code.')
@@ -312,7 +312,7 @@ class PageAdmin(admin.ModelAdmin):
         else:
             template = get_template_from_request(request, obj)
             extra_context = {
-                'placeholders': get_placeholders(template),
+                'placeholders': get_placeholders(template, request.LANGUAGE_CODE),
                 'language': get_language_from_request(request),
                 'traduction_language': [l for l in settings.PAGE_LANGUAGES if Content.objects.get_content(obj, l[0], "title")],
                 'page': obj,
@@ -380,8 +380,8 @@ class PageAdmin(admin.ModelAdmin):
                 # to display this message
                 # _('Page could not been moved.')
             else:
-                page.invalidate()
-                target.invalidate()
+                page.invalidate(request.LANGUAGE_CODE)
+                target.invalidate(request.LANGUAGE_CODE)
                 page.move_to(target, position)
                 return self.list_pages(request,
                     template_name='admin/pages/page/change_list_table.html')
