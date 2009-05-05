@@ -114,7 +114,7 @@ class Page(models.Model):
         cache.delete(self.PAGE_LANGUAGES_KEY % (self.id))
         cache.delete(self.PAGE_TEMPLATE_KEY % (self.id))
 
-        p_names = [p.name for p in get_placeholders(self.get_template(), language_code)]
+        p_names = [p.name for p in get_placeholders(self.get_template())]
         if 'slug' not in p_names:
             p_names.append('slug')
         if 'title' not in p_names:

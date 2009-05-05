@@ -12,7 +12,7 @@ from django.template import loader, Context, RequestContext, TemplateDoesNotExis
 from django.template.loader_tags import ExtendsNode, ConstantIncludeNode
 from pages import settings
 
-def get_request_mock(language_code=None):
+def get_request_mock():
     bh = BaseHandler()
     bh.load_middleware()
     request = WSGIRequest({
@@ -29,7 +29,7 @@ def get_request_mock(language_code=None):
             response = middleware_method(request)
     return request
 
-def get_placeholders(template_name, language_code=None):
+def get_placeholders(template_name):
     """
     Return a list of PlaceholderNode found in the given template
     """
@@ -38,7 +38,7 @@ def get_placeholders(template_name, language_code=None):
     except TemplateDoesNotExist:
         return []
         
-    request = get_request_mock(language_code)
+    request = get_request_mock()
     
     
     try:
