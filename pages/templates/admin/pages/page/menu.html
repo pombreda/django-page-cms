@@ -32,7 +32,11 @@
         </th>
         <td class="language-cell">
             <ul class="popup">
-                {% for lang in page.get_languages %}<li class="{% if not forloop.last %}last{% endif %}"><a href="{{ url }}{{ page.id }}/?language={{ lang }}" class="changelink">{{ lang }}<span class="help">{% trans "edit the page in this language" %}</span></a></li>{% endfor %}
+                {% for lang in page_languages %}
+                <li class="{% if not forloop.last %}last{% endif %}">
+                    <a href="{{ url }}{{ page.id }}/?language={{ lang.0 }}" class="changelink{% if page|has_content_in:lang.0 %} translated{% endif %}">{{ lang.0 }}<span class="help">{% trans "edit the page in" %} {{lang.1}}</span></a>
+                </li>
+                {% endfor %}
             </ul>
         </td>
         <td class="publish-cell">
