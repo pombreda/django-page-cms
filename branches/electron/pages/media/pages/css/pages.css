@@ -281,6 +281,9 @@ a.popup:hover .help,
     text-transform: uppercase;
     background: none;
 }
+.change-list .language-cell .translated {
+    text-decoration: underline;
+}
 .change-list .language-cell .changelink:hover {
     background: url(../images/icons/edit.gif) right 0.2em no-repeat;
 }

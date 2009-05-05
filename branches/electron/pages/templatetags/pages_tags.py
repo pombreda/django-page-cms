@@ -48,6 +48,7 @@ def pages_admin_menu(context, page, url='', level=None):
             if page.id in ids:
                 expanded = True
     
+    page_languages = settings.PAGE_LANGUAGES
     has_permission = page.has_page_permission(request)
 
     return locals()
@@ -58,6 +59,8 @@ def has_permission(page, request):
     return page.has_page_permission(request)
 register.filter(has_permission)
 
+    
+    
 def get_content(context, page, content_type, lang, fallback=True):
     request = context.get('request', False)
     if not request or not page:
@@ -148,6 +151,7 @@ def do_get_content(parser, token):
 do_get_content = register.tag('get_content', do_get_content)
  
 
+
 def show_absolute_url(context, page, lang=None):
     """Show the url of a page in the right language
     
@@ -190,6 +194,11 @@ def show_revisions(context, page, content_type, lang=None):
     return {'revisions':revisions[0:10]}
 show_revisions = register.inclusion_tag('pages/revisions.html',
                                         takes_context=True)(show_revisions)
+
+
+def has_content_in(page,language):
+    return Content.objects.filter(page=page,language=language).count() > 0
+register.filter(has_content_in)
 
 def do_placeholder(parser, token):
     """
