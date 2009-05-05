@@ -26,9 +26,9 @@ class Page(models.Model):
     EXPIRED = 2
     HIDDEN = 3
     STATUSES = (
-        (DRAFT, _('Draft')),
         (PUBLISHED, _('Published')),
         (HIDDEN, _('Hidden')),
+        (DRAFT, _('Draft')),
     )
 
     PAGE_LANGUAGES_KEY = "page_%d_languages"

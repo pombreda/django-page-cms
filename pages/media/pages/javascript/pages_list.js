@@ -2,7 +2,6 @@
 /*
 TODO:
 - Show the whole language list on the pages, even the languages in which the page doesn't exist
-- Manage better the display of the table for narrow windows
 - Test & debug for IE
 */
 
@@ -14,8 +13,7 @@ $(function () {
     function reset_states() {
         action = selected_page = '';
         $('#changelist').removeClass('insert-add insert-move');
-        $('#changelist .action-cell a').removeClass('selected');
-        $('#changelist tr').removeClass('insertable highlighted');
+        $('#changelist tr').removeClass('insertable highlighted selected');
     }
     
     // Get an array of the TR elements that are children of the given page id
@@ -39,7 +37,7 @@ $(function () {
             page_row.after(submenu_cache[id]);
             link.removeClass('loading');
             var expanded = get_expanded();
-            var children = $('.child-of-'+id).each(function() {
+            var children = $('#changelist .child-of-'+id).each(function() {
                 var i = this.id.substring(9);
                 if ($.inArray(i, expanded) != -1) {
                     $('#c'+i).addClass('expanded loading');
@@ -54,7 +52,7 @@ $(function () {
     
     // Remove the children of the given page id from the table
     function rem_children(id) {
-        $('.child-of-'+id).each(function () {
+        $('#changelist .child-of-'+id).each(function () {
             rem_children(this.id.substring(9));
             $(this).remove();
         });
@@ -96,40 +94,42 @@ $(function () {
     // let's start event delegation
     $('#changelist').click(function (e) {
         var link = $(e.target).parents('a').andSelf().filter('a');
+        
         if (link.length) {
             // Toggles a previous action to come back to the initial state
-            if (link.hasClass('selected')) {
+            if (link.hasClass('cancellink')) {
                 reset_states();
                 return false;
-                
+            }
             // Ask where to move the page to
-            } else if (link.hasClass('movelink')) {
+            else if (link.hasClass('movelink')) {
                 reset_states();
                 action = 'move';
-                selected_page = link.addClass('selected').attr('id').split('move-link-')[1];
+                selected_page = link.attr('id').split('move-link-')[1];
                 $('#changelist').addClass('insert-move');
-                $('#page-row-'+selected_page).add(get_children(selected_page)).addClass('highlighted');
+                $('#page-row-'+selected_page).addClass('selected').add(get_children(selected_page)).addClass('highlighted');
                 $('#changelist tr:not(.highlighted)').addClass('insertable');
                 return false;
-                
+            }
             // Ask where to insert the new page
-            } else if (link.hasClass('addlink')) {
+            else if (link.hasClass('addlink')) {
                 reset_states();
                 action = 'add';
-                selected_page = link.addClass('selected').attr('id').split('add-link-')[1];
+                selected_page = link.attr('id').split('add-link-')[1];
                 $('#changelist').addClass('insert-add');
-                $('#page-row-'+selected_page).addClass('highlighted insertable');
+                $('#page-row-'+selected_page).addClass('selected').addClass('highlighted insertable');
                 return false;
-                
+            }
             // Move or add the page and come back to the initial state
-            } else if (link.hasClass('move-target')) {
+            else if (link.hasClass('move-target')) {
                 var position = link.attr('class').match(/left|right|first-child/)[0];
                 var id = link.parent().attr('id').split('move-target-')[1];
+                var row = $('#page-row-'+selected_page);
                 
                 $('#changelist').removeClass('insert-add insert-move');
-                $('#changelist .action-cell a').removeClass('selected');
-                $('#changelist tr').removeClass('insertable');
-                $('#page-row-'+selected_page+' .insert').after('<img class="insert-loading" src="/media/pages/images/loading.gif" alt="Loading" />');
+                $('#changelist tr').removeClass('selected insertable');
+                $('.expand-collapse', row).remove();
+                $('.insert', row).after('<img class="insert-loading" src="/media/pages/images/loading.gif" alt="Loading" />');
                 
                 if (action == 'move') {
                     $.post(selected_page+'/move-page/', { position: position, target: id },
@@ -143,9 +143,9 @@ $(function () {
                     window.location.href += 'add/'+$.query.set('target', id).set('position', position).toString();
                 }
                 return false;
-                
+            }
             // Expand or collapse pages
-            } else if (link.hasClass('expand-collapse')) {
+            else if (link.hasClass('expand-collapse')) {
                 var id = link.attr('id').substring(1);
                 if (link.toggleClass('expanded').hasClass('expanded')) {
                     add_expanded(id);
