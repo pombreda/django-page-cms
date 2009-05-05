@@ -15,18 +15,18 @@
                 
                 
                 <div class="actions popup">
-                    <a class="viewlink" href="{{ page.get_absolute_url }}" target="_blank"><span class="help">{% trans "view this page" %}</span></a>
-                    <a class="movelink" id="move-link-{{ page.id }}" href="#"><span class="help">{% trans "move this page" %}</span></a>
-                    <a class="addlink" id="add-link-{{ page.id }}" href="#"><span class="help">{% trans "insert a new page here" %}</span></a>
-                    <a class="deletelink" href="{{ page.id }}/delete/"><span class="help">{% trans "delete this page" %}</span></a>
-                    <a class="cancellink popup" href="#">{% trans "cancel" %}<span class="help">{% trans "don&#x27;t move this page" %}</span></a>
+                    <a class="viewlink" href="{{ page.get_absolute_url }}" target="_blank" title="{% trans "view this page" %}"></a>
+                    <a class="movelink" id="move-link-{{ page.id }}" href="#" title="{% trans "move this page" %}"></a>
+                    <a class="addlink" id="add-link-{{ page.id }}" href="#" title="{% trans "insert a new page here" %}"></a>
+                    <a class="deletelink" href="{{ page.id }}/delete/" title="{% trans "delete this page" %}"></a>
+                    <a class="cancellink popup" href="#" title="{% trans "don&#x27;t move this page" %}">{% trans "cancel" %}</a>
                 </div>
                 
                 <div id="move-target-{{ page.id }}" class="insert popup container">
-                    <a class="cancellink popup" href="#">{% trans "cancel" %}<span class="help">{% trans "don&#x27;t insert a new page here" %}</span></a>
-                    <a href="#" class="move-target left"><span class="help">{% trans "insert above" %}</span></a>
-                    <a href="#" class="move-target right"><span class="help">{% trans "insert below" %}</span></a>
-                    <a href="#" class="move-target first-child"><span class="help">{% trans "insert as child" %}</span></a>
+                    <a class="cancellink popup" href="#" title="{% trans "don&#x27;t insert a new page here" %}">{% trans "cancel" %}</a>
+                    <a href="#" class="move-target left" title="{% trans "insert above" %}"></a>
+                    <a href="#" class="move-target right" title="{% trans "insert below" %}"></a>
+                    <a href="#" class="move-target first-child" title="{% trans "insert as child" %}"></a>
                 </div>
             </div>
         </th>
@@ -34,7 +34,11 @@
             <ul class="popup">
                 {% for lang in page_languages %}
                 <li class="{% if not forloop.last %}last{% endif %}">
-                    <a href="{{ url }}{{ page.id }}/?language={{ lang.0 }}" class="changelink{% if page|has_content_in:lang.0 %} translated{% endif %}">{{ lang.0 }}<span class="help">{% trans "edit the page in" %} {{lang.1}}</span></a>
+                    {% if page|has_content_in:lang.0 %}
+                        <a href="{{ url }}{{ page.id }}/?language={{ lang.0 }}" class="changelink" title="{% blocktrans with lang.1|lower as lang %}edit {{ lang }} translation{% endblocktrans %}">{{ lang.0 }}</a>
+                    {% else %}
+                        <a href="{{ url }}{{ page.id }}/?language={{ lang.0 }}" class="changelink addlang" title="{% blocktrans with lang.1|lower as lang %}create {{ lang }} translation{% endblocktrans %}">{{ lang.0 }}</a>
+                    {% endif %}
                 </li>
                 {% endfor %}
             </ul>

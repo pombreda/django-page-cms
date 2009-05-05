@@ -177,11 +177,11 @@ a.popup:hover .help,
     margin-right: 5px;
     background-repeat: no-repeat;
     background-position: center 0.25em;
-    opacity: 0.3;
+    opacity: 0.3; filter: alpha(opacity=30);
 }
 .change-list .actions a:hover,
 .change-list tr:hover .actions a {
-    opacity: 1;
+    opacity: 1; filter: alpha(opacity=100);
 }
 .change-list .insert-add .actions a,
 .change-list .insert-move .actions a {
@@ -196,7 +196,7 @@ a.popup:hover .help,
 .change-list .actions a.cancellink {
     display: none;
     font-weight: normal;
-    opacity: 1;
+    opacity: 1;  filter: alpha(opacity=100);
 }
 .change-list .insert-move .selected .actions a.cancellink {
     display: block;
@@ -209,7 +209,7 @@ a.popup:hover .help,
 .change-list .insert {
     display: none;
     position: absolute;
-    right: 4px; top: -4px;
+    right: 0; top: -4px;
 }
 .change-list .insertable .insert {
     display: block;
@@ -277,15 +277,19 @@ a.popup:hover .help,
 .change-list .language-cell .changelink {
     margin: 0 4px;
     padding: 0 12px 0 0;
-    font-weight: normal;
+    font-weight: bold;
     text-transform: uppercase;
     background: none;
 }
-.change-list .language-cell .translated {
-    text-decoration: underline;
-}
 .change-list .language-cell .changelink:hover {
     background: url(../images/icons/edit.gif) right 0.2em no-repeat;
+}
+.change-list .language-cell .addlang {
+    color: #ccc;
+}
+.change-list .language-cell .addlang:hover {
+    color: #007418;
+    background: url(../images/icons/add.gif) right 0.2em no-repeat;
 }
 
 /* Publication status */
@@ -389,6 +393,13 @@ a.popup:hover .help,
 /* Content */
 .change-form .module-content .form-row {
     position: relative;
+    padding: 0;
+}
+.change-form .module-content .field-box {
+    position: relative;
+    float: none;
+    margin: 0;
+    padding: 8px 12px;
 }
 .change-form .module-content .revisions {
     position: absolute;
