@@ -14,7 +14,11 @@
                         {% if field.is_checkbox %}
                             {{ field.field }}{{ field.label_tag }}
                         {% else %}
-                            {{ field.label_tag }}{{ field.field }}
+                            {% ifequal field.field.name 'language' %}
+                                <label>{% trans "Language" %}</label>
+                            {% else %}
+                                {{ field.label_tag }}{{ field.field }}
+                            {% endifequal %}
                         {% endif %}
                         {% if field.field.field.help_text %}
                             <p class="help">{{ field.field.field.help_text|safe }}</p>

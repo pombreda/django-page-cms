@@ -349,6 +349,11 @@ a.popup:hover .help,
 .change-form .sidebar div.description {
     margin: 5px;
 }
+.change-form .field-box {
+    position: relative;
+    float: none;
+    margin: 0;
+}
 
 /* Title */
 .module-general .title label {
@@ -380,7 +385,7 @@ a.popup:hover .help,
     border-bottom: none;
     border-right: 1px solid #eee;
 }
-.change-form .module-options .form-row div {
+.change-form .module-options .form-row .field-box {
     padding: 8px 12px;
 }
 .change-form .module-options select {
@@ -398,7 +403,6 @@ a.popup:hover .help,
 .change-form .module-content .field-box {
     position: relative;
     float: none;
-    margin: 0;
     padding: 8px 12px;
 }
 .change-form .module-content .revisions {

@@ -1,10 +1,5 @@
 /* Initialization of the change_list page - this script is run once everything is ready. */
-/*
-TODO:
-- Test & debug for IE
-- Show the whole language list on the pages, even the languages in which the page doesn't exist
-- Better collapse / expand system
-*/
+
 
 $(function () {
     var action = false;
