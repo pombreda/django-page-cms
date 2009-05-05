@@ -73,6 +73,7 @@ def sub_menu(request, page_id):
     page = Page.objects.get(id=page_id)
     pages = page.children.all()
     has_permission = page.has_page_permission(request)
+    page_languages = settings.PAGE_LANGUAGES
     return "admin/pages/page/sub_menu.html", locals()
     
 sub_menu = staff_member_required(sub_menu)
