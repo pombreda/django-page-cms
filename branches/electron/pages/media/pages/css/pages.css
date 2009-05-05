@@ -203,6 +203,7 @@ a.popup:hover .help,
     width: auto;
     height: auto;
     padding: 0 10px;
+    background: #FFFFBB; /* IE6 fix */
 }
 
 /* Move links */
@@ -210,6 +211,7 @@ a.popup:hover .help,
     display: none;
     position: absolute;
     right: 0; top: -4px;
+    height: 21px; /* IE6 fix */
 }
 .change-list .insertable .insert {
     display: block;
@@ -330,21 +332,22 @@ a.popup:hover .help,
 /* Global */
 .change-form .sidebar {
     width: 288px;
-    clear: left;
     float: left;
+    display: inline; /* IE6 fix */
     margin-right: 1em;
 }
 .change-form label {
+    width: 90px; /* IE6 fix */
     line-height: 20px;
 }
 .change-form .sidebar input,
 .change-form .sidebar select {
-    width: 150px;
+    width: 148px;
 }
 .change-form .sidebar p.help,
 .change-form .sidebar .form-row p.help {
     margin-left: 0;
-    padding: 0;
+    padding: 2px 0 0;
 }
 .change-form .sidebar div.description {
     margin: 5px;
@@ -357,10 +360,11 @@ a.popup:hover .help,
 
 /* Title */
 .module-general .title label {
+    float: none;
     padding-top: 0;
 }
 .module-general .title input {
-    width: 256px;
+    width: 248px;
     font-size: 16px;
 }
 
@@ -403,14 +407,17 @@ a.popup:hover .help,
 .change-form .module-options .language li {
     display: inline;
     list-style: none;
+    margin: 0;
     padding: 0
 }
 .change-form .module-options .language .editlink,
 .change-form .module-options .language .addlink,
 .change-form .module-options .language .current {
-    margin: 0 4px;
+    float: left;
+    display: inline; /* IE6 fix */
+    margin: 0 6px 0 0;
     padding: 0 12px 0 0;
-    line-height: 20px;
+    line-height: 16px;
     font-weight: bold;
     text-transform: uppercase;
     background: none;
@@ -426,6 +433,9 @@ a.popup:hover .help,
     background: url(../images/icons/add.gif) right 0.2em no-repeat;
 }
 .change-form .module-options .language .current {
+    margin-right: 16px;
+    padding: 0 2px;
+    border: 1px solid #888;
     color: black;
 }
 

@@ -20,11 +20,12 @@
     {% endblock %}
     
     <form id="page_form" action="?language={{ request.GET.language }}{%if request.GET.target %}&amp;target={{ request.GET.target }}{% endif %}&amp;{%if request.GET.target %}position={{ request.GET.position }}{% endif %}" method="post">
+        <div class="sidebar">
         {% for fieldset in adminform %}
             {% include "admin/pages/page/includes/fieldset.html" %}
             
             {% if forloop.first and not add %}
-                <div><fieldset class="module module-translation-helper aligned sidebar">
+                <fieldset class="module module-translation-helper aligned">
                     <h2>{% trans "Translation helper" %}</h2>
                     <div class="form-row">
                         <label for="translation-helper-select" class="required">{% trans "Language:" %}</label>
@@ -36,9 +37,12 @@
                         </select>
                         <div id="translation-helper-content"></div>
                     </div>
-                </fieldset></div>
+                </fieldset>
+                
+                </div><div class="content">
             {% endif %}
         {% endfor %}
+        </div>
         
         {% submit_row %}
     </form>

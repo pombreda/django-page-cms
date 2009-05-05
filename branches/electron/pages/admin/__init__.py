@@ -50,11 +50,11 @@ class PageAdmin(admin.ModelAdmin):
     fieldsets = (
         (_('General'), {
             'fields': general_fields,
-            'classes': ('module-general', 'sidebar',),
+            'classes': ('module-general',),
         }),
         (_('Options'), {
             'fields': normal_fields,
-            'classes': ('module-options', 'clearfix',),
+            'classes': ('module-options',),
         }),
     )
 
