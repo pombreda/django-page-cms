@@ -69,7 +69,7 @@ pages.fade_color = function (elem, o) {
     var interval = setInterval(function () {
         if ((elapsed += o.frame) >= o.duration) {
             clearInterval(interval);
-            elem.css(o.css, o.keep ? '#'+o.color2 : null);
+            elem.css(o.css, o.keep ? '#'+o.color2 : '');
         } else {
             for (var i = c1.length; i--;)
                 c[i] = Math.round(c1[i]+(c2[i]-c1[i])*elapsed/o.duration);
@@ -85,7 +85,7 @@ pages.update_published_icon = function (url, select, img) {
         'src': img.attr('src').replace(/icons\/.*/, 'loading.gif'),
         'alt': 'Loading'
     });
-    $.post(url+'change-status-'+opt[select.val()]+'/', {1:1}, function(val) {
+    $.post(url+'change-status-'+opt[$(select).val()]+'/', {1:1}, function(val) {
         img.attr({
             'src': img.attr('src').replace('loading.gif', 'icons/'+opt[val]+'.gif'),
             'alt': opt[val]
@@ -98,8 +98,8 @@ $(function () {
     // Ignore clicks on help popups, just hide the help message
     $('a.popup .help, .popup a .help').click(function (e) {
         var help = $(this).css('display', 'none')
-        help.parents('a').mouseout(function() {
-            help.css('display', null);
+        help.closest('a').mouseout(function() {
+            help.css('display', '');
         });
         e.stopPropagation();
         return false;

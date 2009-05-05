@@ -1,26 +1,27 @@
 /* Initialization of the change_list page - this script is run once everything is ready. */
 /*
 TODO:
-- Show the whole language list on the pages, even the languages in which the page doesn't exist
 - Test & debug for IE
+- Show the whole language list on the pages, even the languages in which the page doesn't exist
+- Better collapse / expand system
 */
 
 $(function () {
     var action = false;
     var selected_page = false;
-    var submenu_cache = [];
+    var changelist = $('#changelist');
     
     function reset_states() {
         action = selected_page = '';
-        $('#changelist').removeClass('insert-add insert-move');
-        $('#changelist tr').removeClass('insertable highlighted selected');
+        changelist.removeClass('insert-add insert-move');
+        $('tr', changelist).removeClass('insertable highlighted selected');
     }
     
     // Get an array of the TR elements that are children of the given page id
     // The list argument should not be used (it is only used by the recursion)
     function get_children(id, list) {
         list = list || [];
-        $('.child-of-'+id).each(function() {
+        $('.child-of-'+id).each(function () {
             list.push(this);
             get_children(this.id.substring(9), list);
         });
@@ -32,12 +33,11 @@ $(function () {
         var page_row = $('#page-row-'+id);
         var link = $('.expand-collapse', page_row).addClass('loading');
         
-        function add(html) {
-            html && (submenu_cache[id] = html); // If a new request was made, save the HTML to the cache
-            page_row.after(submenu_cache[id]);
+        $.get(id+'/sub-menu/', function (html) {
+            page_row.after(html);
             link.removeClass('loading');
             var expanded = get_expanded();
-            var children = $('#changelist .child-of-'+id).each(function() {
+            var children = $('.child-of-'+id, changelist).each(function () {
                 var i = this.id.substring(9);
                 if ($.inArray(i, expanded) != -1) {
                     $('#c'+i).addClass('expanded loading');
@@ -45,14 +45,12 @@ $(function () {
                 }
             });
             callback && callback(children);
-        }
-        
-        submenu_cache[id] ? add() : $.get(id+'/sub-menu/', add);
+        });
     }
     
     // Remove the children of the given page id from the table
     function rem_children(id) {
-        $('#changelist .child-of-'+id).each(function () {
+        $('.child-of-'+id, changelist).each(function () {
             rem_children(this.id.substring(9));
             $(this).remove();
         });
@@ -91,11 +89,24 @@ $(function () {
         pages.cookie('tree_expanded', array.join(','), { 'expires': 14 }); // expires after 12 days
     }
     
+    // Add the event hanlder to handle the changes of the publication status through ajax
+    // In IE, event delegation doesn't work for the onchange event, so we do it the old way
+    function init_publish_hanlder(elements) {
+        $('.publish-select', elements).change(function (e) {
+            var url = this.name.split('status-')[1]+'/';
+            var img = $(this).parent().find('img');
+            pages.update_published_icon(url, this, img);
+        });
+    }
+    
+    init_publish_hanlder(changelist);
+    
     // let's start event delegation
-    $('#changelist').click(function (e) {
-        var link = $(e.target).parents('a').andSelf().filter('a');
+    changelist.click(function (e) {
+        var target = $(e.target);
+        var link = target.closest('a').andSelf().filter('a');
         
-        if (link.length) {
+        if (!target.hasClass('help') && link.length) {
             // Toggles a previous action to come back to the initial state
             if (link.hasClass('cancellink')) {
                 reset_states();
@@ -106,9 +117,9 @@ $(function () {
                 reset_states();
                 action = 'move';
                 selected_page = link.attr('id').split('move-link-')[1];
-                $('#changelist').addClass('insert-move');
+                changelist.addClass('insert-move');
                 $('#page-row-'+selected_page).addClass('selected').add(get_children(selected_page)).addClass('highlighted');
-                $('#changelist tr:not(.highlighted)').addClass('insertable');
+                $('tr:not(.highlighted)', changelist).addClass('insertable');
                 return false;
             }
             // Ask where to insert the new page
@@ -116,7 +127,7 @@ $(function () {
                 reset_states();
                 action = 'add';
                 selected_page = link.attr('id').split('add-link-')[1];
-                $('#changelist').addClass('insert-add');
+                changelist.addClass('insert-add');
                 $('#page-row-'+selected_page).addClass('selected').addClass('highlighted insertable');
                 return false;
             }
@@ -126,15 +137,16 @@ $(function () {
                 var id = link.parent().attr('id').split('move-target-')[1];
                 var row = $('#page-row-'+selected_page);
                 
-                $('#changelist').removeClass('insert-add insert-move');
-                $('#changelist tr').removeClass('selected insertable');
+                changelist.removeClass('insert-add insert-move');
+                $('tr', changelist).removeClass('selected insertable');
                 $('.expand-collapse', row).remove();
                 $('.insert', row).after('<img class="insert-loading" src="/media/pages/images/loading.gif" alt="Loading" />');
                 
                 if (action == 'move') {
                     $.post(selected_page+'/move-page/', { position: position, target: id },
                         function (html) {
-                            $('#changelist').html(html);
+                            changelist.html(html);
+                            init_publish_hanlder(changelist);
                             pages.fade_color($('#page-row-'+selected_page).add(get_children(selected_page)));
                             action = selected_page = '';
                         }
@@ -149,11 +161,12 @@ $(function () {
                 var id = link.attr('id').substring(1);
                 if (link.toggleClass('expanded').hasClass('expanded')) {
                     add_expanded(id);
-                    add_children(id, function(children) {
+                    add_children(id, function (children) {
+                        init_publish_hanlder(children);
                         // Update the move and add links of the inserted rows
                         if (action == 'move') {
-                            $('#page-row-'+selected_page).add(get_children(selected_page)).addClass('highlighted');
-                            $('#changelist tr:not(.highlighted)').addClass('insertable');
+                            $('#page-row-'+selected_page).addClass('selected').add(get_children(selected_page)).addClass('highlighted');
+                            $('tr:not(.highlighted)', changelist).addClass('insertable');
                         } else if (action == 'add') {
                             $('#page-row-'+selected_page).addClass('highlighted insertable');
                         }
@@ -164,16 +177,6 @@ $(function () {
                 }
                 return false;
             }
-        }
-    });
-    
-    // Set the publication status
-    $('#changelist').change(function (e) {
-        var select = $(e.target);
-        if (select.is('select.publish-select')) {
-            var url = select.attr('name').split('status-')[1]+'/';
-            var img = select.parent().find('img');
-            pages.update_published_icon(url, select, img);
         }
     });
 });

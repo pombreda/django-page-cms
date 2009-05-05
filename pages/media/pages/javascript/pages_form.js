@@ -68,24 +68,20 @@ $(function() {
     // Disable the page content if the page is a redirection
     var redirect = $('#id_redirect_to').change(update_redirect);
     var affected = $('.form-row:has(#id_language), .form-row:has(#id_template), .module-content .form-row')
-        .each(function () {
-            var element = $(this).css('position', 'relative');
-            $('<div class="overlay"></div>').css({
-                'position': 'absolute',
-                'display': 'none',
-                'opacity': '0',
-                'top': '0',
-                'left': '0',
-                'height': element.height(),
-                'width': element.width()
-            }).appendTo(element);
-        });
+        .css('position', 'relative');
+    var overlay = $('<div class="overlay"></div>').css({
+            'display': 'none',
+            'position': 'absolute',
+            'z-index': '1000',
+            'top': '0',
+            'left': '0',
+            'height': '100%',
+            'width': '100%',
+            'opacity': '0.66',
+            'background': 'white'
+        }).appendTo(affected);
     function update_redirect() {
-        if (redirect.val()) {
-            affected.css('opacity', '0.5').find('.overlay').show();
-        } else {
-            affected.css('opacity', '1').find('.overlay').hide();
-        }
+        redirect.val() ? overlay.show() : overlay.hide();
     }
     update_redirect();
     
@@ -95,7 +91,7 @@ $(function() {
         var val = select.val();
         if (val) {
             $.get(val, function (html) {
-                var formrow = select.parents('.form-row');
+                var formrow = select.closest('.form-row');
                 if ($('a.disable', formrow).length) {
                     $('iframe', formrow)[0].contentWindow.document.getElementsByTagName("body")[0].innerHTML = html;
                 } else {
