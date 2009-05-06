@@ -31,7 +31,7 @@
                         <label for="translation-helper-select" class="required">{% trans "Language:" %}</label>
                         <select id="translation-helper-select">
                             <option value="" selected="selected">---------</option>
-                            {% for lang in traduction_language %}
+                            {% for lang in traduction_languages %}
                                 <option value="{{ lang.0 }}">{{ lang.1 }}</option>
                             {% endfor %}
                         </select>

@@ -314,7 +314,9 @@ class PageAdmin(admin.ModelAdmin):
             extra_context = {
                 'placeholders': get_placeholders(template),
                 'language': get_language_from_request(request),
-                'traduction_language': [l for l in settings.PAGE_LANGUAGES if Content.objects.get_content(obj, l[0], "title")],
+                'page_languages': settings.PAGE_LANGUAGES,
+                'traduction_languages': [l for l in settings.PAGE_LANGUAGES if
+                            Content.objects.get_content(obj, l[0], "title")],
                 'page': obj,
             }
         return super(PageAdmin, self).change_view(request, object_id, extra_context)
