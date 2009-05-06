@@ -193,10 +193,10 @@ class PagesTestCase(TestCase):
         # and not accept-language in HTTP requests.
         setattr(settings, "PAGE_DEFAULT_LANGUAGE", 'de')
         response = c.get('/admin/pages/page/add/')
-        self.assertContains(response, 'value="de" selected="selected"')
+        self.assertContains(response, 'class="current">de')
         setattr(settings, "PAGE_DEFAULT_LANGUAGE", 'fr-ch')
         response = c.get('/admin/pages/page/add/')
-        self.assertContains(response, 'value="fr-ch" selected="selected"')
+        self.assertContains(response, 'class="current">fr-ch')
 
         page_data = self.get_new_page_data()
         page_data["title"] = 'english title'
@@ -213,7 +213,7 @@ class PagesTestCase(TestCase):
             major, middle = [int(v) for v in django_version]
         if major >=1 and middle > 0:
             response = c.get('/admin/pages/page/%d/?language=de' % page.id)
-            self.assertContains(response, 'value="de" selected="selected"')
+            self.assertContains(response, 'class="current">de')
 
         # add a french version of the same page
         page_data["language"] = 'fr-ch'
