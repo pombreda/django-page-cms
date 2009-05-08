@@ -74,6 +74,7 @@ class PageAdmin(admin.ModelAdmin):
         )]
 
     def __call__(self, request, url):
+        print url
         
         # Delegate to the appropriate method, based on the URL.
         if url is None:
@@ -93,7 +94,7 @@ class PageAdmin(admin.ModelAdmin):
         elif 'delete-content' in url:
             page_id, action, language_id = url.split('/')
             return delete_content(request,unquote(page_id), unquote(language_id))
-                                    
+                                
         elif url.endswith('/sub-menu'):
             return sub_menu(request, unquote(url[:-9]))
         elif url.endswith('/move-page'):
@@ -104,7 +105,6 @@ class PageAdmin(admin.ModelAdmin):
             return change_status(request, unquote(url[:-24]), Page.PUBLISHED)
         elif url.endswith('/change-status-hidden'):
             return change_status(request, unquote(url[:-21]), Page.HIDDEN)
-
         ret = super(PageAdmin, self).__call__(request, url)
         
         
@@ -360,13 +360,25 @@ class PageAdmin(admin.ModelAdmin):
         # HACK: overrides the changelist template and later resets it to None
         if template_name:
             self.change_list_template = template_name
+        
+        q=request.POST.get('q', '').strip()
+        
+        if q:
+            page_ids = list(set([c.page.pk for c in Content.objects.filter(body__icontains=q)]))
+            pages = Page.objects.filter(pk__in=page_ids).order_by("tree_id")
+        else:
+            pages = Page.objects.root().order_by("tree_id")
+            
         context = {
             'name': _("page"),
-            'pages': Page.objects.root().order_by("tree_id"),
+            'pages': pages,
             'opts': self.model._meta
         }
+        
+            
         context.update(extra_context or {})
         change_list = self.changelist_view(request, context)
+        
         self.change_list_template = None
         return change_list
 
