@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from django.shortcuts import get_object_or_404
-from django.http import HttpResponse, Http404
+from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.contrib.admin.views.decorators import staff_member_required
 
 from pages import settings
@@ -40,6 +40,17 @@ def modify_content(request, page_id, content_id, language_id):
     raise Http404
 modify_content = staff_member_required(modify_content)
 
+
+def delete_content(request, page_id, language_id):
+    page = get_object_or_404(Page, pk=page_id)
+    for c in Content.objects.filter(page=page,language=language_id):
+        c.delete()
+    
+    destination = request.REQUEST.get('next', request.META.get('HTTP_REFERER', '/admin/pages/page/%s/' % page_id))
+    return HttpResponseRedirect(destination)
+delete_content = staff_member_required(delete_content)
+    
+    
 def traduction(request, page_id, language_id):
     page = Page.objects.get(pk=page_id)
     context = {}
