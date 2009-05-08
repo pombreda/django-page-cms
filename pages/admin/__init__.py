@@ -19,7 +19,7 @@ from pages.admin import widgets
 from pages.utils import get_placeholders
 from pages.admin.forms import PageForm
 from pages.admin.utils import get_connected_models
-from pages.admin.views import traduction, get_content, sub_menu, change_status, modify_content
+from pages.admin.views import traduction, get_content, sub_menu, change_status, modify_content, delete_content
 
 class PageAdmin(admin.ModelAdmin):
 
@@ -90,6 +90,10 @@ class PageAdmin(admin.ModelAdmin):
             page_id, action, content_id, language_id = url.split('/')
             return modify_content(request, unquote(page_id),
                                     unquote(content_id), unquote(language_id))
+        elif 'delete-content' in url:
+            page_id, action, language_id = url.split('/')
+            return delete_content(request,unquote(page_id), unquote(language_id))
+                                    
         elif url.endswith('/sub-menu'):
             return sub_menu(request, unquote(url[:-9]))
         elif url.endswith('/move-page'):
@@ -100,6 +104,7 @@ class PageAdmin(admin.ModelAdmin):
             return change_status(request, unquote(url[:-24]), Page.PUBLISHED)
         elif url.endswith('/change-status-hidden'):
             return change_status(request, unquote(url[:-21]), Page.HIDDEN)
+
         ret = super(PageAdmin, self).__call__(request, url)
         
         

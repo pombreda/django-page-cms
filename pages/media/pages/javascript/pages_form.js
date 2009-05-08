@@ -109,4 +109,8 @@ $(function() {
         }
         return false;
     });
+    
+    $('.js-confirm-delete').click(function() {
+        return confirm(gettext('Are you sure you want to delete this content?'));
+    });
 });
