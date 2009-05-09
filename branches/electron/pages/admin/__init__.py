@@ -74,7 +74,6 @@ class PageAdmin(admin.ModelAdmin):
         )]
 
     def __call__(self, request, url):
-        print url
         
         # Delegate to the appropriate method, based on the URL.
         if url is None:
@@ -106,8 +105,7 @@ class PageAdmin(admin.ModelAdmin):
         elif url.endswith('/change-status-hidden'):
             return change_status(request, unquote(url[:-21]), Page.HIDDEN)
         ret = super(PageAdmin, self).__call__(request, url)
-        
-        
+
         """
         Persist the language and template GET arguments, both on "save and keep 
         editing" and when switching language and template (which also submits)
@@ -365,9 +363,9 @@ class PageAdmin(admin.ModelAdmin):
         
         if q:
             page_ids = list(set([c.page.pk for c in Content.objects.filter(body__icontains=q)]))
-            pages = Page.objects.filter(pk__in=page_ids).order_by("tree_id")
+            pages = Page.objects.filter(pk__in=page_ids)
         else:
-            pages = Page.objects.root().order_by("tree_id")
+            pages = Page.objects.root()
             
         context = {
             'name': _("page"),
@@ -375,7 +373,6 @@ class PageAdmin(admin.ModelAdmin):
             'opts': self.model._meta
         }
         
-            
         context.update(extra_context or {})
         change_list = self.changelist_view(request, context)
         
