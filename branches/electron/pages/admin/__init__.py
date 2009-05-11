@@ -370,7 +370,8 @@ class PageAdmin(admin.ModelAdmin):
         context = {
             'name': _("page"),
             'pages': pages,
-            'opts': self.model._meta
+            'opts': self.model._meta,
+            'q': q
         }
         
         context.update(extra_context or {})
