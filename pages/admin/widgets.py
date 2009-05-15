@@ -76,6 +76,8 @@ class WYMEditor(Textarea):
     class Media:
         js = [join(PAGES_MEDIA_URL, path) for path in (
             'javascript/jquery.js',
+            'javascript/jquery.ui.js',
+            'javascript/jquery.ui.resizable.js',
             'wymeditor/jquery.wymeditor.js',
             'wymeditor/plugins/resizable/jquery.wymeditor.resizable.js',
         )]
