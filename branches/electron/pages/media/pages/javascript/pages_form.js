@@ -66,6 +66,9 @@ $(function() {
     });
     
     // Disable the page content if the page is a redirection
+    /*
+    // To fix if we use placeholder in templates for META or extra content
+    
     var redirect = $('#id_redirect_to').change(update_redirect);
     var affected = $('.form-row:has(#id_language), .form-row:has(#id_template), .module-content .form-row')
         .css('position', 'relative');
@@ -84,7 +87,7 @@ $(function() {
         redirect.val() ? overlay.show() : overlay.hide();
     }
     update_redirect();
-    
+    */
     // Content revision selector
     $('.revisions').change(function () {
         var select = $(this);
