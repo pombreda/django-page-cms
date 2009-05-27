@@ -92,16 +92,22 @@ def auto_render(func):
     def _dec(request, *args, **kwargs):
         template_override = kwargs.pop('template_name', None)
         only_context = kwargs.pop('only_context', False)
+
         if only_context:
             # return only context dictionary
             response = func(request, *args, **kwargs)
-            if isinstance(response, HttpResponse):
+            if isinstance(response, HttpResponse) or isinstance(response, HttpResponseRedirect) or isinstance(response, HttpResponsePermanentRedirect):
                 raise AutoRenderHttpError
             (template_name, context) = response
             return context
+
         response = func(request, *args, **kwargs)
-        if isinstance(response, HttpResponse):
+        if isinstance(response, HttpResponse) or isinstance(response, HttpResponseRedirect) or isinstance(response, HttpResponsePermanentRedirect):
             return response
+
+        if response[1].get('http_redirect', False):
+            return response[1].get('http_redirect')
+
         (template_name, context) = response
         t = context['template_name'] = template_override or template_name
         return render_to_response(t, context, context_instance=RequestContext(request))
