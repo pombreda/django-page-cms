@@ -399,6 +399,10 @@ a.popup:hover .help,
     border-right: none;
 }
 
+.change-form .module-options .redirect_to _url{
+    float: right;
+}
+
 .change-form .module-options .redirect_to_url input {
     width: 200px;
 }
