@@ -60,6 +60,8 @@ class Page(models.Model):
             
     redirect_to = models.ForeignKey('self', null=True, blank=True, related_name='redirected_pages')
     
+    redirect_to_url = models.CharField(max_length=200, null=True, blank=True)
+    
     # Managers
     objects = PageManager()
 
