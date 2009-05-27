@@ -46,6 +46,10 @@ def details(request, slug=None, lang=None, ajax=False):
     if not lang:
         lang = get_language_from_request(request, current_page)
     
+    if current_page.redirect_to_url:
+        # return this object if you want to activate redirections
+        http_redirect = HttpResponsePermanentRedirect(current_page.redirect_to_url)
+    
     if current_page.redirect_to:
         # return this object if you want to activate redirections
         http_redirect = HttpResponsePermanentRedirect(
