@@ -34,7 +34,7 @@ def details(request, slug=None, lang=None, ajax=False):
     if slug:
         current_page = get_page_from_slug(slug, request, lang)
     elif pages:
-        current_page = pages[0]
+        current_page = Page.objects.published().order_by("tree_id")[0]
 
     if not current_page:
         raise Http404
