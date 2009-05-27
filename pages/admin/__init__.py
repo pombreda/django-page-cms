@@ -47,6 +47,7 @@ class PageAdmin(admin.ModelAdmin):
     if settings.PAGE_TEMPLATES:
         normal_fields.append('template')
     normal_fields.append('redirect_to')
+    normal_fields.append('redirect_to_url')
     fieldsets = (
         (_('General'), {
             'fields': general_fields,
