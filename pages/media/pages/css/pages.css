@@ -399,7 +399,7 @@ a.popup:hover .help,
     border-right: none;
 }
 
-.change-form .module-options .redirect_to _url{
+.change-form .module-options .redirect_to_url {
     float: right;
 }
 
