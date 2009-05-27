@@ -50,7 +50,7 @@ class PageManager(models.Manager):
         if settings.PAGE_USE_SITE_ID:
             queryset = queryset.filter(sites=settings.SITE_ID)
 
-        queryset = queryset.filter(status=self.model.PUBLISHED)
+        queryset = queryset.exclude(status=self.model.DRAFT)
 
         if settings.PAGE_SHOW_START_DATE:
             queryset = queryset.filter(publication_date__lte=datetime.now())
