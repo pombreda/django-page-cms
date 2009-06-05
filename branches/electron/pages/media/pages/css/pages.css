@@ -473,6 +473,10 @@ a.popup:hover .help,
     cursor: s-resize;
 }
 
+.change-form .module-content .header_image_title input {
+    width: 100%;
+}
+
 /* Translation helper */
 .change-form .module-translation-helper #translation-helper-content {
     overflow: hidden;
