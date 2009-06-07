@@ -1,6 +1,8 @@
 #summary Some screenshots
 #labels Featured
 
+*Note: these screenshots are out dated and don't reflect the actual state of the application.*
+
 =Page tree=
 
 http://django-page-cms.googlecode.com/svn/trunk/docs/admin-screenshot1.png
