@@ -17,7 +17,8 @@ use :
 
 {{{
 sudo easy_install pip
-sudo pip install -r requirements/external_apps.txt
+wget -c http://django-page-cms.googlecode.com/svn/trunk/requirements/external_apps.txt
+sudo pip install -r external_apps.txt
 }}}
 
 Every package listed in the `external_app.txt` should be downloaded and installed.
