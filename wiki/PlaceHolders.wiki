@@ -98,3 +98,15 @@ http://www.webdesignerdepot.com/wp-content/uploads/2008/11/05_markitup.jpg
 HTML editor based on [http://markitup.jaysalvat.com/home/ markitup]
 
 http://t37.net/files/markitup-081127.jpg
+
+==TinyMCE==
+
+HTML editor based on [http://tinymce.moxiecode.com/ TinyMCE]
+
+*You should install [http://pypi.python.org/pypi/django-tinymce/1.5 django-tinymce] first*
+
+{{{
+{% placeholder [name] with TinyMCE %}
+}}}
+
+http://mgccl.com/gallery2/g2data/albums/2006/11/tinymce.png
