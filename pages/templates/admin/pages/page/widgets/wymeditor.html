@@ -5,8 +5,19 @@
         lang: '{{ language }}',
         skin: 'django',
         skinPath: "{{ PAGES_MEDIA_URL }}javascript/wymeditor/skins/django/",
-        updateSelector: '.submit-row input[type=submit],',
+        updateSelector: '.submit-row input[type=submit]',
         updateEvent: 'click',
+        containersItems: [
+            {'name': 'P', 'title': 'Paragraph', 'css': 'wym_containers_p'},
+            {'name': 'H3', 'title': 'Heading_3', 'css': 'wym_containers_h3'},
+            {'name': 'H4', 'title': 'Heading_4', 'css': 'wym_containers_h4'},
+            {'name': 'H5', 'title': 'Heading_5', 'css': 'wym_containers_h5'}
+        ],
+        classesItems: [
+            {'name': 'left', 'title': 'Image left align', 'expr': 'img'},
+            {'name': 'right', 'title': 'Image right align', 'expr': 'img'},
+            {'name': 'border', 'title': 'Image border', 'expr': 'img'}
+        ],
         postInit: function(wym) {
             wym.resizable({handles: "s", maxHeight: 600});
             //construct the button's html
