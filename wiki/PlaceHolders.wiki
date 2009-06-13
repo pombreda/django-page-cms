@@ -2,34 +2,33 @@
 
 =Dynamic localized placeholders in templates=
 
-The placeholder template tag has been revamped to be a more flexible. The new syntax is a bit different and will break unless you change your existing templates.
-
-The *old* syntax for 0.1 release:
+The syntax for placeholder is the following:
 
 {{{
-{% placeholder [name] [page] [widget] %}
+{% placeholder <name> [on <page>] [with [<widget>] [parsed[ as <varname>]] %}
 }}}
 
-The *new* syntax for trunk:
+The `page` and `widget` parameter are both optional. If the `page` parameter is not sepcified it will automatically take the current page (by using the `current_page` context variable) to get the content of the placeholder.
+
+If you pass the word "parsed" the content of the template will be evaluated as Django template, within the current context. Django page cms will search for a template with the same name of the palceholder and try to render it with this template. 
+
+Each placeholder with the "parsed" parameter defined will also have a note in the admin interface noting its ability to be evaluated as template.
+
+You can now also use a variable name optionally that is automatically set in the context view with the content of the placeholder.
+
+Here is some possible syntax:
 
 {{{
-{% placeholder [name] %}
-{% placeholder [name] parsed %}
+{% placeholder title %}
+{% placeholder title parsed %}
 
-{% placeholder [name] with [widget] %}
-{% placeholder [name] with [widget] parsed %}
+{% placeholder title with TextIntput %}
+{% placeholder body with Textarea parsed %}
 
-{% placeholder [name] on [page]  %}
-{% placeholder [name] on [page] parsed %}
-{% placeholder [name] on [page] with [widget] %}
-{% placeholder [name] on [page] with [widget] parsed %}
+{% placeholder body on root_page %}
+{% placeholder title on current_page parsed %}
+{% placeholder title on root_page with TextInput parsed as root_page_title %}
 }}}
-
-The `page` and `widget` parameter are both optional now. If now `page` parameter is given it will automatically take the current page (by using the `current_page` context variable) to get the content of the placeholder.
-
-*New:* If you pass the word "parsed" the content of the template will be evaluated as Django template code, within the current template context. Each placeholder with that has the "parsed" parameter will also have a note in the admin interface noting its ability to be evaluated as template.
-
-*New:* You can now also use a variable name optionally that is automatically set in the context view with the content of the placeholder. The content will not be embedded in a `div` tag. 
 
 {{{
 {% placeholder right-column parsed as right_column %}
