@@ -27,17 +27,13 @@ Here is some possible syntax:
 
 {% placeholder body on root_page %}
 {% placeholder title on current_page parsed %}
-{% placeholder title on root_page with TextInput parsed as root_page_title %}
-
-{% placeholder foo on current_page with TextInput as foo %}
-}}}
-
-{{{
 {% placeholder right-column parsed as right_column %}
 
 ..random content..
 
 <div class="my_funky_column">{{ right_column }}</div>
+
+{% placeholder foo on current_page with TextInput as foo %}
 }}}
 
 =List of placeholder widgets=
