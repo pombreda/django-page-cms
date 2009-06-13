@@ -24,6 +24,7 @@ Here is some possible syntax:
 
 {% placeholder title with TextIntput %}
 {% placeholder body with Textarea parsed %}
+{% placeholder foo on current_page with TextInput as foo %}
 
 {% placeholder body on root_page %}
 {% placeholder title on current_page parsed %}
@@ -32,8 +33,6 @@ Here is some possible syntax:
 ..random content..
 
 <div class="my_funky_column">{{ right_column }}</div>
-
-{% placeholder foo on current_page with TextInput as foo %}
 }}}
 
 =List of placeholder widgets=
