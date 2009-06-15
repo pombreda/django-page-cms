@@ -1,0 +1,29 @@
+#summary How to use the Page and Content model in your application
+
+= List of attributes of the Page object =
+
+The attributes name are self explanatory:
+
+ * author
+ * parent
+ * creation_date
+ * publication_date
+ * publication_end_date
+ * last_modification_date
+ * status (0 draft, 1 published, 2 expired, 3 hidden)
+ * redirect_to : Page where to redirect to
+
+
+= List of important methods of the Page object =
+
+ * get_ancestors(ascending=True|False)
+ * get_children
+ * get_calculated_status : get the calculated status of the page based on published_date, published_end_date, and status 
+ * get_children_for_frontend : get the published children of this page
+ * get_languages : a list of the languages where the page have some content
+ * get_absolute_url(language) : absolute to the project
+ * get_url(language) : relative to the root of the application
+ * slug(language)
+ * title(language)
+ * get_template
+ * has_page_permission(request) : return True if request.user has the permission on the Page
