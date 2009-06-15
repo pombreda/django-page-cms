@@ -47,17 +47,3 @@ For a full documenation : [DisplayContentInTemplates display content in template
 
  # change the url routing to accept a language prefix parameter (lang)
  # the default view named "details" accept this parameter and display the page content accordingly.
-
-== I have an error trying to display a page in the admin ==
-
-Check you have added the required middlewares and context processors. 
-
-For that, compare your MIDDLEWARE_CLASSES in your settings.py to the example that comes with page-cms.
-
-Don't forget to also add:
-
-{{{
-"pages.context_processors.media",
-}}}
-
-in your TEMPLATE_CONTEXT_PROCESSORS section to get the media files that comes with this CMS.
