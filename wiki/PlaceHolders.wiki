@@ -106,3 +106,16 @@ HTML editor based on [http://tinymce.moxiecode.com/ TinyMCE]
 }}}
 
 http://mgccl.com/gallery2/g2data/albums/2006/11/tinymce.png
+
+== EditArea ==
+
+Allows to edit raw html code with syntax highlight based on [http://www.cdolivet.com/index.php?page=editArea editArea]
+
+ * Added as a svn external so check your svn propget svn:externals .
+
+
+{{{
+{% placeholder [name] with EditArea %}
+}}}
+
+http://sourceforge.net/dbimage.php?id=69125&image.png
