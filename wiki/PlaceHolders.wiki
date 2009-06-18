@@ -5,7 +5,7 @@
 The syntax for placeholder is the following:
 
 {{{
-{% placeholder <name> [on <page>] [with [<widget>] [parsed] [as <varname>] %}
+{% placeholder <name> [on <page>] [with <widget>] [parsed] [as <varname>] %}
 }}}
 
 The `page` and `widget` parameter are both optional. If the `page` parameter is not sepcified it will automatically take the current page (by using the `current_page` context variable) to get the content of the placeholder.
