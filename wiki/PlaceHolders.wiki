@@ -49,7 +49,7 @@ a simple line input
 
 ==Textarea==
 
-a multi line input, a simple
+a multi line input
 
 {{{
 {% placeholder [name] with Textarea %}
