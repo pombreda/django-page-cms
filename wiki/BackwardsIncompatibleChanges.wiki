@@ -3,6 +3,25 @@
 
 = Backwards Incompatible Changes =
 
+=== r569 (Jun 16, 2009) ===
+
+Now overriding a template block containing with a placeholder will work remove it from the admin. In example:
+
+index.html
+{{{
+{% block override %}
+    <!-- nice.html overrideing this block to make custom-widget-example disapear form the admin -->
+    {% placeholder custom-widget-example on current_page with example.widgets.CustomTextarea parsed  %}
+{% endblock %}
+}}}
+
+nice.html
+{{{
+{% block override %}
+    <!-- by overrideing this block custom-widget-example should disapear form the admin -->
+{% endblock %}
+}}}
+
 === r450 (Apr 15, 2009) ===
 last_modification_date (models.DateTimeField) has been added to the Page model.
 
