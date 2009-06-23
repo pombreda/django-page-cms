@@ -8,13 +8,15 @@ The syntax for placeholder is the following:
 {% placeholder <name> [on <page>] [with <widget>] [parsed] [as <varname>] %}
 }}}
 
-The `page` and `widget` parameter are both optional. If the `page` parameter is not sepcified it will automatically take the current page (by using the `current_page` context variable) to get the content of the placeholder.
+If the `page` option is not specified the CMS will automatically take the current page (by using the `current_page` context variable) to get the content of the placeholder.
+
+If the `widget` option is not specified the CMS will render a simple `TextInput`. 
 
 If you use the keyword ´parsed´ the content of the template will be evaluated as Django template, within the current context. Django page CMS will search for a template with the same name of the palceholder and try to render it with this template. 
 
 Each placeholder with the "parsed" parameter defined will also have a note in the admin interface noting its ability to be evaluated as template.
 
-With the ´as´ option you define a variable that is automatically set in the template's context with the content of the placeholder.
+If you use the option ´as´ you will define in the template's context with the content of the placeholder that you will be able to use for different purpose.
 
 Here is some possible syntax:
 
@@ -32,7 +34,7 @@ Here is some possible syntax:
 
 ..random content..
 
-<div class="my_funky_column">{{ right_column }}</div>
+<div class="my_funky_column">{{ right_column|safe }}</div>
 }}}
 
 =List of placeholder widgets=
