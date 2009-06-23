@@ -1,9 +1,6 @@
 #summary Explain how to integrate django page cms into a legacy django project
 #labels Featured
 
-=Install instructions step by step=
-
-For a step to step installation process, there is this OpenOffice document : http://django-page-cms.googlegroups.com/web/gpc-install-instructions.odt
 
 =Install in legacy project=
 
@@ -12,6 +9,10 @@ This document explain how to install django page CMS into an existing Django pro
 If you have any problem installing this CMS, take a look at the example application that stands in the example directory. This application works out of the box and will certainly help you to get started.
 
 Pay a special attention to the following bold *must* statements.
+
+=Install instructions step by step=
+
+For an alternative, step by step installation process, there is this OpenOffice document : http://django-page-cms.googlegroups.com/web/gpc-install-instructions.odt
 
 ==Install by using pip==
 
