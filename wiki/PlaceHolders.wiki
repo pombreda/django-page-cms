@@ -12,11 +12,11 @@ If the `page` option is not specified the CMS will automatically take the curren
 
 If the `widget` option is not specified the CMS will render a simple `TextInput`. 
 
-If you use the keyword ´parsed´ the content of the template will be evaluated as Django template, within the current context. Django page CMS will search for a template with the same name of the palceholder and try to render it with this template. 
+If you use the keyword `parsed` the content of the template will be evaluated as Django template, within the current context. Django page CMS will search for a template with the same name of the palceholder and try to render it with this template. 
 
-Each placeholder with the "parsed" parameter defined will also have a note in the admin interface noting its ability to be evaluated as template.
+Each placeholder with the `parsed` parameter defined will also have a note in the admin interface noting its ability to be evaluated as template.
 
-If you use the option ´as´ you will define in the template's context with the content of the placeholder that you will be able to use for different purpose.
+If you use the option `as` you will define in the template's context with the content of the placeholder that you will be able to use for different purpose.
 
 Here is some possible syntax:
 
@@ -113,8 +113,13 @@ http://mgccl.com/gallery2/g2data/albums/2006/11/tinymce.png
 
 Allows to edit raw html code with syntax highlight based on [http://www.cdolivet.com/index.php?page=editArea editArea]
 
- * Added as a svn external so check your svn propget svn:externals .
+The code (Javascript, CSS) for editarea is not included into the codebase. To get the code you can add this into your svn external dependecies:
 
+{{{
+pages/media/pages/edit_area -r29 https://editarea.svn.sourceforge.net/svnroot/editarea/trunk/edit_area
+}}}
+
+Usage:
 
 {{{
 {% placeholder [name] with EditArea %}
