@@ -18,7 +18,11 @@
                     <a class="viewlink" href="{{ page.get_absolute_url }}" target="_blank" title="{% trans "view this page" %}"></a>
                     <a class="movelink" id="move-link-{{ page.id }}" href="#" title="{% trans "move this page" %}"></a>
                     <a class="addlink" id="add-link-{{ page.id }}" href="#" title="{% trans "insert a new page here" %}"></a>
+                    {% if not page.children.count %}
                     <a class="deletelink" href="{{ page.id }}/delete/" title="{% trans "delete this page" %}"></a>
+                    {% else %}
+                    <a></a>
+                    {% endif %}
                     <a class="cancellink" href="#" title="{% trans "don&#x27;t move this page" %}">{% trans "cancel" %}</a>
                 </div>
                 
