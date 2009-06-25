@@ -51,18 +51,16 @@ $(function() {
         });
     }
     
-    // Confirm language and template change if page is not saved
-    $.each(['language', 'template'], function(i, label) {
-        var select = $('#id_'+label);
-        if (select.length) {
-            var orig_ = select.val();
-            select.change(function() {
-                var query = $.query.set(label, orig_).set('new_'+label,select.val()).toString();
-                select.val(orig_);
-                $('#page_form').attr('action',query);
-                $('input[name=_continue]').click();
-            });
-        }
+    // Confirm language change if page is not saved
+    $('.language ul a').each(function(i, label) {
+        $(this).click(function() {
+            var answer = confirm(gettext('Did you save your modifications before switching language?'));
+            if (answer) {
+                return true;
+            } else {
+                return false;
+            }
+        });
     });
     
     // Disable the page content if the page is a redirection
