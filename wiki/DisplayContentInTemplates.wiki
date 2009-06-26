@@ -7,7 +7,7 @@ Django page CMS provide several, ready to use, template tags
 Store a content type from a page into a context variable that you can reuse after.
 
 {{{
-{% get_content page_object "title" as content %}
+{% get_content current_page "title" as content %}
 }}}
    
 You can also use the slug of a page
@@ -21,7 +21,7 @@ You can also use the slug of a page
 Output the content of a page directly within the template.
 
 {{{
-{% show_content page_object "title" %}
+{% show_content current_page "title" %}
 }}}
    
 You can also use the slug of a page
@@ -35,7 +35,7 @@ You can also use the slug of a page
 Show the absolute url of a page in the right language
     
 {{{
-{% show_absolute_url page_object %}
+{% show_absolute_url current_page %}
 }}}
     
 Like the other template tags you can use the slug of a page
