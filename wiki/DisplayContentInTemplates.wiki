@@ -1,6 +1,10 @@
 #summary How to display page content in your templates
 
-Django page CMS provide several, ready to use, template tags
+Django page CMS provide several, ready to use, template tags. To load these tags you must load them first:
+
+{{{
+{% load pages_tags %}
+}}}
 
 ==get_content==
 
@@ -42,4 +46,23 @@ Like the other template tags you can use the slug of a page
     
 {{{
 {% show_absolute_url "my-page-slug" %}
+}}}
+
+
+==page_menu==
+
+Render a navigation nested list of all children of the given page
+
+{{{
+{% pages_menu page %}
+}}}
+
+You can override the template `pages/menu.html` if you need more control on the rendering of these menus.
+
+==page_sub_menu==
+
+Get the root page (the highest in the hierarchy) of the given page and render a navigation nested list of all root's children pages. This is typically used for a section menu that is always open.
+
+{{{
+{% pages_sub_menu page %}
 }}}
