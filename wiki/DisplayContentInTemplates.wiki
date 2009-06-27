@@ -66,3 +66,5 @@ Get the root page (the highest in the hierarchy) of the given page and render a 
 {{{
 {% pages_sub_menu page %}
 }}}
+
+You can override the template `pages/sub_menu.html` if you need more control on the rendering of these menus.
