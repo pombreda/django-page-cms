@@ -2,10 +2,6 @@
 
 = FAQ =
 
-== You add the page ID at end of URL. How can I change that? ==
-
-if you want to get ride of this ID you can set PAGE_UNIQUE_SLUG_REQUIRED to True into your settings and the default front end will use the slug instead of the ID of the page.
-
 == How can I specify a meta description for each page and for each language? ==
 
 If you want to have a field for the description meta tag just add a placeholder in your template:
