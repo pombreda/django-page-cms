@@ -3,6 +3,8 @@
 
 *Note: these screenshots are out dated and don't reflect the actual state of the application.*
 
+You can try the demo instead : http://pagesdemo.piquadrat.ch/admin/
+
 =Page tree=
 
 http://django-page-cms.googlecode.com/svn/trunk/docs/admin-screenshot1.png
