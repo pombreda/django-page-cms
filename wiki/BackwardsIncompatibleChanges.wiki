@@ -3,6 +3,30 @@
 
 = Backwards Incompatible Changes =
 
+=== r598 (Jul 08, 2009) ===
+
+The signature of the default view has changed:
+ 
+{{{
+-def details(request, slug=None, lang=None):
++def details(request, path=None, lang=None):
+}}}
+
+Consequently, if you had add a customized urls.py you will need to update it to
+
+{{{
+if settings.PAGE_USE_LANGUAGE_PREFIX:
+    urlpatterns += patterns('',
+        url(r'^(?P<lang>[-\w]+)/(?P<path>.*)$', details,
+            name='pages-details-by-slug'),
+    )
+else:
+    urlpatterns += patterns('',
+        url(r'^(?P<path>.*)$', details,
+            name='pages-details-by-slug'),
+    )
+}}}
+
 === r569 (Jun 16, 2009) ===
 
 Now overriding a template block containing with a placeholder will work remove it from the admin. In example:
