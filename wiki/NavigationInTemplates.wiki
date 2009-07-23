@@ -1,0 +1,96 @@
+#summary describes how the various menu tags are used
+
+_Note: The following documentation describes some features (dynamic menu, breadcrumbs) which are currently only available from trunk, and are not yet part of the released version (1.0.5 at the time of this writing)_
+
+= Introduction =
+
+Presenting a navigational structure to the user is an important task for every website. django-pages-cms offers various template tags which can be used to create a site navigation menu.
+
+= Details =
+
+== Tag: {{{ {% pages_menu %} }}} ==
+
+The {{{{% pages_menu %}}}} tag displays the whole navigation tree, including all subpages. This is useful for smaller sites which do not have a large number of pages.
+
+*Usage*
+
+Place the following snippet in your template:
+
+{{{
+<ul>
+   {% for page in pages %}
+      {% pages_menu page %}
+   {% endfor %}
+</ul>
+}}}
+
+The {{{{% pages_menu %}}}} tag uses the {{{pages/menu.html}}} template to render the navigation menu. By default, the menu is rendered as a nested list: 
+
+{{{
+<ul>
+    <li><a href="/page/1">page1</a></li>
+    ...
+</ul>
+}}}
+
+== Tag: {{{{% pages_dynamic_tree_menu %}}}} ==
+
+The {{{{% pages_dynamic_tree_menu %}}}} tag works similar to the {{{{% pages_menu %}}}} tag, but instead of displaying the whole navigation structure, only the following pages are displayed:
+
+ * all "root" pages (pages which have no parent)
+ * all parents of the current page
+ * all direct children of the current page
+
+This type of navigation is recommended if your site has a large number of pages and/or a deep hierarchy, which is too complex or large to be presented to the user at once.
+
+* Usage *
+
+Place the following snippet in your template:
+
+{{{
+<ul>
+   {% for page in pages %}
+      {% pages_dynamic_tree_menu page %}
+   {% endfor %}
+</ul>
+}}}
+
+The {{{{% pages_menu %}}}} tag uses the {{{pages/dynamic_tree_menu.html}}} template to render the navigation menu. By default, the menu is rendered as a nested list similar to the {{{{% pages_menu %}}}} tag.
+
+== Tag: {{{ {% pages_submenu %} }}} ==
+
+The {{{{% pages_submenu %}}}} tag shows all the children of the root of the current page. This can be used for example as a secondary menu.
+
+* Usage *
+
+Use the following snippet to display a list of all the children of the current root.
+
+{{{
+<ul>
+  {% pages_submenu current_page %}
+</ul>
+}}}
+
+Again, the default template ({{{pages/sub_menu.html}}}) will render the items as a nested, unordered list (see above).
+
+== Tag: {{{ {% pages_breadcrumb %} }}} ==
+
+With the {{{{% pages_breadcrumb %}}}} tag, it is possible to use the "breadcrumb"/"you are here" navigational pattern, consisting of a list of all parents of the current page.
+
+* Usage *
+
+{{{
+<ul>
+  {% pages_breadcrumb current_page %}
+</ul>
+}}}
+
+The output of the {{{{% pages_breadcrumb %}}}} tag is controlled by the template {{{pages/breadcrumb.html}}}
+
+== Tag: {{{ {% load_pages %} }}} ==
+
+The {{{{% load_pages %}}}} Tag can be used to load the navigational structure in views which are _not_ rendered through pages' own {{{details()}}} view. It will check the current template context and adds the {{{pages}}} and {{{current_page}}} variable to the context, if they are not present. 
+
+This is useful if you are using a common base template for your whole site, and want the pages menu to be always present, even if the actual content is not a page. See ContactFormExample for an example of integrating different apps into pages-cms.
+
+The {{{{% load_pages %}}}} does not take any parameters and must be placed before one of the menu-rendering tags.
