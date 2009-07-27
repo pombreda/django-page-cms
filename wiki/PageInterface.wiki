@@ -1,6 +1,14 @@
 #summary How to use the Page and Content model in your application
 
-= List of attributes of the Page object =
+If ``python-sphinx`` is installed on your system you can get more complete and nicer API documentation by running:
+
+{{{
+python setup.py build_sphinx
+}}}
+
+And then open ``build/sphinx/html/index.html``.
+
+= List of important attributes of the Page object =
 
 The attributes name are self explanatory:
 
