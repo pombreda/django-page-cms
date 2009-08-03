@@ -20,9 +20,14 @@ class DocumentForm(ModelForm):
 After that you need to set the PAGE_CONNECTED_MODELS into your settings:
 
 {{{
-PAGE_CONNECTED_MODELS = [
-    {'model':'documents.models.Document','form':'documents.models.DocumentForm'},
-]
+PAGE_CONNECTED_MODELS = [{
+    'model':'documents.models.Document',
+    'form':'documents.models.DocumentForm',
+    'options':{
+            'extra': 3,
+            'max_num': 10,
+        },
+},]
 }}}
 
 When you edit a page, you should see a form to create a Document object linked to this page.
