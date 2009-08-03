@@ -27,8 +27,4 @@ PAGE_CONNECTED_MODELS = [
 
 When you edit a page, you should see a form to create a Document object linked to this page.
 
-==Planned features==
-
- * Delete/Edit related object from the page admin (a simple link should be enough)
- * Inject related object into the default public view
  
