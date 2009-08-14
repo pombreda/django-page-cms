@@ -101,9 +101,17 @@ http://t37.net/files/markitup-081127.jpg
 
 HTML editor based on [http://tinymce.moxiecode.com/ TinyMCE]
 
-*You should install [http://pypi.python.org/pypi/django-tinymce/1.5 django-tinymce] first*
+*You should install the [http://pypi.python.org/pypi/django-tinymce/1.5 django-tinymce] application first*
 
-And then follow carefully the instructions noted here : http://code.google.com/p/django-tinymce/source/browse/trunk/docs/installation.rst
+Then in your settings you should activate the application
+
+{{
+PAGE_TINYMCE = True
+}}
+
+And add ``tinymce`` in your ``INSTALLED_APPS`` list.
+
+The basic javascript files required to run TinyMCE are distributed with this CSM. However if you want to use plugins you need to make a full install of TinyMCE. To do that follow carefully those instructions : http://code.google.com/p/django-tinymce/source/browse/trunk/docs/installation.rst
 
 {{{
 {% placeholder [name] with TinyMCE %}
