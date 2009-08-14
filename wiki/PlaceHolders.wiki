@@ -105,9 +105,9 @@ HTML editor based on [http://tinymce.moxiecode.com/ TinyMCE]
 
 Then in your settings you should activate the application
 
-{{
+{{{
 PAGE_TINYMCE = True
-}}
+}}}
 
 And add ``tinymce`` in your ``INSTALLED_APPS`` list.
 
