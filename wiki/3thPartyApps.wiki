@@ -1,6 +1,8 @@
 #summary a way to integrate 3th party apps into the CMS admin interface
 
-Django page cms provide a basic way to integrate forms into page admin in order to create page related object. For this you need an object with foreign key pointing to a page:
+Django page CMS provide a solid way to integrate external application forms for managing page related object (create/delete/update) into the page's administraion interface.
+
+For this you need an object with foreign key pointing to a page:
 
 {{{
 class Document(models.Model):
@@ -17,7 +19,7 @@ class DocumentForm(ModelForm):
         model = Document
 }}}
 
-After that you need to set the PAGE_CONNECTED_MODELS into your settings:
+After that you need to set up the PAGE_CONNECTED_MODELS into your settings similar to this one:
 
 {{{
 PAGE_CONNECTED_MODELS = [{
@@ -30,6 +32,6 @@ PAGE_CONNECTED_MODELS = [{
 },]
 }}}
 
-When you edit a page, you should see a form to create a Document object linked to this page.
+When you edit a page, you should see a form to create/update/delete a Document object linked to this page.
 
  
