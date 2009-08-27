@@ -1,6 +1,12 @@
 #summary describes how the various menu tags are used
 
-_Note: The following documentation describes some features (dynamic menu, breadcrumbs) which are currently only available from trunk, and are not yet part of the released version (1.0.5 at the time of this writing)_
+If ``python-sphinx`` is installed on your system you can get an alternative template tags documentation by running:
+
+{{{
+python setup.py build_sphinx
+}}}
+
+And then open ``build/sphinx/html/index.html``.
 
 = Introduction =
 
@@ -57,9 +63,9 @@ Place the following snippet in your template:
 
 The {{{{% pages_menu %}}}} tag uses the {{{pages/dynamic_tree_menu.html}}} template to render the navigation menu. By default, the menu is rendered as a nested list similar to the {{{{% pages_menu %}}}} tag.
 
-== Tag: {{{ {% pages_submenu %} }}} ==
+== Tag: {{{ {% pages_sub_menu %} }}} ==
 
-The {{{{% pages_submenu %}}}} tag shows all the children of the root of the current page. This can be used for example as a secondary menu.
+The {{{{% pages_sub_menu %}}}} tag shows all the children of the root of the current page. This can be used for example as a secondary menu.
 
 * Usage *
 
@@ -67,7 +73,7 @@ Use the following snippet to display a list of all the children of the current r
 
 {{{
 <ul>
-  {% pages_submenu current_page %}
+  {% pages_sub_menu current_page %}
 </ul>
 }}}
 
