@@ -488,6 +488,7 @@ jQuery.fn.wymeditor = function(options) {
     classSelector:     ".wym_classes a",
     htmlValSelector:   ".wym_html_val",
     
+    protoSelector:      ".wym_proto",
     hrefSelector:      ".wym_href",
     srcSelector:       ".wym_src",
     titleSelector:     ".wym_title",
@@ -514,9 +515,9 @@ jQuery.fn.wymeditor = function(options) {
     updateEvent:       "click",
     
     dialogFeatures:    "menubar=no,titlebar=no,toolbar=no,resizable=no"
-                      + ",width=560,height=300,top=0,left=0",
+                      + ",width=600,height=300,top=30,left=0",
     dialogFeaturesPreview: "menubar=no,titlebar=no,toolbar=no,resizable=no"
-                      + ",scrollbars=yes,width=560,height=300,top=0,left=0",
+                      + ",scrollbars=yes,width=480,height=600,top=30,left=0",
 
     dialogHtml:      "<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Strict//EN'"
                       + " 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd'>"
@@ -553,6 +554,7 @@ jQuery.fn.wymeditor = function(options) {
                + "<legend>{Link}</legend>"
                + "<div class='row'>"
                + "<label>{URL}</label>"
+               + "<select class='wym_proto'><option value='http://'>http://</option><option value='ftp://'>ftp://</option><option value='mailto://'>mailto://</option><option value=''></option></select>"
                + "<input type='text' class='wym_href' value='' size='40' />"
                + "</div>"
                + "<div class='row'>"
@@ -1451,7 +1453,13 @@ WYMeditor.INIT_DIALOG = function(index) {
 
   //auto populate fields if selected container (e.g. A)
   if(selected) {
-    jQuery(wym._options.hrefSelector).val(jQuery(selected).attr(WYMeditor.HREF));
+    if (jQuery(selected).attr(WYMeditor.HREF) !== undefined) {
+        var matches_url = (/^(http|ftp|mailto):\/\/(.*)$/).exec(jQuery(selected).attr(WYMeditor.HREF));
+        if(matches_url)
+            jQuery(wym._options.hrefSelector).val(matches_url[2]);
+        else
+            jQuery(wym._options.hrefSelector).val(jQuery(selected).attr(WYMeditor.HREF));
+    }
     jQuery(wym._options.srcSelector).val(jQuery(selected).attr(WYMeditor.SRC));
     jQuery(wym._options.titleSelector).val(jQuery(selected).attr(WYMeditor.TITLE));
     jQuery(wym._options.altSelector).val(jQuery(selected).attr(WYMeditor.ALT));
@@ -1470,13 +1478,12 @@ WYMeditor.INIT_DIALOG = function(index) {
   jQuery(wym._options.dialogLinkSelector + " "
     + wym._options.submitSelector).click(function() {
 
+      var sProto = jQuery(wym._options.protoSelector).val();
       var sUrl = jQuery(wym._options.hrefSelector).val();
       if(sUrl.length > 0) {
-
         wym._exec(WYMeditor.CREATE_LINK, sStamp);
-
         jQuery("a[href=" + sStamp + "]", wym._doc.body)
-            .attr(WYMeditor.HREF, sUrl)
+            .attr(WYMeditor.HREF, ((sProto) ? sProto : '') + sUrl)
             .attr(WYMeditor.TITLE, jQuery(wym._options.titleSelector).val());
 
       }

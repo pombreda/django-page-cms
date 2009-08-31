@@ -88,3 +88,8 @@
     border: 1px solid red !important;
     font-size: 12px !important;
     font-weight: normal; }
+
+/* page link */
+  .externallink_broken,
+  .pagelink_broken { text-decoration: line-through; }
+

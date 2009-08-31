@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-import itertools
+import itertools, re
 from datetime import datetime
 from django.db import models, connection
 from django.contrib.sites.managers import CurrentSiteManager
@@ -7,6 +7,7 @@ from django.contrib.sites.models import Site
 from django.db.models import Q
 from django.core.cache import cache
 from pages import settings
+
 
 class PageManager(models.Manager):
     
@@ -92,7 +93,7 @@ class ContentManager(models.Manager):
         set or create a content for a particular page and language
         """
         if settings.PAGE_SANITIZE_USER_INPUT:
-            body = self.sanitize(body)
+            body = self.sanitize(body)       
         try:
             content = self.filter(page=page, language=language,
                                   type=cnttype).latest('creation_date')
@@ -123,11 +124,11 @@ class ContentManager(models.Manager):
         Gets the latest content for a particular page and language. Falls back
         to another language if wanted.
         """
-        PAGE_CONTENT_DICT_KEY = "page_content_dict_%d_%s"
+        PAGE_CONTENT_DICT_KEY = "page_content_dict_%s_%s"
         if not language:
             language = settings.PAGE_DEFAULT_LANGUAGE
 
-        content_dict = cache.get(PAGE_CONTENT_DICT_KEY % (page.id, ctype))
+        content_dict = cache.get(PAGE_CONTENT_DICT_KEY % (str(page.id), ctype))
         #content_dict = None
 
         if not content_dict:
@@ -138,14 +139,14 @@ class ContentManager(models.Manager):
                     content_dict[lang[0]] = content.body
                 except self.model.DoesNotExist:
                     content_dict[lang[0]] = ''
-            cache.set(PAGE_CONTENT_DICT_KEY % (page.id, ctype), content_dict)
-        
-        if content_dict[language]:
+            cache.set(PAGE_CONTENT_DICT_KEY % (str(page.id), ctype), content_dict)
+       
+        if language in content_dict:
             return content_dict[language]
 
         if language_fallback:
             for lang in settings.PAGE_LANGUAGES:
-                if content_dict[lang[0]]:
+                if lang[0] in content_dict:
                     return content_dict[lang[0]]
         return ''
 

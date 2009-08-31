@@ -13,12 +13,10 @@ from django.contrib.admin.util import unquote
 
 from pages import settings
 from pages.models import Page, Content
-from pages.utils import get_template_from_request, has_page_add_permission, get_language_from_request, break_here
-
+from pages.utils import get_placeholders, get_template_from_request, has_page_add_permission, get_language_from_request, break_here
 from pages.admin import widgets
-from pages.utils import get_placeholders
 from pages.admin.forms import PageForm
-from pages.admin.utils import get_connected_models
+from pages.admin.utils import get_connected_models, get_body_pagelink_ids, set_body_pagelink, update_body_pagelink
 from pages.admin.views import traduction, get_content, sub_menu, change_status, modify_content, delete_content
 
 class PageAdmin(admin.ModelAdmin):
@@ -75,7 +73,7 @@ class PageAdmin(admin.ModelAdmin):
         )]
 
     def __call__(self, request, url):
-        
+       
         # Delegate to the appropriate method, based on the URL.
         if url is None:
             return self.list_pages(request)
@@ -144,6 +142,8 @@ class PageAdmin(admin.ModelAdmin):
         target = form.data.get('target', None)
         position = form.data.get('position', None)
         obj.save()
+        
+        initial_pagelink_ids = get_body_pagelink_ids(obj)
 
         if target and position:
             try:
@@ -175,6 +175,8 @@ class PageAdmin(admin.ModelAdmin):
                         placeholder.name, form.cleaned_data[placeholder.name])
 
         obj.invalidate()
+        if len(settings.PAGE_LINK_EDITOR) > 0: 
+            set_body_pagelink(obj, initial_pagelink_ids) # (extra) pagelink
 
     def get_fieldsets(self, request, obj=None):
         """
@@ -401,6 +403,8 @@ class PageAdmin(admin.ModelAdmin):
                 page.invalidate()
                 target.invalidate()
                 page.move_to(target, position)
+                if len(settings.PAGE_LINK_EDITOR) > 0:
+                    update_body_pagelink(page) # (extra) pagelink
                 return self.list_pages(request,
                     template_name='admin/pages/page/change_list_table.html')
         return HttpResponseRedirect('../../')
