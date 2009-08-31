@@ -143,7 +143,8 @@ class PageAdmin(admin.ModelAdmin):
         position = form.data.get('position', None)
         obj.save()
         
-        initial_pagelink_ids = get_body_pagelink_ids(obj)
+        if settings.PAGE_LINK_EDITOR:
+            initial_pagelink_ids = get_body_pagelink_ids(obj)
 
         if target and position:
             try:
@@ -175,7 +176,7 @@ class PageAdmin(admin.ModelAdmin):
                         placeholder.name, form.cleaned_data[placeholder.name])
 
         obj.invalidate()
-        if len(settings.PAGE_LINK_EDITOR) > 0: 
+        if settings.PAGE_LINK_EDITOR: 
             set_body_pagelink(obj, initial_pagelink_ids) # (extra) pagelink
 
     def get_fieldsets(self, request, obj=None):
@@ -403,7 +404,7 @@ class PageAdmin(admin.ModelAdmin):
                 page.invalidate()
                 target.invalidate()
                 page.move_to(target, position)
-                if len(settings.PAGE_LINK_EDITOR) > 0:
+                if settings.PAGE_LINK_EDITOR:
                     update_body_pagelink(page) # (extra) pagelink
                 return self.list_pages(request,
                     template_name='admin/pages/page/change_list_table.html')
