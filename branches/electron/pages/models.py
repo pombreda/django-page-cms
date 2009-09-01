@@ -101,44 +101,46 @@ class Page(models.Model):
         if settings.PAGE_LINK_EDITOR: 
             if self.pagelink is not None:
                 pagelink_ids = self.pagelink.split(',')
-                for pk,obj in Page.objects.in_bulk(pagelink_ids).items():
-                    if obj.id != self.id:
-                        pagelink_broken = 0
-                        for placeholder in get_placeholders(obj.get_template()):
-                            if placeholder.widget in settings.PAGE_LINK_EDITOR:                                    
-                                for language in obj.get_languages():
-                                    try:
-                                        content = Content.objects.filter(language=language, type=placeholder.name, page=obj).latest()
-                                        body = BeautifulSoup(content.body)
-                                        tags = body.findAll('a', attrs={'class': 'page_'+str(self.id)})
-                                        if len(tags) > 0:
+                if pagelink_ids[0] !='':
+                    for pk,obj in Page.objects.in_bulk(pagelink_ids).items():
+                        if obj.id != self.id:
+                            obj_pagelink_broken = 0
+                            for placeholder in get_placeholders(obj.get_template()):
+                                if placeholder.widget in settings.PAGE_LINK_EDITOR:                                    
+                                    for language in obj.get_languages():
+                                        try:
+                                            content = Content.objects.filter(language=language, type=placeholder.name, page=obj).latest()
+                                            body = BeautifulSoup(content.body)
+                                            tags = body.findAll('a')
                                             for tag in tags:
-                                                if tag.string:
-                                                    pagelink_broken += 1
-                                                    tag.replaceWith('<a class="pagelink_broken" title="'+self.title(language) \
-                                                                    +'" href="'+self.get_absolute_url(language)+'">'+tag.string+'</a>')
-                                                else:
-                                                    # remove empty tag (prevent false-positive)
-                                                    tag.replaceWith('')
-
+                                                if tag.string and tag.string.strip():
+                                                    if tag.get('class',''):
+                                                        # finf link(s) with the page_id > set link to broken
+                                                        if tag['class'] == 'page_'+str(self.id):
+                                                            obj_pagelink_broken += 1
+                                                            tag.replaceWith('<a class="pagelink_broken" title="'+self.title(language) \
+                                                                                +'" href="'+self.get_absolute_url(language)+'">'+tag.string.strip()+'</a>')
+                                                        # count already broken page link(s)
+                                                        if tag['class'] == 'pagelink_broken':
+                                                            obj_pagelink_broken += 1
                                             content.body = unicode(body)
                                             content.save()
-                                    except Content.DoesNotExist:
-                                        pass
-                                cache.delete(self.PAGE_CONTENT_DICT_KEY % (obj.id, placeholder.name))                            
-                        obj.pagelink_broken = pagelink_broken
-                        obj.save()
+                                        except Content.DoesNotExist:
+                                            pass
+                                    cache.delete(self.PAGE_CONTENT_DICT_KEY % (obj.id, placeholder.name))                            
+                            obj.pagelink_broken = obj_pagelink_broken
+                            obj.save()
                       
             # update pagelink(s), remove page ID
             for obj in Page.objects.filter(pagelink__regex=r'^(.*,|)?'+str(self.id)+'(,.*|)?$'):
                 if obj.id != self.id:
-                    if obj.pagelink:
-                        pagelink_ids = obj.pagelink.split(',')
-                        if pagelink_ids:
-                            if str(self.id) in pagelink_ids:
-                                pagelink_ids.remove(str(self.id))
-                                if pagelink_ids:
-                                    obj.pagelink = pagelink_ids
+                    if obj.pagelink is not None:
+                        obj_pagelink_ids = obj.pagelink.split(',')
+                        if obj_pagelink_ids[0] !='':
+                            if str(self.id) in obj_pagelink_ids:
+                                obj_pagelink_ids.remove(str(self.id))
+                                if obj_pagelink_ids[0] !='':
+                                    obj.pagelink = obj_pagelink_ids
                                 else:
                                     obj.pagelink = ''
                                 obj.save()
