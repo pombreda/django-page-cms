@@ -1,4 +1,6 @@
 #summary Explain how to integrate django page cms into a legacy django project
 #labels Featured
 
+The install documentation is now hosted by python.org : 
+
 http://packages.python.org/django-page-cms/installation.html
