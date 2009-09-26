@@ -1,0 +1,72 @@
+#summary Documment about pagelink system.
+
+= Introduction =
+
+The *pagelink* system permit to add *internal link* in a CMS content using a WYMEditor placeholder by a customised dialog (button).
+
+In the background the logic implemented accomplish 3 distinct targets:
+
+ A) Maintaining the correct absolute URL of each link if a page is moved over the tree
+
+ B) Inform if concerned pages are a internal URL broken after a page is removed.
+
+ C) Inform if a page are a 'external URL' broken (for URL starting with http://).
+
+= How this work =
+
+All *page links* added with the custom WYMEditor dialog is formated like this:
+{{{
+<a class="page_ID" href="/pages/page-test/">Text selected</a>
+}}}
+
+- on SAVE/UPDATE of a page:
+ * all links found with the class 'page_ID' are the *title* and the *url* updated.
+ * all links with url start with 'http://' not valided are flagged and the class 'externallink_broken' is set.
+{{{
+# internal link
+<a class="page_ID" href="/pages/page-test/" title="Page Test">Text selected</a>
+}}}
+{{{
+# external broken url
+<a href="www.google.off" class="externallink_broken">Text selected</a>
+}}}
+
+- on MOVE (moving page in the tree):
+ * all links found with the class 'page_ID' are the *title* and the *url* updated and also on all these children pages concerned.
+
+- on DELETE of a page:
+ * all links found with the class 'page_ID' are modified with class 'pagelink_broken' and flagged.  
+{{{
+<a class="pagelink_broken" href="/pages/page-test/" title="Page Test">Text selected</a>
+}}}
+
+- on DELETE of the content for a specified *language*:
+   * idem of point 4 accordingly with the language.
+
+
+All this interaction with the HTML content is made with BeautifulSoup excellent lib. This is made by language an only on WYMEditor placeholder content.
+
+= To enable ''pagelink'' system =
+
+- Add in your project settings.py file:
+{{{
+PAGE_LINK_EDITOR = ['WYMEditor']
+}}}
+
+notice: respect letter case in editor name!
+
+- if the *Page* model table already exist, create the 3 new require fields: *pagelink*, *pagelink_broken* and *externallink_broken*. 
+
+{{{
+ALTER TABLE `pages_page` ADD `pagelink` varchar(200),
+   ADD `pagelink_broken` smallint unsigned,
+   ADD `externallink_broken` smallint unsigned;
+}}}
+
+Now when you use a WYEditor placeholder the Rich Text Editor offer a new button for adding *internal page* links!
+
+
+= TODO = 
+The implementation is very new actually and require more test and fixes! 
+
+*DON'T USE IN PRODUCTION WEB SITE!!!*
