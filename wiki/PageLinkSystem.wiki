@@ -44,7 +44,7 @@ All *page links* added with the custom WYMEditor dialog is formated like this:
    * idem of point 4 accordingly with the language.
 
 
-All this interaction with the HTML content is made with BeautifulSoup excellent lib. This is made by language an only on WYMEditor placeholder content.
+All this interaction with the HTML content is made with BeautifulSoup excellent lib. This is made by language and only on WYMEditor placeholder content.
 
 = To enable ''pagelink'' system =
 
@@ -58,9 +58,9 @@ notice: respect letter case in editor name!
 - if the *Page* model table already exist, create the 3 new require fields: *pagelink*, *pagelink_broken* and *externallink_broken*. 
 
 {{{
-ALTER TABLE `pages_page` ADD `pagelink` varchar(200),
-   ADD `pagelink_broken` smallint unsigned,
-   ADD `externallink_broken` smallint unsigned;
+ALTER TABLE `pages_page` ADD `pagelink` varchar(200);
+ALTER TABLE `pages_page` ADD `pagelink_broken` smallint unsigned;
+ALTER TABLE `pages_page` ADD `externallink_broken` smallint unsigned;
 }}}
 
 Now when you use a WYEditor placeholder the Rich Text Editor offer a new button for adding *internal page* links!
