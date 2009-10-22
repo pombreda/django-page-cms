@@ -1,28 +1,22 @@
 # -*- coding: utf-8 -*-
+"""Django page CMS test suite module"""
 import django
-from django.test import TestCase
-import settings
-from pages.models import *
-from pages.utils import auto_render, AutoRenderHttpError
+from django.conf import settings
 from django.test.client import Client
 from django.template import Template, RequestContext, TemplateDoesNotExist
+from django.template import loader
 from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import render_to_response
+
+from pages.models import Page, Content, PageAlias
+from pages.tests.testcase import TestCase
 
 class PagesTestCase(TestCase):
-    fixtures = ['tests.json']
-    counter = 1
-
-    def get_new_page_data(self):
-        page_data = {'title':'test page %d' % self.counter, 
-            'slug':'test-page-%d' % self.counter, 'language':'en-us',
-            'sites':[2], 'status':Page.PUBLISHED}
-        self.counter = self.counter + 1
-        return page_data
-
+    """Django page CMS test suite class"""
+    
     def test_01_add_page(self):
-        """
-        Test that the add admin page could be displayed via the admin
-        """
+        """Test that the add admin page could be displayed via the
+        admin"""
         c = Client()
         c.login(username= 'batiste', password='b')
         response = c.get('/admin/pages/page/add/')
@@ -30,16 +24,16 @@ class PagesTestCase(TestCase):
 
 
     def test_02_create_page(self):
-        """
-        Test that a page can be created via the admin
-        """
-        setattr(settings, "SITE_ID", 2)
+        """Test that a page can be created via the admin."""
+        #setattr(settings, "SITE_ID", 2)
         c = Client()
         c.login(username= 'batiste', password='b')
         page_data = self.get_new_page_data()
         response = c.post('/admin/pages/page/add/', page_data)
         self.assertRedirects(response, '/admin/pages/page/')
-        slug_content = Content.objects.get_content_slug_by_slug(page_data['slug'])
+        slug_content = Content.objects.get_content_slug_by_slug(
+            page_data['slug']
+        )
         assert(slug_content is not None)
         page = slug_content.page
         self.assertEqual(page.title(), page_data['title'])
@@ -47,9 +41,7 @@ class PagesTestCase(TestCase):
         self.assertNotEqual(page.last_modification_date, None)
 
     def test_03_slug_collision(self):
-        """
-        Test a slug collision
-        """
+        """Test a slug collision."""
         setattr(settings, "PAGE_UNIQUE_SLUG_REQUIRED", True)
 
         c = Client()
@@ -57,9 +49,7 @@ class PagesTestCase(TestCase):
         page_data = self.get_new_page_data()
         response = c.post('/admin/pages/page/add/', page_data)
         self.assertRedirects(response, '/admin/pages/page/')
-
         setattr(settings, "PAGE_UNIQUE_SLUG_REQUIRED", False)
-        
         response = c.post('/admin/pages/page/add/', page_data)
         self.assertEqual(response.status_code, 200)
 
@@ -72,9 +62,7 @@ class PagesTestCase(TestCase):
         self.assertNotEqual(page1.id, page2.id)
 
     def test_04_details_view(self):
-        """
-        Test the details view
-        """
+        """Test the details view"""
 
         c = Client()
         c.login(username= 'batiste', password='b')
@@ -96,6 +84,7 @@ class PagesTestCase(TestCase):
         page_data = self.get_new_page_data()
         page_data['status'] = Page.PUBLISHED
         page_data['slug'] = 'test-page-2'
+        page_data['template'] = 'pages/index.html'
         response = c.post('/admin/pages/page/add/', page_data)
         self.assertRedirects(response, '/admin/pages/page/')
 
@@ -103,9 +92,7 @@ class PagesTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_05_edit_page(self):
-        """
-        Test that a page can edited via the admin
-        """
+        """Test that a page can edited via the admin"""
         c = Client()
         c.login(username= 'batiste', password='b')
         page_data = self.get_new_page_data()
@@ -124,11 +111,13 @@ class PagesTestCase(TestCase):
         self.assertEqual(body, 'changed body')
 
     def test_06_site_framework(self):
-        """
-        Test the site framework, and test if it's possible to disable it
-        """
-        setattr(settings, "SITE_ID", 2)
-        setattr(settings, "PAGE_USE_SITE_ID", True)
+        """Test the site framework, and test if it's possible to
+        disable it"""
+
+        # this is necessary to make the test pass
+        from pages import settings as pages_settings
+        setattr(pages_settings, "SITE_ID", 2)
+        setattr(pages_settings, "PAGE_USE_SITE_ID", True)
 
         c = Client()
         c.login(username= 'batiste', password='b')
@@ -148,12 +137,13 @@ class PagesTestCase(TestCase):
 
         # we cannot get a slug that doesn't exist
         content = Content.objects.get_content_slug_by_slug("this doesn't exist")
+        self.assertEqual(content, None)
 
         # we cannot get the data posted on another site
         content = Content.objects.get_content_slug_by_slug(page_data['slug'])
         self.assertEqual(content, None)
 
-        setattr(settings, "SITE_ID", 3)
+        setattr(pages_settings, "SITE_ID", 3)
         page = Content.objects.get_content_slug_by_slug(page_data['slug']).page
         self.assertEqual(page.sites.count(), 1)
         self.assertEqual(page.sites.all()[0].id, 3)
@@ -164,7 +154,7 @@ class PagesTestCase(TestCase):
 
         # without param
         self.assertEqual(Page.objects.on_site().count(), 1)
-        setattr(settings, "SITE_ID", 2)
+        setattr(pages_settings, "SITE_ID", 2)
         self.assertEqual(Page.objects.on_site().count(), 1)
 
         page_data = self.get_new_page_data()
@@ -176,25 +166,22 @@ class PagesTestCase(TestCase):
         self.assertEqual(Page.objects.on_site(2).count(), 2)
         self.assertEqual(Page.objects.on_site().count(), 2)
 
-        setattr(settings, "PAGE_USE_SITE_ID", False)
+        setattr(pages_settings, "PAGE_USE_SITE_ID", False)
 
         # we should get everything
         self.assertEqual(Page.objects.on_site().count(), 3)
 
     def test_07_languages(self):
-        """
-        Test post a page with different languages
-        and test that the default view works correctly
-        """
+        """Test post a page with different languages
+        and test that the admin views works correctly."""
         c = Client()
         user = c.login(username= 'batiste', password='b')
         
-        # test that the default language setting is used add page admin
-        # and not accept-language in HTTP requests.
-        setattr(settings, "PAGE_DEFAULT_LANGUAGE", 'de')
+        # test that the client language setting is used in add page admin
+        c.cookies["django_language"] = 'de'
         response = c.get('/admin/pages/page/add/')
         self.assertContains(response, 'value="de" selected="selected"')
-        setattr(settings, "PAGE_DEFAULT_LANGUAGE", 'fr-ch')
+        c.cookies["django_language"] = 'fr-ch'
         response = c.get('/admin/pages/page/add/')
         self.assertContains(response, 'value="fr-ch" selected="selected"')
 
@@ -204,6 +191,7 @@ class PagesTestCase(TestCase):
         self.assertRedirects(response, '/admin/pages/page/')
 
         page = Page.objects.all()[0]
+        self.assertEqual(page.get_languages(), ['en-us'])
 
         # this test only works in version superior of 1.0.2
         django_version =  django.get_version().rsplit()[0].split('.')
@@ -211,7 +199,7 @@ class PagesTestCase(TestCase):
             major, middle, minor = [int(v) for v in django_version]
         else:
             major, middle = [int(v) for v in django_version]
-        if major >=1 and middle > 0:
+        if major >= 1 and middle > 0:
             response = c.get('/admin/pages/page/%d/?language=de' % page.id)
             self.assertContains(response, 'value="de" selected="selected"')
 
@@ -221,7 +209,7 @@ class PagesTestCase(TestCase):
         response = c.post('/admin/pages/page/%d/' % page.id, page_data)
         self.assertRedirects(response, '/admin/pages/page/')
 
-        setattr(settings, "PAGE_DEFAULT_LANGUAGE", 'en-us')
+        #setattr(settings, "PAGE_DEFAULT_LANGUAGE", 'en-us')
         
         # test that the frontend view use the good parameters
         # I cannot find a way of setting the accept-language HTTP 
@@ -247,12 +235,9 @@ class PagesTestCase(TestCase):
         response = c.get('/pages/')
         self.assertContains(response, 'french title')
         self.assertContains(response, 'lang="fr-ch"')
-
         
     def test_08_revision(self):
-        """
-        Test that a page can edited several times
-        """
+        """Test that a page can edited several times."""
         c = Client()
         c.login(username= 'batiste', password='b')
         page_data = self.get_new_page_data()
@@ -305,6 +290,8 @@ class PagesTestCase(TestCase):
         response = c.post('/admin/pages/page/add/', page_data)
         # the redirect tell that the page has been create correctly
         self.assertRedirects(response, '/admin/pages/page/')
+        response = c.get('/pages/same-slug/')
+        self.assertEqual(response.status_code, 200)
 
         page = Page.objects.all()[0]
 
@@ -312,8 +299,6 @@ class PagesTestCase(TestCase):
         # we cannot create 2 root page with the same slug
         # this assert test that the creation fails as wanted
         self.assertEqual(response.status_code, 200)
-
-        response = c.get('/pages/same-slug/')
 
         page1 = Content.objects.get_content_slug_by_slug(page_data['slug']).page
         self.assertEqual(page1.id, page.id)
@@ -343,13 +328,14 @@ class PagesTestCase(TestCase):
         class request:
             REQUEST = {'language': 'en'}
             GET = {}
-        context = RequestContext(request, {'page': page})
+        context = RequestContext(request, {'page': page, 'lang':'en-us',
+            'path':'/page-1/'})
         template = Template('{% load pages_tags %}'
                             '{% show_content page "title" "en-us" %}')
-        self.assertEqual(template.render(context), page_data['title'] + '\n')
+        self.assertEqual(template.render(context), page_data['title'])
         template = Template('{% load pages_tags %}'
                             '{% show_content page "title" %}')
-        self.assertEqual(template.render(context), page_data['title'] + '\n')
+        self.assertEqual(template.render(context), page_data['title'])
 
     def test_12_get_content_tag(self):
         """
@@ -373,98 +359,6 @@ class PagesTestCase(TestCase):
                             '{{ content }}')
         self.assertEqual(template.render(context), page_data['title'])
 
-    def test_13_auto_render(self):
-        """
-        Call an @auto_render decorated view with allowed keyword argument
-        combinations.
-        """
-        @auto_render
-        def testview(request, *args, **kwargs):
-            assert 'only_context' not in kwargs
-            assert 'template_name' not in kwargs
-            return 'tests/auto_render.txt', locals()
-        response = testview(None)
-        self.assertEqual(response.__class__, HttpResponse)
-        self.assertEqual(response.content,
-                         "template_name: 'tests/auto_render.txt', "
-                         "only_context: ''\n")
-        self.assertEqual(testview(None, only_context=True),
-                         {'args': (), 'request': None, 'kwargs': {}})
-        response = testview(None, only_context=False)
-        self.assertEqual(response.__class__, HttpResponse)
-        self.assertEqual(response.content,
-                         "template_name: 'tests/auto_render.txt', "
-                         "only_context: ''\n")
-        response = testview(None, template_name='tests/auto_render2.txt')
-        self.assertEqual(response.__class__, HttpResponse)
-        self.assertEqual(response.content,
-                         "alternate template_name: 'tests/auto_render2.txt', "
-                         "only_context: ''\n")
-
-    def test_14_auto_render_httpresponse(self):
-        """
-        Call an @auto_render decorated view which returns an HttpResponse with
-        allowed keyword argument combinations.
-        """
-        @auto_render
-        def testview(request, *args, **kwargs):
-            assert 'only_context' not in kwargs
-            assert 'template_name' not in kwargs
-            return HttpResponse(repr(sorted(locals().items())))
-        response = testview(None)
-        self.assertEqual(response.__class__, HttpResponse)
-        self.assertEqual(response.content,
-                         "[('args', ()), ('kwargs', {}), ('request', None)]")
-        self.assertOnlyContextException(testview)
-        self.assertEqual(testview(None, only_context=False).__class__,
-                         HttpResponse)
-        response = testview(None, template_name='tests/auto_render2.txt')
-        self.assertEqual(response.__class__, HttpResponse)
-        self.assertEqual(response.content,
-                         "[('args', ()), ('kwargs', {}), ('request', None)]")
-
-    def test_15_auto_render_redirect(self):
-        """
-        Call an @auto_render decorated view which returns an
-        HttpResponseRedirect with allowed keyword argument combinations.
-        """
-        @auto_render
-        def testview(request, *args, **kwargs):
-            assert 'only_context' not in kwargs
-            assert 'template_name' not in kwargs
-            return HttpResponseRedirect(repr(sorted(locals().items())))
-        response = testview(None)
-        self.assertEqual(response.__class__, HttpResponseRedirect)
-        self.assertOnlyContextException(testview)
-        self.assertEqual(testview(None, only_context=False).__class__,
-                         HttpResponseRedirect)
-        response = testview(None, template_name='tests/auto_render2.txt')
-        self.assertEqual(response.__class__, HttpResponseRedirect)
-
-    def test_16_auto_render_any_httpresponse(self):
-        """
-        Call an @auto_render decorated view which returns an arbitrary
-        HttpResponse subclass with allowed keyword argument combinations.
-        """
-        class MyResponse(HttpResponse): pass
-        @auto_render
-        def testview(request, *args, **kwargs):
-            assert 'only_context' not in kwargs
-            assert 'template_name' not in kwargs
-            return MyResponse(repr(sorted(locals().items())))
-        response = testview(None)
-        self.assertEqual(response.__class__, MyResponse)
-        self.assertOnlyContextException(testview)
-        self.assertEqual(response.content,
-                         "[('MyResponse', <class 'pages.tests.MyResponse'>), "
-                         "('args', ()), ('kwargs', {}), ('request', None)]")
-        self.assertEqual(testview(None, only_context=False).__class__,
-                         MyResponse)
-        response = testview(None, template_name='tests/auto_render2.txt')
-        self.assertEqual(response.__class__, MyResponse)
-        self.assertEqual(response.content,
-                         "[('MyResponse', <class 'pages.tests.MyResponse'>), "
-                         "('args', ()), ('kwargs', {}), ('request', None)]")
 
     def test_17_request_mockup(self):
         from pages.utils import get_request_mock
@@ -473,7 +367,7 @@ class PagesTestCase(TestCase):
 
     def test_18_tree_admin_interface(self):
         """
-        Test that moving page in the tree is working properly
+        Test that moving/creating page in the tree is working properly
         using the admin interface
         """
         c = Client()
@@ -484,12 +378,14 @@ class PagesTestCase(TestCase):
         response = c.post('/admin/pages/page/add/', page_data)
         
         root_page = Content.objects.get_content_slug_by_slug('root').page
+        self.assertTrue(root_page.is_first_root())
         page_data['position'] = 'first-child'
         page_data['target'] = root_page.id
         page_data['slug'] = 'child-1'
         response = c.post('/admin/pages/page/add/', page_data)
         
         child_1 = Content.objects.get_content_slug_by_slug('child-1').page
+        self.assertFalse(child_1.is_first_root())
         
         page_data['slug'] = 'child-2'
         response = c.post('/admin/pages/page/add/', page_data)
@@ -498,18 +394,57 @@ class PagesTestCase(TestCase):
 
         self.assertEqual(str(Page.objects.all()),
             "[<Page: root>, <Page: child-2>, <Page: child-1>]")
+        # move page 1 in the first position
         response = c.post('/admin/pages/page/%d/move-page/' % child_1.id,
             {'position':'first-child', 'target':root_page.id})
 
         self.assertEqual(str(Page.objects.all()),
             "[<Page: root>, <Page: child-1>, <Page: child-2>]")
-        
+
+        # move page 2 in the first position
         response = c.post('/admin/pages/page/%d/move-page/' % child_2.id,
             {'position': 'left', 'target': child_1.id})
         
         self.assertEqual(str(Page.objects.all()),
             "[<Page: root>, <Page: child-2>, <Page: child-1>]")
 
+        # try to create a sibling with the same slug, via left, right
+        from pages import settings as pages_settings
+        setattr(pages_settings, "PAGE_UNIQUE_SLUG_REQUIRED", False)
+        page_data['target'] = child_2.id
+        page_data['position'] = 'left'
+        response = c.post('/admin/pages/page/add/', page_data)
+        self.assertEqual(response.status_code, 200)
+
+        # try to create a sibling with the same slug, via first-child
+        page_data['target'] = root_page.id
+        page_data['position'] = 'first-child'
+        response = c.post('/admin/pages/page/add/', page_data)
+        self.assertEqual(response.status_code, 200)
+        # try to create a second page 2 in root
+        del page_data['target']
+        del page_data['position']
+
+        setattr(pages_settings, "PAGE_UNIQUE_SLUG_REQUIRED", True)
+        # cannot create because slug exists
+        response = c.post('/admin/pages/page/add/', page_data)
+        self.assertEqual(response.status_code, 200)
+        # Now it should work beause the page is not a sibling
+        setattr(pages_settings, "PAGE_UNIQUE_SLUG_REQUIRED", False)
+        response = c.post('/admin/pages/page/add/', page_data)
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(Page.objects.count(), 4)
+        # Should not work because we already have sibling at the same level
+        response = c.post('/admin/pages/page/add/', page_data)
+        self.assertEqual(response.status_code, 200)
+
+        # try to change the page 2 slug into page 1
+        page_data['slug'] = 'child-1'
+        response = c.post('/admin/pages/page/%d/' % child_2.id, page_data)
+        self.assertEqual(response.status_code, 200)
+        setattr(pages_settings, "PAGE_UNIQUE_SLUG_REQUIRED", True)
+        response = c.post('/admin/pages/page/%d/' % child_2.id, page_data)
+        self.assertEqual(response.status_code, 200)
 
     def test_19_tree(self):
         """
@@ -561,9 +496,10 @@ class PagesTestCase(TestCase):
             
     
     def test_20_ajax_language(self):
+        """Test that language is working properly"""
         c = Client()
         c.login(username= 'batiste', password='b')
-        # Activate a language other thant settings.LANGUAGE_CODE
+        # Activate a language other than settings.LANGUAGE_CODE
         response = c.post('/i18n/setlang/', {'language':'fr-ch' })
         self.assertEqual(c.session.get('django_language', False), 'fr-ch')
         
@@ -575,7 +511,6 @@ class PagesTestCase(TestCase):
         # Create some pages (taken from test_18_tree_admin_interface)
         page_data = self.get_new_page_data()
         page_data['slug'] = 'root'
-
         response = c.post('/admin/pages/page/add/', page_data)
         
         root_page = Content.objects.get_content_slug_by_slug('root').page
@@ -616,16 +551,147 @@ class PagesTestCase(TestCase):
             
         # Make sure the content response we got was in french
         self.assertTrue('Auteur' in response.content)
-        
-        
-    def assertOnlyContextException(self, view):
+
+    def test_21_view_context(self):
         """
-        If an @auto_render-decorated view returns an HttpResponse and is called
-        with ``only_context=True``, it should raise an appropriate exception.
+        Test that the default view can only return the context
         """
-        try:
-            view(None, only_context=True)
-        except Exception, e:
-            self.assertTrue(isinstance(e, AutoRenderHttpError))
-        else:
-            assert False, 'Exception expected'
+        
+        c = Client()
+        c.login(username= 'batiste', password='b')
+        page_data = self.get_new_page_data()
+        page_data['slug'] = 'page1'
+        # create a page for the example otherwise you will get a Http404 error
+        response = c.post('/admin/pages/page/add/', page_data)
+        page1 = Content.objects.get_content_slug_by_slug('page1').page
+
+        from pages.views import details
+        from pages.utils import get_request_mock
+        request = get_request_mock()
+        context = details(request, only_context=True)
+        self.assertEqual(context['current_page'], page1)
+
+    def test_24_page_valid_targets(self):
+        """Test page valid_targets method"""
+        c = Client()
+        c.login(username= 'batiste', password='b')
+        page_data = self.get_new_page_data()
+        page_data['slug'] = 'root'
+        response = c.post('/admin/pages/page/add/', page_data)
+        root_page = Content.objects.get_content_slug_by_slug('root').page
+        page_data['position'] = 'first-child'
+        page_data['target'] = root_page.id
+        page_data['slug'] = 'child-1'
+        response = c.post('/admin/pages/page/add/', page_data)
+        self.assertEqual(response.status_code, 302)
+        c1 = Content.objects.get_content_slug_by_slug('child-1').page
+
+        root_page = Content.objects.get_content_slug_by_slug('root').page
+        self.assertEqual(len(root_page.valid_targets()), 0)
+        self.assertEqual(str(c1.valid_targets()),
+                                            "[<Page: root>]")
+
+    def test_25_page_admin_view(self):
+        """Test page admin view"""
+        c = Client()
+        c.login(username= 'batiste', password='b')
+        page_data = self.get_new_page_data()
+        page_data['slug'] = 'page-1'
+        response = c.post('/admin/pages/page/add/', page_data)
+        page = Content.objects.get_content_slug_by_slug('page-1').page
+        self.assertEqual(page.status, 1)
+        response = c.post('/admin/pages/page/%d/change-status/' %
+            page.id, {'status':Page.DRAFT})
+        page = Content.objects.get_content_slug_by_slug('page-1').page
+        self.assertEqual(page.status, Page.DRAFT)
+
+        url = '/admin/pages/page/%d/modify-content/title/en-us/' % page.id
+        response = c.post(url, {'content': 'test content'})
+        self.assertEqual(page.title(), 'test content')
+
+        # TODO: realy test these methods
+        url = '/admin/pages/page/%d/traduction/en-us/' % page.id
+        response = c.get(url)
+        self.assertEqual(response.status_code, 200)
+        
+        url = '/admin/pages/page/%d/sub-menu/' % page.id
+        response = c.get(url)
+        self.assertEqual(response.status_code, 200)
+
+        url = '/admin/pages/page/%d/get-content/1/' % page.id
+        response = c.get(url)
+        self.assertEqual(response.status_code, 200)
+        
+    def test_26_page_alias(self):
+        """Test page aliasing system"""
+
+        c = Client()
+        c.login(username= 'batiste', password='b')
+        
+        # create some pages
+        page_data = self.get_new_page_data()
+        page_data['title'] = 'home-page-title'
+        page_data['slug'] = 'home-page'
+        response = c.post('/admin/pages/page/add/', page_data)
+        self.assertRedirects(response, '/admin/pages/page/')
+        
+        page_data['title'] =  'downloads-page-title'
+        page_data['slug'] = 'downloads-page'
+        response = c.post('/admin/pages/page/add/', page_data)
+        self.assertRedirects(response, '/admin/pages/page/')
+        
+        # create aliases for the pages
+        page = Page.objects.from_path('home-page', None)
+        self.assertTrue(page)
+        p = PageAlias(page=page, url='/index.php')
+        p.save()
+        
+        page = Page.objects.from_path('downloads-page', None)
+        self.assertTrue(page)
+        p = PageAlias(page=page, url='index.php?page=downloads')
+        p.save()
+        
+        # now check whether we can retrieve the pages.
+        # is the homepage available from is alias
+        response = c.get('/pages/index.php')
+        self.assertRedirects(response, '/pages/home-page/', 301)
+
+        # for the download page, the slug is canonical
+        response = c.get('/pages/downloads-page/')
+        self.assertContains(response, "downloads-page-title", 2)
+        
+        # calling via its alias must cause redirect
+        response = c.get('/pages/index.php?page=downloads')
+        self.assertRedirects(response, '/pages/downloads-page/', 301)
+       
+    def test_27_page_redirect_to(self):
+        """Test page redirected to an other page."""
+
+        client = Client()
+        client.login(username= 'batiste', password='b')
+
+        # create some pages
+        page1 = self.create_new_page(client)
+        page2 = self.create_new_page(client)
+        
+        page1.redirect_to = page2
+        page1.save()
+
+        # now check whether you go to the target page.
+        response = client.get(page1.get_absolute_url())
+        self.assertRedirects(response, page2.get_absolute_url(), 301)
+
+    def test_28_page_redirect_to_url(self):
+        """Test page redirected to external url."""
+
+        client = Client()
+        client.login(username= 'batiste', password='b')
+        page1 = self.create_new_page(client)
+        url = 'http://code.google.com/p/django-page-cms/'
+        page1.redirect_to_url = url
+        page1.save()
+
+        # now check whether we can retrieve the page.
+        response = client.get(page1.get_absolute_url())
+        self.assertTrue(response.status_code == 301)
+        self.assertTrue(response['Location'] == url)

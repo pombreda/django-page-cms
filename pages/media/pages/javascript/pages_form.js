@@ -22,10 +22,13 @@ $(function() {
     
     // Set the publication status
     var select = $('#id_status');
-    var opt = ({ 0: 'draft', 1: 'published', 3: 'hidden' })[select.val()];
-    var img = $('<img src="/media/pages/images/icons/'+opt+'.gif" alt="'+opt+'" />').insertAfter(select);
+    var opt = ({ 0: 'draft', 1: 'published', 2: 'expired', 3: 'hidden' })[select.val()];
+    var img = $('<img src="'+page_media_url+'/images/icons/'+opt+'.gif" alt="'+opt+'" />').insertAfter(select);
+    // disable ajax post if page not already created (add view)
+    var change_status = (typeof(add_form) !== 'undefined' && add_form) ? 0 : 1;
+
     select.change(function(e) {
-        pages.update_published_icon('', select, img);
+        pages.update_published_icon('', select, img, change_status);
     });
     
     // Translation helper
@@ -40,27 +43,17 @@ $(function() {
         }
     });
     
-    // Select the appropriate template option
-    var template = $.query.get('template');
-    if (template) {
-        $('#id_template option').each(function() {
-            if (template == this.value) {
-                $(this).attr('selected', true);
-                return false;
-            }
-        });
-    }
-    
-    // Confirm language change if page is not saved
-    $('.language ul a').each(function(i, label) {
-        $(this).click(function() {
-            var answer = confirm(gettext('Did you save your modifications before switching language?'));
-            if (answer) {
-                return true;
-            } else {
-                return false;
-            }
-        });
+    // Confirm language and template change if page is not saved
+    // this code doesn't work with languages
+    $.each(['language', 'template'], function(i, label) {
+        var select = $('#id_'+label);
+        if (select.length) {
+            var orig_ = select.val();
+            select.change(function() {
+                if(confirm(gettext('You will loose any changes you have done to the page. Are you sure?')))
+                    $('input[name=_continue]').click();
+            });
+        };
     });
     
     // Disable the page content if the page is a redirection
@@ -86,6 +79,7 @@ $(function() {
     }
     update_redirect();
     */
+    
     // Content revision selector
     $('.revisions').change(function () {
         var select = $(this);
@@ -96,14 +90,24 @@ $(function() {
                 if ($('a.disable', formrow).length) {
                     $('iframe', formrow)[0].contentWindow.document.getElementsByTagName("body")[0].innerHTML = html;
                 } else {
+                	// support for TextInput
+                	$('input', formrow).val(html);
+                	// support for TextArea
                     var formrow_textarea = $('textarea', formrow).val(html);
                     // support for WYMeditor
-                    if (WYMeditor) {
+                    if (window.WYMeditor !== undefined) {
                         $(WYMeditor.INSTANCES).each(function (i, wym) {
                             if (formrow_textarea.attr('id') === wym._element.attr('id')) {
                                 wym.html(html);
                             }
                         });
+                    }
+                    // support for TinyMCE
+                    if (window.tinyMCE !== undefined) {
+                    	var editor = tinyMCE.get(formrow_textarea.attr('id'));
+                    	if (editor !== undefined) {
+                    		editor.setContent(html);
+                    	}
                     }
                 }
             });

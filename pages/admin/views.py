@@ -1,29 +1,30 @@
 # -*- coding: utf-8 -*-
+"""Admin views"""
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.contrib.admin.views.decorators import staff_member_required
 
-from pages import settings
 from pages.models import Page, Content
-from pages.utils import get_placeholders, auto_render
-from pages.admin.utils import set_body_pagelink, delete_body_pagelink_by_language
+from pages.utils import get_placeholders
+from pages.http import auto_render
+from pages.pagelinks import make_pagelink, delete_pagelink_by_language
+from pages import settings
 
-def change_status(request, page_id, status):
+
+def change_status(request, page_id):
     """
-    Switch the status of a page
+    Switch the status of a page.
     """
     if request.method == 'POST':
-        try:
-            page = Page.objects.get(pk=page_id)
-            page.status = status
-            page.save()
-            return HttpResponse(unicode(page.status))
-        except:
-            return HttpResponse(unicode(status))
+        page = Page.objects.get(pk=page_id)
+        page.status = int(request.POST['status'])
+        page.save()
+        return HttpResponse(unicode(page.status))
     raise Http404
 change_status = staff_member_required(change_status)
 
 def modify_content(request, page_id, content_id, language_id):
+    """Modify the content of a page."""
     if request.method == 'POST':
         content = request.POST.get('content', False)
         if not content:
@@ -36,8 +37,10 @@ def modify_content(request, page_id, content_id, language_id):
             Content.objects.set_or_create_content(page, language_id,
                                                   content_id, content)
         page.invalidate()
-        if len(settings.PAGE_LINK_EDITOR) > 0:
-            set_body_pagelink(page) # (extra) pagelink
+        # to update last modification date
+        page.save()
+        if settings.PAGE_LINK_EDITOR:
+            make_pagelink(page)
 
         return HttpResponse('ok')
     raise Http404
@@ -46,8 +49,8 @@ modify_content = staff_member_required(modify_content)
 
 def delete_content(request, page_id, language_id):
     page = get_object_or_404(Page, pk=page_id)
-    if len(settings.PAGE_LINK_EDITOR) > 0:
-        delete_body_pagelink_by_language(page, language_id) # (extra) pagelink
+    if settings.PAGE_LINK_EDITOR:
+        delete_pagelink_by_language(page, language_id)
     for c in Content.objects.filter(page=page,language=language_id):
         c.delete()
     
@@ -57,6 +60,7 @@ delete_content = staff_member_required(delete_content)
     
     
 def traduction(request, page_id, language_id):
+    """Traduction helper."""
     page = Page.objects.get(pk=page_id)
     context = {}
     lang = language_id
@@ -68,24 +72,15 @@ traduction = staff_member_required(traduction)
 traduction = auto_render(traduction)
 
 def get_content(request, page_id, content_id):
+    """Get the content for a particular page"""
     content_instance = get_object_or_404(Content, pk=content_id)
     return HttpResponse(content_instance.body)
 get_content = staff_member_required(get_content)
 get_content = auto_render(get_content)
 
-def valid_targets_list(request, page_id):
-    """A list of valid targets to move a page"""
-    if not settings.PAGE_PERMISSION:
-        perms = "All"
-    else:
-        from pages.models import PagePermission
-        perms = PagePermission.objects.get_page_id_list(request.user)
-    query = Page.objects.valid_targets(page_id, request, perms)
-    return HttpResponse(",".join([str(p.id) for p in query]))
-valid_targets_list = staff_member_required(valid_targets_list)
-
 def sub_menu(request, page_id):
-    """Render the children of the requested page"""
+    """Render the children of the requested page with the sub_menu
+    template."""
     page = Page.objects.get(id=page_id)
     pages = page.children.all()
     has_permission = page.has_page_permission(request)

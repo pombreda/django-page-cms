@@ -1,8 +1,9 @@
-{% load mptt_tags %}
+{% load mptt_tags pages_tags %}
 <script type="text/javascript">
 <!--
     jQuery('#id_{{ name }}').wymeditor({
-        lang: '{{ language }}',
+        langPath: "{{ PAGES_MEDIA_URL }}wymeditor/lang/",
+        lang: '{{ lang }}',        
         skin: 'django',
         skinPath: "{{ PAGES_MEDIA_URL }}javascript/wymeditor/skins/django/",
         updateSelector: '.submit-row input[type=submit]',
@@ -77,7 +78,7 @@
                          + "<label>Page</label>"
                          + "<select class='wym_select_pagelink'>"
                          {% for page in page_list %}
-                         + "<option class='page_{{page.id}}' value='{{ page.get_absolute_url }}#{{page.id}}'>{{ page.with_level }}</option>"
+                         + "<option class='page_{{page.id}}' value='{% show_absolute_url page language %}#{{page.id}}'>{% show_slug_with_level page language %}</option>"
                          {% endfor %}
                          + "</select>"
                          + "</div>"
@@ -108,7 +109,7 @@
                 jQuery(body)
                     .find('input.wym_submit_pagelink')
                     .click(function() {
-                        var values = jQuery(body).find('.wym_select_pagelink').val().split('#');                   
+                        var values = jQuery(body).find('.wym_select_pagelink').val().split('#');
                         wym.wrap('<a class="page_' + values[1] + '" href="' + values[0] + '" title="">', '</a>');
                         wdw.close();
     

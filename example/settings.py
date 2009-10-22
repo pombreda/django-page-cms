@@ -10,12 +10,10 @@ ADMINS = (
     # ('Your Name', 'your_email@domain.com'),
 )
 
-CACHE_BACKEND = 'locmem:///'
-
 MANAGERS = ADMINS
 
 DATABASE_ENGINE = 'sqlite3'           # 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
-DATABASE_NAME = 'cms.db'             # Or path to database file if using sqlite3.
+DATABASE_NAME = os.path.join(PROJECT_DIR, 'cms.db')             # Or path to database file if using sqlite3.
 DATABASE_USER = ''             # Not used with sqlite3.
 DATABASE_PASSWORD = ''         # Not used with sqlite3.
 DATABASE_HOST = ''             # Set to empty string for localhost. Not used with sqlite3.
@@ -94,11 +92,19 @@ INSTALLED_APPS = (
     'tagging',
     'pages',
     'mptt',
+    #'tinymce',
 )
 
-PAGE_CONNECTED_MODELS = [
-    {'model':'documents.models.Document','form':'documents.models.DocumentForm'},
-]
+#PAGE_TINYMCE = True
+
+PAGE_CONNECTED_MODELS = [{
+    'model':'documents.models.Document',
+    'form':'documents.models.DocumentForm',
+    'options':{
+            'extra': 3,
+            'max_num': 10,
+        },
+},]
 
 # Default language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
@@ -108,14 +114,16 @@ LANGUAGE_CODE = 'en-us'
 # django.utils.translation -- that module depends on the settings.
 gettext_noop = lambda s: s
 
-# language you want to into the CMS
+# languages you want to translate into the CMS.
 PAGE_LANGUAGES = (
     ('de', gettext_noop('German')),
     ('fr-ch', gettext_noop('Swiss french')),
     ('en-us', gettext_noop('US English')),
 )
 
-# You should add here all language you want to accept as valid client language
+# You should add here all language you want to accept as valid client
+# language. By default we copy the PAGE_LANGUAGES constant and add some other
+# similar languages.
 languages = list(PAGE_LANGUAGES)
 languages.append(('fr-fr', gettext_noop('French')))
 languages.append(('fr-be', gettext_noop('Belgium french')))
@@ -136,7 +144,18 @@ DEFAULT_PAGE_TEMPLATE = 'pages/index.html'
 PAGE_TEMPLATES = (
     ('pages/nice.html', 'nice one'),
     ('pages/cool.html', 'cool one'),
+    ('pages/editor.html', 'raw editor'),
 )
+
+PAGE_SANITIZE_USER_INPUT = False
+PAGE_LINK_EDITOR = ['WYMEditor']
+
+# A test runner that use the test coverage module
+TEST_RUNNER = "test_runner.run_tests"
+
+# used with debug_ method
+import logging
+logging.basicConfig(level=logging.DEBUG, format='%(message)s')
 
 try:
     from local_settings import *
