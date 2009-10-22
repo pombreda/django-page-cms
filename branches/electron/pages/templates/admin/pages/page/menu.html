@@ -2,6 +2,7 @@
 
 {% if has_permission %}
     <tr id="page-row-{{ page.id }}" class="child-of-{{ page.parent_id }}">
+        <td><input class="action-select" type="checkbox" name="_selected_action" value="{{ page.id }}"/></td>
         <th class="title-cell">
             <div class="title-cell-container" style="margin-left:{{ page.margin_level }}em">
                 {% if page.pagelink_broken or page.externallink_broken %}
@@ -12,14 +13,13 @@
                     <a href="#" class="expand-collapse {% if expanded %}expanded{% endif %}" id="c{{ page.id }}">
                         <span class="expand">+</span>
                         <span class="collapse">-</span>
-                        <img class="expand-loading" src="/media/pages/images/loading.gif" alt="loading" />
+                        <img class="expand-loading" src="{{ PAGES_MEDIA_URL }}images/loading.gif" alt="loading" />
                     </a>
                 {% endif %} 
-                <a href="{{ url }}{{ page.id }}/" class="title changelink {% if page.pagelink_broken or page.externallink_broken %}broken{% endif %}">{% show_content page "slug" %}</a>
-                
-                
-                <div class="actions">
-                    <a class="viewlink" href="{{ page.get_absolute_url }}" target="_blank" title="{% trans "view this page" %}"></a>
+                <a href="{{ url }}{{ page.id }}/" class="title changelink {% if page.pagelink_broken or page.externallink_broken %}broken{% endif %}">{% show_content page "slug" %}{% if page.redirect_to or page.redirect_to_url %} <img class="redirected" src="{{ PAGES_MEDIA_URL }}images/icons/redirect.gif" alt="redirected" />{% endif %}</a>
+
+                <div class="actions-pages">
+                    <a class="viewlink" href="{% show_absolute_url page %}" target="_blank" title="{% trans "view this page" %}"></a>
                     <a class="movelink" id="move-link-{{ page.id }}" href="#" title="{% trans "move this page" %}"></a>
                     <a class="addlink" id="add-link-{{ page.id }}" href="#" title="{% trans "insert a new page here" %}"></a>
                     {% if not page.children.count %}
@@ -51,20 +51,23 @@
                 {% endfor %}
             </ul>
         </td>
+        <td class="last-modification-cell">
+            {{ page.last_modification_date|date:_("DATETIME_FORMAT") }}
+        </td>
         <td class="publish-cell">
             {% ifequal page.status page.DRAFT %}
-                <img src="/media/pages/images/icons/draft.gif" alt="draft" />
+                <img src="{{ PAGES_MEDIA_URL }}images/icons/draft.gif" alt="draft" />
             {% else %}{% ifequal page.status page.PUBLISHED %}
-                <img src="/media/pages/images/icons/published.gif" alt="published" />
+                <img src="{{ PAGES_MEDIA_URL }}images/icons/published.gif" alt="published" />
             {% else %}
-                <img src="/media/pages/images/icons/hidden.gif" alt="hidden"/>
+                <img src="{{ PAGES_MEDIA_URL }}images/icons/hidden.gif" alt="hidden"/>
             {% endifequal %}{% endifequal %}
             &nbsp;
             <select class="publish-select" name="select-status-{{ page.id }}">
                 <option value="0" {% ifequal page.status page.DRAFT %}selected="selected"{% endifequal %}>{% trans "Draft" %}</option>
                 <option value="1" {% ifequal page.status page.PUBLISHED %}selected="selected"{% endifequal %}>{% trans "In navigation" %}</option>
                 <option value="3" {% ifequal page.status page.HIDDEN %}selected="selected"{% endifequal %}>{% trans "Hidden" %}</option>
-            </select>            
+            </select>
         </td>
         <td class="template-cell">
             {{ page.get_template_name }}

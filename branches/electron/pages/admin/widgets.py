@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+"""Django CMS come with a set of ready to use widgets that you can enable
+in the admin via a placeholder tag in your template."""
 from os.path import join
 from django.conf import settings
 from django.forms import TextInput, Textarea
@@ -7,13 +9,14 @@ from django.template import RequestContext
 from django.template.loader import render_to_string
 from pages.settings import PAGES_MEDIA_URL, PAGE_TAGGING, PAGE_TINYMCE, PAGE_LINK_EDITOR
 from pages.models import Page
-from pages.utils import get_language_from_request 
+from pages.http import get_language_from_request 
 
 if PAGE_TAGGING:
     from tagging.models import Tag
     from django.utils import simplejson
 
     class AutoCompleteTagInput(TextInput):
+        """An autocompete widget"""
         class Media:
             js = [join(PAGES_MEDIA_URL, path) for path in (
                 'javascript/jquery.js',
@@ -22,7 +25,11 @@ if PAGE_TAGGING:
                 'javascript/jquery.autocomplete.min.js'
             )]
 
-        def render(self, name, value, attrs=None):
+        def __init__(self, language=None, attrs=None):
+            self.language = language
+            super(AutoCompleteTagInput, self).__init__(attrs)
+
+        def render(self, name, value, language=None, attrs=None):
             rendered = super(AutoCompleteTagInput, self).render(name, value, attrs)
             page_tags = Tag.objects.usage_for_model(Page)
             context = {
@@ -33,6 +40,7 @@ if PAGE_TAGGING:
                 'admin/pages/page/widgets/autocompletetaginput.html', context))
 
 class RichTextarea(Textarea):
+    """A RichTextarea widget."""
     class Media:
         js = [join(PAGES_MEDIA_URL, path) for path in (
             'javascript/jquery.js',
@@ -43,8 +51,9 @@ class RichTextarea(Textarea):
             )]
         }
 
-    def __init__(self, attrs=None):
+    def __init__(self, language=None, attrs=None):
         attrs = {'class': 'rte'}
+        self.language = language
         super(RichTextarea, self).__init__(attrs)
 
     def render(self, name, value, attrs=None):
@@ -60,7 +69,9 @@ if PAGE_TINYMCE:
     from tinymce import widgets as tinymce_widgets
     
     class TinyMCE(tinymce_widgets.TinyMCE):
-        def __init__(self, content_language=None, attrs=None, mce_attrs={}):
+        """TinyMCE widget."""
+        def __init__(self, language=None, attrs=None, mce_attrs={}):
+            self.language = language
             self.mce_attrs = mce_attrs
             self.mce_attrs.update({
                 'mode': "exact",
@@ -70,9 +81,10 @@ if PAGE_TINYMCE:
                 'theme_advanced_toolbar_location': "top",
                 'theme_advanced_toolbar_align': "left"
             })
-            super(TinyMCE, self).__init__(content_language, attrs, mce_attrs)
+            super(TinyMCE, self).__init__(language, attrs, mce_attrs)
 
 class WYMEditor(Textarea):
+    """WYMEditor widget."""
 
     class Media:
         js = [join(PAGES_MEDIA_URL, path) for path in (
@@ -88,23 +100,24 @@ class WYMEditor(Textarea):
         
 
     def __init__(self, language=None, attrs=None):
-        self.language = language or settings.LANGUAGE_CODE[:2]
+        self.language = language
         self.attrs = {'class': 'wymeditor'}
         if attrs:
             self.attrs.update(attrs)
         super(WYMEditor, self).__init__(attrs)
 
     def render(self, name, value, attrs=None):
-        rendered = super(WYMEditor, self).render(name, value, attrs)       
+        rendered = super(WYMEditor, self).render(name, value, attrs)
         context = {
-            'page_list': Page.objects.all().order_by('tree_id','lft'), 
             'name': name,
+            'lang': self.language[:2],
             'language': self.language,
             'PAGES_MEDIA_URL': PAGES_MEDIA_URL,
         }
         context['page_link_wymeditor'] = 0
-        if 'WYMEditor' in PAGE_LINK_EDITOR:
+        if [editor for editor in PAGE_LINK_EDITOR if editor.endswith('WYMEditor')]:
             context['page_link_wymeditor'] = 1
+            context['page_list'] = Page.objects.all().order_by('tree_id','lft')
 
         context['filebrowser'] = 0
         if "filebrowser" in getattr(settings, 'INSTALLED_APPS', []):
@@ -114,6 +127,8 @@ class WYMEditor(Textarea):
             'admin/pages/page/widgets/wymeditor.html', context))
 
 class markItUpMarkdown(Textarea):
+    """markItUpMarkdown widget."""
+    
     class Media:
         js = [join(PAGES_MEDIA_URL, path) for path in (
             'javascript/jquery.js',
@@ -136,6 +151,8 @@ class markItUpMarkdown(Textarea):
             'admin/pages/page/widgets/markitupmarkdown.html', context))
 
 class markItUpHTML(Textarea):
+    """markItUpHTML widget."""
+    
     class Media:
         js = [join(PAGES_MEDIA_URL, path) for path in (
             'javascript/jquery.js',
@@ -156,3 +173,28 @@ class markItUpHTML(Textarea):
         }
         return rendered + mark_safe(render_to_string(
             'admin/pages/page/widgets/markituphtml.html', context))
+
+class EditArea(Textarea):
+    "EditArea is a html syntax coloured widget"
+    class Media:
+        js = [join(PAGES_MEDIA_URL, path) for path in (
+            'edit_area/edit_area_full.js',
+        )]
+    
+        
+    def __init__(self, language=None, attrs=None):
+        self.language = language
+        self.attrs = {'class': 'editarea',}
+        if attrs:
+            self.attrs.update(attrs)
+        super(EditArea, self).__init__(attrs)
+
+    def render(self, name, value, attrs=None):
+        rendered = super(EditArea, self).render(name, value, attrs)
+        context = {
+            'name': name,
+            'language': self.language,
+            'PAGES_MEDIA_URL': PAGES_MEDIA_URL,
+        }
+        return rendered + mark_safe(render_to_string(
+            'admin/pages/page/widgets/editarea.html', context))

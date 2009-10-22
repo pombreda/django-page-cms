@@ -90,7 +90,7 @@ $(function () {
         $('.publish-select', elements).change(function (e) {
             var url = this.name.split('status-')[1]+'/';
             var img = $(this).parent().find('img');
-            pages.update_published_icon(url, this, img);
+            pages.update_published_icon(url, this, img, 1);
         });
     }
     
@@ -135,7 +135,7 @@ $(function () {
                 changelist.removeClass('insert-add insert-move');
                 $('tr', changelist).removeClass('selected insertable');
                 $('.expand-collapse', row).remove();
-                $('.insert', row).after('<img class="insert-loading" src="/media/pages/images/loading.gif" alt="Loading" />');
+                $('.insert', row).after('<img class="insert-loading" src="'+media_url+'pages/images/loading.gif" alt="Loading" />');
                 
                 if (action == 'move') {
                     $.post(selected_page+'/move-page/', { position: position, target: id },
@@ -161,6 +161,7 @@ $(function () {
                         // Update the move and add links of the inserted rows
                         if (action == 'move') {
                             $('#page-row-'+selected_page).addClass('selected').add(get_children(selected_page)).addClass('highlighted');
+                            // this could become quite slow with a lot of pages
                             $('tr:not(.highlighted)', changelist).addClass('insertable');
                         } else if (action == 'add') {
                             $('#page-row-'+selected_page).addClass('highlighted insertable');

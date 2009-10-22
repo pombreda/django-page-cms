@@ -1,0 +1,6 @@
+{% load cache pages_tags %}
+{% load_pages %}
+{% for page in pages %}
+    {{ page.slug }}
+{% endfor %}
+

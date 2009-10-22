@@ -1,10 +1,8 @@
 # -*- coding: utf-8 -*-
-"""
-Convenience module that provides access to custom settings for the ``pages`` 
+"""Convenience module that provides access to custom settings for the
+``pages`` 
 application.  Provides default settings for the ``pages`` application when the
-project ``settings`` module does not contain the appropriate settings.
-
-"""
+project ``settings`` module does not contain the appropriate settings."""
 from os.path import join
 from django.conf import settings
 from django.core.exceptions import ImproperlyConfigured
@@ -103,6 +101,11 @@ SITE_ID = getattr(settings, 'SITE_ID', 1)
 # framework
 PAGE_USE_SITE_ID = getattr(settings, 'PAGE_USE_SITE_ID', False)
 
+# Set PAGE_USE_LANGUAGE_PREFIX to ``True`` to make the ``get_absolute_url``
+# method to prefix the URLs with the language code
+PAGE_USE_LANGUAGE_PREFIX = getattr(settings, 'PAGE_USE_LANGUAGE_PREFIX',
+                                                                        False)
+
 # Assign a list of placeholders to PAGE_CONTENT_REVISION_EXCLUDE_LIST
 # to exclude them from the revision process.
 PAGE_CONTENT_REVISION_EXCLUDE_LIST = getattr(settings,
@@ -117,6 +120,9 @@ PAGE_SANITIZE_USER_INPUT = getattr(settings, 'PAGE_SANITIZE_USER_INPUT', False)
 PAGES_MEDIA_URL = getattr(settings, 'PAGES_MEDIA_URL', join(settings.MEDIA_URL, 
                                                             'pages/'))
 
+# Hide the slug's of the first root page ie: ``/home/`` becomes ``/``
+PAGE_HIDE_ROOT_SLUG = getattr(settings, 'PAGE_HIDE_ROOT_SLUG', False)
+
 # Show the publication start date field in the admin.  Allows for future dating
 # Changing the ``PAGE_SHOW_START_DATE``  from ``True`` to ``False``
 # after adding data could cause some weirdness.  If you must do this, you 
@@ -130,20 +136,27 @@ PAGE_SHOW_START_DATE = getattr(settings, 'PAGE_SHOW_START_DATE', False)
 PAGE_SHOW_END_DATE = getattr(settings, 'PAGE_SHOW_END_DATE', False)
 
 # ``PAGE_CONNECTED_MODELS`` allows you to specify a model and form for this 
-# model into your settings to get an automatic form to create and directly link 
-# a new instance of this model with your page in the admin.  
+# model into your settings to get an automatic form to create
+# and directly link a new instance of this model with your page in the admin.
 #
 # Here is an example:
 #
 # PAGE_CONNECTED_MODELS = [
-#     {'model':'documents.models.Document','form':'documents.models.DocumentForm'},
+#     {'model':'documents.models.Document',
+#        'form':'documents.models.DocumentForm'},
 # ]
 #
 PAGE_CONNECTED_MODELS = getattr(settings, 'PAGE_CONNECTED_MODELS', False)
 
-# for validate_url 
-# valide editor: 'WYMEditor'
-PAGE_LINK_EDITOR = ['WYMEditor']
+# pagelink system - add a button to WYMEditor to add internal cms links 
+# + check external url validity 
+# if you active this 3 new fields will be added to the model of Page !!!
+# valid editor: 'WYMEditor'
+PAGE_LINK_EDITOR = getattr(settings, 'PAGE_LINK_EDITOR', [])
 
-# pagelink url validator agent
+# pagelink url validator user agent
 PAGE_URL_VALIDATOR_USER_AGENT = getattr(settings, 'URL_VALIDATOR_USER_AGENT', False)
+
+# This setting is a function that can be defined if you need to pass extra context
+# data to the pages templates.
+PAGE_EXTRA_CONTEXT = getattr(settings, 'PAGE_EXTRA_CONTEXT', None)
