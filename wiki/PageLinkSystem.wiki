@@ -1,5 +1,7 @@
 #summary Documment about pagelink system.
 
+NOTICE: This feature is only implemented on the *[http://code.google.com/p/django-page-cms/source/browse/branches/electron electron]* branch !!!
+
 = Introduction =
 
 The *pagelink* system permit to add *internal link* in a CMS content using a WYMEditor placeholder by a customised dialog (button).
@@ -61,6 +63,6 @@ ALTER TABLE `pages_page` ADD `externallink_broken` smallint unsigned;
 Now when you use a WYEditor placeholder the Rich Text Editor offer a new button for adding *internal page* links!
 
 = TODO = 
-The implementation is very new actually and require more test and fixes! 
 
-*DON'T USE IN PRODUCTION WEB SITE!!!*
+ * Make more test for a 90% of coverage.
+ * Optimize the page list on WyMEditor popup with cache logic. 
