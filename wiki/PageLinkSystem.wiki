@@ -1,7 +1,5 @@
 #summary Documment about pagelink system.
 
-= Introduction =
-
 The *pagelink* system permit to add *internal link* in a CMS content using the WYMEditor placeholder by a customised dialog (button).
 
 In the background the logic implemented accomplish 2 things:
@@ -9,7 +7,7 @@ In the background the logic implemented accomplish 2 things:
  # Maintaining the correct absolute URL of each link if a page is moved over the tree
  # Inform the admin if a page has a broken URL after the linked page is removed.
 
-= How this work =
+== How this work ==
 
 All *page links* added with the custom WYMEditor dialog is formated like this:
 {{{
@@ -25,7 +23,7 @@ Then when the page is displayed:
 
 This functionality is only available with the WYMEditor placeholder content for now.
 
-= To enable ''pagelink'' system =
+== To enable ''pagelink'' system ==
 
 Add in your project settings.py file:
 {{{
@@ -34,6 +32,6 @@ PAGE_LINK_FILTER = True
 
 Now when you use a WYEditor placeholder the Rich Text Editor offer a new button for adding *internal page* links!
 
-= TODO = 
+== TODO == 
 
  * Optimize the page list on WyMEditor popup with cache logic. 
