@@ -7,7 +7,7 @@ The *pagelink* system permit to add *internal link* in a CMS content using the W
 In the background the logic implemented accomplish 2 things:
 
  # Maintaining the correct absolute URL of each link if a page is moved over the tree
- # Inform if concerned pages are a internal URL broken after a page is removed.
+ # Inform the admin if a page has a broken URL after the linked page is removed.
 
 = How this work =
 
