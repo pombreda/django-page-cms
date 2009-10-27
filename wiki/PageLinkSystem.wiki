@@ -1,4 +1,4 @@
-#summary Documment about pagelink system.
+#summary How the special page link system works.
 
 The *pagelink* system permit to add *internal link* in a CMS content using the WYMEditor placeholder by a customised dialog (button).
 
