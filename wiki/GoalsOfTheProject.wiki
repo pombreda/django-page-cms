@@ -1,6 +1,6 @@
 #summary Goals of the project
 
-The main goal of this project is to create a good common ground for a hierarchical Django CMS.
+The main goal of this project is to create a good common ground for a hierarchical and multilingual Django CMS.
 
 Assuming it's very difficult to create a CMS that please everybody, this CMS aim to be simple and flexible enough to be easily extensible.
 
