@@ -1,11 +1,12 @@
 """Default example views"""
-from django.http import Http404, HttpResponsePermanentRedirect
-from django.shortcuts import get_object_or_404
+from django.http import Http404, HttpResponse, HttpResponsePermanentRedirect
 from django.contrib.sites.models import SITE_CACHE
+
 from pages import settings
 from pages.models import Page, Content, PageAlias
 from pages.http import auto_render, get_language_from_request
 from pages.http import get_slug_and_relative_path
+from pages.debug import debug_
 
 def details(request, path=None, lang=None):
     """This view get the root pages for navigation

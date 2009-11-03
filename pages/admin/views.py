@@ -3,12 +3,15 @@
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.contrib.admin.views.decorators import staff_member_required
+from django.utils import simplejson
+from django.core.cache import cache
 
 from pages.models import Page, Content
 from pages.utils import get_placeholders
 from pages.http import auto_render
 from pages.pagelinks import make_pagelink, delete_pagelink_by_language
 from pages import settings
+from pages.debug import debug_
 
 
 def change_status(request, page_id):
@@ -86,6 +89,25 @@ def sub_menu(request, page_id):
     has_permission = page.has_page_permission(request)
     page_languages = settings.PAGE_LANGUAGES
     return "admin/pages/page/sub_menu.html", locals()
-    
 sub_menu = staff_member_required(sub_menu)
 sub_menu = auto_render(sub_menu)
+
+def pagelinks_html_options(request):
+    """Return HTML list of pages."""
+    if request.is_ajax():
+        try:
+            lang = request.POST.get('lang', -1)
+        except:
+            raise Http404
+      
+        cached_result = cache.get('ajax_pagelinks_selector_%s' % lang)
+        if cached_result is None:
+            cached_result = ''           
+            for page in Page.objects.published().order_by('tree_id','lft'):
+                cached_result += '<option class="page_%d" value="%s#%d">%s</option>' %(
+                    page.pk, page.get_absolute_url(lang), page.pk, page.slug_with_level(lang)
+                )
+            cache.set('ajax_pagelinks_selector_%s' % lang, cached_result, 24*3600)                         
+        return HttpResponse(cached_result, mimetype="application/javascript")
+    else:
+        raise Http404

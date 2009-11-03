@@ -117,7 +117,7 @@ class WYMEditor(Textarea):
         context['page_link_wymeditor'] = 0
         if [editor for editor in PAGE_LINK_EDITOR if editor.endswith('WYMEditor')]:
             context['page_link_wymeditor'] = 1
-            context['page_list'] = Page.objects.all().order_by('tree_id','lft')
+            #context['page_list'] = Page.objects.all().order_by('tree_id','lft')
 
         context['filebrowser'] = 0
         if "filebrowser" in getattr(settings, 'INSTALLED_APPS', []):
