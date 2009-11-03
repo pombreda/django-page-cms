@@ -1,7 +1,9 @@
 #!/usr/bin/env python
 import os, sys
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../site-packages')))
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '.')))
 from django.core.management import execute_manager
-sys.path.insert(0, os.path.abspath('./..'))
 try:
     import settings # Assumed to be in the same directory.
 except ImportError:

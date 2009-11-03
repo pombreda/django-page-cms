@@ -73,16 +73,13 @@
                          + "<input type='hidden' class='wym_dialog_type' value='"
                          + "Pages"
                          + "' />"
-                         + "<legend>Page link {{ lang }}</legend>"
+                         + "<legend>Page link {{lang}}</legend>"
                          + "<div class='row'>"
                          + "<label>Page</label>"
                          + "<select class='wym_select_pagelink'>"
-                         {% for page in page_list %}
-                         + "<option class='page_{{page.id}}' value='{% show_absolute_url page language %}#{{page.id}}'>{% show_slug_with_level page language %}</option>"
-                         {% endfor %}
                          + "</select>"
                          + "</div>"
-                         + "<div class='row row-indent'>"
+                         + "<div class='row row-indent submit-row'>"
                          + "<input class='wym_submit wym_submit_pagelink' type='button'"
                          + " value='{Submit}' />"
                          + "<input class='wym_cancel' type='button'"
@@ -90,6 +87,8 @@
                          + "</div>"
                          + "</fieldset>"
                          + "</form>"
+                         + "<script type='text/javascript'>var language = \"{{language}}\";</"+"script>"
+                         + "<script type='text/javascript' src='{{PAGES_MEDIA_URL}}javascript/wymeditor/wymeditor_pagelinks_dialog.js'></"+"script>"
                          + "</body>";
 
                     wym.dialog("Link Page", "menubar=no,titlebar=no,toolbar=no,resizable=no"
