@@ -163,7 +163,7 @@ class Page(models.Model):
                         update_broken_links(self, obj, Content)
 
         # update all pagelink (pages ID list) if contening the 'page_ID' 
-        PAGE_LIST_ID_REGEX = r'^(.*,|)?'+str(self.id)+'(,.*|)?$'
+        PAGE_LIST_ID_REGEX = r',?'+str(self.id)+r',?'
         for obj in Page.objects.filter(pagelink__regex=PAGE_LIST_ID_REGEX):
             if obj.id != self.id:
                 if obj.pagelink is not None:
