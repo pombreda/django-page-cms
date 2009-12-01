@@ -2,38 +2,4 @@
 
 =How to create your own widget for the CMS's admin=
 
-A basic widget could look like this:
-
-{{{
-from django.forms import Textarea
-from django.utils.safestring import mark_safe
-
-class CustomTextarea(Textarea):
-    """class Media:
-        js = ['path to your javascript']
-        css = {
-            'all': ['path to your CSS']
-        }"""
-
-    def __init__(self, attrs=None):
-        attrs = {'class': 'custom-textarea'}
-        super(CustomTextarea, self).__init__(attrs)
-
-    def render(self, name, value, attrs=None):
-        rendered = super(CustomTextarea, self).render(name, value, attrs)
-        return mark_safe("""Take a look at \
-                example.widgets.CustomTextarea<br>""") \
-                + rendered
-}}}
-
-
-Create a file named widgets (or whathever you want) somewhere in one of your project's application and then you can simply use the placeholder syntax.
-
-If your widget is in the `example.widgets` module the syntax should look like this :
-
-{{{
-{% placeholder custom_widget_example on current_page with example.widgets.CustomTextarea parsed  %}
-}}}
-
-
-More example of widgets are available in `pages.admin.widgets`
+http://packages.python.org/django-page-cms/placeholders.html#changing-the-widget-of-the-common-placeholder
