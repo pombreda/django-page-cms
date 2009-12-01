@@ -1,5 +1,5 @@
 #summary Example for creating and using a custom widget.
 
-=How to create your own widget for the CMS's admin=
+This documentation is now hosted there: 
 
 http://packages.python.org/django-page-cms/placeholders.html#changing-the-widget-of-the-common-placeholder
