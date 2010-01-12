@@ -3,6 +3,10 @@
 
 = Backwards Incompatible Changes =
 
+Latest changes in the CHANGELOG file:
+
+http://github.com/batiste/django-page-cms/blob/master/CHANGELOG
+
 === r598 (Jul 08, 2009) ===
 
 The signature of the default view has changed:
